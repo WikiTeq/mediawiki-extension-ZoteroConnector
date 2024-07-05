@@ -1,0 +1,83 @@
+{
+    "key": "8NZQJXVY",
+    "version": 147,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/8NZQJXVY",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/8NZQJXVY",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/7ECBYKZ8",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 148762
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Uludong",
+        "parsedDate": "1972-03-02",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "8NZQJXVY",
+        "version": 147,
+        "itemType": "newspaperArticle",
+        "title": "Telling It Like It Is",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Francisco",
+                "lastName": "Uludong"
+            }
+        ],
+        "abstractNote": "",
+        "publicationTitle": "Marianas Variety",
+        "place": "Saipan",
+        "edition": "",
+        "date": "1972-03-02",
+        "section": "",
+        "pages": "",
+        "language": "",
+        "shortTitle": "",
+        "ISSN": "",
+        "url": "",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:54Z",
+        "dateModified": "2024-05-30T16:47:54Z"
+    }
+}

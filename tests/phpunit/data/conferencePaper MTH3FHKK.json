@@ -1,0 +1,86 @@
+{
+    "key": "MTH3FHKK",
+    "version": 122,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/MTH3FHKK",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/MTH3FHKK",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/M5AWZV83",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 654751
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Monter",
+        "parsedDate": "2008-08-12",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "MTH3FHKK",
+        "version": 122,
+        "itemType": "conferencePaper",
+        "title": "Out of the shadow: Biographical Details of Elisabeth Kr\u00e4mer-Bannow",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Sven",
+                "lastName": "Monter"
+            }
+        ],
+        "abstractNote": "",
+        "date": "2008-08-12",
+        "proceedingsTitle": "Graduate Conference Day, Department of History",
+        "conferenceName": "",
+        "place": "",
+        "publisher": "",
+        "volume": "",
+        "pages": "",
+        "series": "",
+        "language": "",
+        "DOI": "",
+        "ISBN": "",
+        "shortTitle": "",
+        "url": "https://docplayer.net/45718164-Out-of-the-shadow-biographical-details-of-elisabeth-kramer-bannow-or-the-woman-behind-dr-augustin-kramer.html",
+        "accessDate": "2024-03-18",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:51Z",
+        "dateModified": "2024-05-30T16:47:51Z"
+    }
+}

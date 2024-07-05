@@ -1,0 +1,94 @@
+{
+	"name": "ZoteroConnector",
+	"author": [
+		"Daniel Scherzer"
+	],
+	"descriptionmsg": "zoteroconnector-desc",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.39"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\ZoteroConnector\\": "src/",
+		"MediaWiki\\Extension\\ZoteroConnector\\Maintenance\\": "maintenance/"
+	},
+	"MessagesDirs": {
+		"ZoteroConnector": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"ZoteroConnectorAlias": "ZoteroConnector.alias.php",
+		"ZoteroConnectorNamespaces": "ZoteroConnector.namespaces.php"
+	},
+	"namespaces": [
+		{
+			"id": 1934,
+			"constant": "NS_ZOTERO_REF",
+			"name": "Zotero_reference",
+			"subpages": false,
+			"content": true,
+			"protection": "edit-zotero-reference"
+		},
+		{
+			"id": 1935,
+			"constant": "NS_ZOTERO_REF_TALK",
+			"name": "Zotero_reference_talk",
+			"subpages": true
+		}
+	],
+	"AvailableRights": [
+		"edit-zotero-reference",
+		"zotero-import"
+	],
+	"GroupPermissions": {
+		"sysop": {
+			"zotero-import": true
+		}
+	},
+	"SpecialPages": {
+		"ZoteroImporter": {
+			"class": "\\MediaWiki\\Extension\\ZoteroConnector\\Special\\SpecialZoteroImporter",
+			"services": [
+				"ZoteroConnector.AttachmentManager",
+				"TitleFormatter",
+				"ZoteroConnector.WikiUpdater",
+				"ZoteroConnector.ZoteroRequester"
+			]
+		}
+	},
+	"HookHandlers": {
+		"comment": {
+			"class": "\\MediaWiki\\Extension\\ZoteroConnector\\HookHandlers\\CommentHandler",
+			"factory": "\\MediaWiki\\Extension\\ZoteroConnector\\HookHandlers\\CommentHandler::create",
+			"services": [
+				"MessageFormatterFactory",
+				"ContentLanguage"
+			]
+		},
+		"parser": {
+			"class": "\\MediaWiki\\Extension\\ZoteroConnector\\HookHandlers\\ParserHandler",
+			"services": [
+				"ZoteroConnector.AttachmentManager"
+			]
+		}
+	},
+	"Hooks": {
+		"FormatAutocomments": "comment",
+		"InfoAction": "parser",
+		"ParserFirstCallInit": "parser"
+	},
+	"TrackingCategories": [
+		"zotero-non-file-with-version",
+		"zotero-file-with-invalid-version"
+	],
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
+	"config": {
+		"ZoteroConnectorAPIKey": {
+			"value": ""
+		}
+	},
+	"manifest_version": 2
+}

@@ -1,0 +1,25 @@
+{{Cite journal
+|title = Bryoflora of the Atolls of Micronesia
+|date = 1964
+|url = https://www.jstor.org/stable/3240821?origin=crossref
+|ISSN = 00072745
+|DOI = 10.2307/3240821
+|volume = 67
+|issue = 2
+|pages = 242
+|work = The Bryologist
+|last1 = Robinson
+|first1 = Harold
+|last2 = Miller
+|first2 = H. A.
+|last3 = Whittier
+|first3 = H. O.
+|last4 = Bonner
+|first4 = C. E. B.
+}}
+{{ZoteroDetails
+|key = 2KZVC9RY
+|itemType = journalArticle
+|version = 62
+|abstractNote = Catalog and identification of the bryophytes (mosses, liverworts, and hornworts) found in on coral atolls of the Gilbert, Marshalls and Caroline Islands. Miller and Whittier were academic botonists, Booner led the Conservatory and Botanical Garden of the city of Geneva. Published book, softcover.
+}}

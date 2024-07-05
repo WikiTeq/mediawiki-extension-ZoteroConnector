@@ -1,0 +1,14 @@
+{{Cite news
+|title = Telling It Like It Is
+|date = 1972-03-02
+|place = Saipan
+|work = Marianas Variety
+|last1 = Uludong
+|first1 = Francisco
+}}
+{{ZoteroDetails
+|key = 8NZQJXVY
+|itemType = newspaperArticle
+|version = 147
+|attachment = 7ECBYKZ8
+}}

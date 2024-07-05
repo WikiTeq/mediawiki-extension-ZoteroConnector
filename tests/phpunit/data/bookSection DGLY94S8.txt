@@ -1,0 +1,24 @@
+{{Cite book
+|title = History of Cartography
+|date = 1996
+|publisher = University of Chicago Press
+|place = Chicago
+|url = https://www.semanticscholar.org/paper/Nautical-Cartography-and-Traditional-Navigation-in-Finney/bde415d1d8fb58f0a90488ea3d478e705a771dad
+|access-date = 2024-03-18
+|volume = 2
+|pages = 443-492
+|chapter = Nautical Cartography and Traditional Navigation in Oceania
+|last1 = Finney
+|first1 = Ben
+|editor1-last = Woodward
+|editor1-first = David
+|editor2-last = Lewis
+|editor2-first = Malcom G.
+}}
+{{ZoteroDetails
+|key = DGLY94S8
+|itemType = bookSection
+|version = 116
+|abstractNote = The navigational practices of Oceanians present somewhat of a puzzle to the student of the history of carto-graphy. Here were superb navigators who sailed their canoes from island to island, spending days or sometimes many weeks out of sight of land, and who found their way without consulting any instruments or charts at sea. Instead, they carried in their head images of the spread of islands over the ocean and envisioned in the mind's eye the bearings from one to the other in terms of a conceptual compass whose points were typically delineated according to the rising and setting of key stars and constellations or the directions from which named winds blow. Within this mental framework of islands and bearings , to guide their canoes to destinations lying over the horizon these navigators applied vital information obtained by watching with the naked eye the stars, ocean swells, steady winds, island-influenced cloud formations, land-nesting birds fishing out at sea, and other cues provided by nature. Among the few places in the Pacific where traditional navigation is still practiced are several tiny atolls in the Caroline Islands of Micronesia. In his study of traditional Carolinian navigation, anthropologist Thomas Gladwin captured the essence of how at sea a master navigator relies solely on his senses and a mental image of the islands around him. "Everything that really matters in the whole process goes on in his head or through his senses. All he can actually see or feel is the travel of the canoe through the water, the direction of the wind, and the direction of the stars. Everything else depends upon a cognitive map, a map which is both literally geographical and also logical ." 1 A number of geographers, psychologists, and other scholars have written about how people form "cognitive maps" or "mental maps" of the world around them. 2 But whereas most of these studies have focused primarily on the general processes by which children and ordinary adults form and utilize images of their surroundings, this chapter explores the highly structured ways professional navigators from the Pacific Islands mentally charted the environment of sea, islands, swells, winds, stars, and other features vital to their art, and then employed these formal images and their own sense perceptions to guide their canoes over the ocean. The idea of physically portraying their mental images was not alien to these specialists, however. Early Western explorers and missionaries recorded instances of how indigenous navigators, when questioned about the islands surrounding their own, readily produced maps by tracing lines in the sand or arranging pieces of coral. Some of these early visitors drew up charts based on such ephemeral maps or from information their informants supplied by word and gesture on the bearing and distance to the islands they knew. Furthermore, on some islands master navigators taught their pupils a conceptual "star compass" by laying out coral fragments to signify the rising and setting points of key stars and constellations. Once their pupils had mastered the star compass, they were required to imagine a series of "island charts" by mentally placing successive islands at the center of the compass and then reciting the islands, reefs, and other navigationally important features to be found by sailing along each star bearing. In the Marshall Islands, and only there, navigators skilled at reading the way islands disrupt the patterning of the deep ocean swells made "stick charts" depicting islands and their effect on the swells. These charts were used to teach students and as mnemonic aids to be consulted before a voyage. Yet when these navigators set sail, they did not take with them any such physical representations of islands , star positions, or swell patterns to aid them in their task. A wealth of ethnographic evidence, which began accumulating with the observations of Captain James Cook and other early explorers, in conjunction with contem-1.
+|attachment = S4HDWBVD
+}}

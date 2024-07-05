@@ -1,0 +1,35 @@
+{
+	"@metadata": {
+		"authors": [
+			"Daniel Scherzer"
+		]
+	},
+	"zoteroconnector-desc": "{{desc|name=ZoteroConnector}}",
+	"right-edit-zotero-reference": "{{doc-right|edit-zotero-reference}}",
+	"action-edit-zotero-reference": "{{doc-action|edit-zotero-reference}}",
+	"right-zotero-import": "{{doc-right|zotero-import}}",
+	"action-zotero-import": "{{doc-action|zotero-import}}",
+	"zoteroconnector-error": "Error page title",
+	"zoteroconnector-import-not-found": "Error message for missing items\n\nParameters:\n* $1 - the item ID requested",
+	"zoteroconnector-import-no-subpage": "Error message when accessing [[Special:ZoteroImporter]] without a subpage",
+	"zoteroconnector-import-invalid-subpage": "Error message when accessing [[Special:ZoteroImporter]] with a bad subpage",
+	"zoteroconnector-auto-upload": "Automatic upload edit summary",
+	"zoteroconnector-auto-update": "Automatic attachment page update edit summary",
+	"zoteroimporter": "Special page title",
+	"zoteroconnector-import-submit": "Submit button label",
+	"zoteroconnector-import-type-label": "Radio input label",
+	"zoteroconnector-import-type-reference": "Radio input label for specific option",
+	"zoteroconnector-import-type-attachment": "Radio input label for specific option",
+	"zoteroconnector-no-redirect": "Error message",
+	"zoteroconnector-import-key-label": "Label for text input",
+	"zoteroconnector-import-error-top": "Error message",
+	"zoteroconnector-import-reference-is-attachment": "Note when trying to import an attachment as a reference",
+	"zoteroconnector-import-reference-no-change": "Message when no reference page changed\n\nParameters:\n* $1 - the item ID requested",
+	"zoteroconnector-import-reference-successful": "Message when reference page updated\n\nParameters:\n* $1 - the item ID requested",
+	"zoteroconnector-upload-attachment-no-change": "Message when no upload performed for an attachment\n\nParameters:\n* $1 - the attachment ID requested",
+	"zoteroconnector-attachment-page-updated": "Message when only a page content update for an attachment was performed\n\nParameters:\n* $1 - the attachment ID requested",
+	"zoteroconnector-upload-attachment-successful": "Message when attachment was uploaded\n\nParameters:\n* $1 - the attachment ID requested",
+	"zotero-non-file-with-version": "Tracking category description",
+	"zotero-file-with-invalid-version": "Tracking category description",
+	"zotero-file-current-version-info": "Label for version in action=info output"
+}

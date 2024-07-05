@@ -1,0 +1,108 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  EXTNAME: ZoteroConnector
+  MW_INSTALL_PATH: ${{ github.workspace }}
+
+jobs:
+  style-php:
+    name: Code Style (PHP)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.1' ]
+        # Not running against master due to T358956
+        mediawiki: [ REL1_41 ]
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+          coverage: none
+          tools: composer, phpcs, phplint
+      - name: Setup MediaWiki
+        uses: actions/checkout@v3
+        with:
+          repository: wikimedia/mediawiki
+          ref: ${{ matrix.mediawiki }}
+      - name: Setup Extension
+        uses: actions/checkout@v3
+        with:
+          path: extensions/${{ env.EXTNAME }}
+      - name: Setup Composer
+        run: |
+          echo '{"extra":{"merge-plugin":{"include":["extensions/*/composer.json","skins/*/composer.json"]}}}' > composer.local.json
+          composer update
+          composer update
+      - name: Lint
+        run: phplint -w extensions/${{ env.EXTNAME }}
+      - name: PHP Code Sniffer
+        # We cannot just use the `phpcs` command because we want to make use of
+        # our configuration for this extension, and if we used that command it
+        # wouldn't autoload PHPUnitTestTrait properly. Potential cause:
+        # https://github.com/squizlabs/PHP_CodeSniffer/issues/1463
+        run: vendor/bin/phpcs -sp --standard=extensions/${{ env.EXTNAME }}/.phpcs.xml extensions/${{ env.EXTNAME }}
+
+  security:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.1' ]
+        # Deliberately *not* testing against `master`
+        mediawiki: [ REL1_39, REL1_41 ]
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl, ast
+          coverage: none
+          tools: composer
+      - name: Setup MediaWiki
+        uses: actions/checkout@v3
+        with:
+          repository: wikimedia/mediawiki
+          ref: ${{ matrix.mediawiki }}
+      - name: Setup Extension
+        uses: actions/checkout@v3
+        with:
+          path: extensions/${{ env.EXTNAME }}
+      - name: Setup Composer
+        run: |
+          echo '{"extra":{"merge-plugin":{"include":["extensions/*/composer.json","skins/*/composer.json"]}}}' > composer.local.json
+          composer update
+          composer update
+      - name: Phan
+        run: ./vendor/bin/phan -d extensions/${{ env.EXTNAME }} --minimum-target-php-version=7.4 --long-progress-bar
+
+  test:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    env:
+      MW_INSTALL_PATH: ${{ github.workspace }}/mediawiki
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.1' ]
+        # Deliberately *not* testing against `master`
+        mediawiki: [ REL1_39, REL1_41 ]
+    steps:
+      - name: Setup Extension
+        uses: actions/checkout@v3
+      - name: Mediawiki PHPUnit
+        uses: wikiteq/mediawiki-phpunit-action@master
+        with:
+          type: extension
+          php: ${{ matrix.php }}
+          mwbranch: ${{ matrix.mediawiki }}
+          extension: ZoteroConnector

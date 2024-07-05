@@ -1,0 +1,90 @@
+{
+    "key": "2WSA5G4S",
+    "version": 53,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/2WSA5G4S",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/2WSA5G4S",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/RTBKECLI",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 20690324
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Ho-min Sohn and Bender",
+        "parsedDate": "1973",
+        "numChildren": 2
+    },
+    "data": {
+        "key": "2WSA5G4S",
+        "version": 53,
+        "itemType": "book",
+        "title": "A Ulithian Grammar",
+        "creators": [
+            {
+                "creatorType": "author",
+                "name": "Ho-min Sohn"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "Byron W.",
+                "lastName": "Bender"
+            }
+        ],
+        "abstractNote": "",
+        "series": "",
+        "seriesNumber": "",
+        "volume": "",
+        "numberOfVolumes": "",
+        "edition": "",
+        "place": "",
+        "publisher": "",
+        "date": "1973",
+        "numPages": "",
+        "language": "",
+        "ISBN": "978-0-85883-098-1",
+        "shortTitle": "",
+        "url": "https://archive.org/details/ulithiangrammar0027sohn/mode/2up",
+        "accessDate": "2024-04-10",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:44Z",
+        "dateModified": "2024-05-30T16:47:44Z"
+    }
+}

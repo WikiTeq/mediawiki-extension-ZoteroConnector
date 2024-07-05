@@ -1,0 +1,106 @@
+{
+    "key": "KUWNE75R",
+    "version": 132,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/KUWNE75R",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/KUWNE75R",
+            "type": "text/html"
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Smith and Tkel-Sbal",
+        "parsedDate": "1995",
+        "numChildren": 0
+    },
+    "data": {
+        "key": "KUWNE75R",
+        "version": 132,
+        "itemType": "bookSection",
+        "title": "Prototype Analyses of Emotion Terms in Palau, Micronesia",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Kyle D.",
+                "lastName": "Smith"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "Debbie",
+                "lastName": "Tkel-Sbal"
+            },
+            {
+                "creatorType": "editor",
+                "firstName": "James",
+                "lastName": "Russell"
+            },
+            {
+                "creatorType": "editor",
+                "firstName": "Jose-Miguel",
+                "lastName": "Fernadez-Dols"
+            },
+            {
+                "creatorType": "editor",
+                "firstName": "Antony",
+                "lastName": "Manstead"
+            },
+            {
+                "creatorType": "editor",
+                "firstName": "J.C.",
+                "lastName": "Wellenkamp"
+            }
+        ],
+        "abstractNote": "chapter: describes 3 tests for evidence of a prototypical internal structure to the concept of emotion in Palau, a small island nation in Western Micronesia / each replicated a study reported by B. Fehr and J. Russell (1984), paralleling ongoing and coordinated replications in China, Estonia, Japan, Spain, Turkey and Uganda / is there a Palauan equivalent to emotion / if so, what are its boundaries, and how elaborate is the emotion domain / which exemplars come most readily to mind / do Palauans distinguish emotions from experiences considered non-emotions in other languages / do Palauans use emotion terms that lack clear non-emotions in other languages / do Palauans lack emotion terms present in other languages / [Ss for the 3 studies were high school students with a mean age of 17 yrs] (PsycINFO Database Record (c) 2004 APA, all rights reserved)",
+        "bookTitle": "Everyday Conceptions of Emotion",
+        "series": "",
+        "seriesNumber": "",
+        "volume": "NATO ASI, vol. 81",
+        "numberOfVolumes": "",
+        "edition": "",
+        "place": "Dordrecht",
+        "publisher": "Springer",
+        "date": "1995",
+        "pages": "85-102",
+        "language": "",
+        "ISBN": "978-90-481-4551-5",
+        "shortTitle": "",
+        "url": "",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "DOI: 10.1007/978-94-015-8484-5_5",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:54Z",
+        "dateModified": "2024-05-30T16:47:54Z"
+    }
+}

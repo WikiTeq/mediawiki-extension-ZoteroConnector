@@ -1,0 +1,35 @@
+{
+	"@metadata": {
+		"authors": [
+			"Daniel Scherzer"
+		]
+	},
+	"zoteroconnector-desc": "Zotero connector",
+	"right-edit-zotero-reference": "Edit zotero reference pages",
+	"action-edit-zotero-reference": "edit zotero reference pages",
+	"right-zotero-import": "Use [[Special:ZoteroImporter]]",
+	"action-zotero-import": "use [[Special:ZoteroImporter]]",
+	"zoteroconnector-error": "Zotero connector error",
+	"zoteroconnector-import-not-found": "Item \"$1\" was not found",
+	"zoteroconnector-import-no-subpage": "No subpage specified to import",
+	"zoteroconnector-import-invalid-subpage": "The subpage should be in the form `reference/{id}` or `attachment/{id}`",
+	"zoteroconnector-auto-upload": "Automatic upload by ZoteroConnector extension",
+	"zoteroconnector-auto-update": "Automatic update by ZoteroConnector extension",
+	"zoteroimporter": "Zotero importer",
+	"zoteroconnector-import-submit": "Import from Zotero",
+	"zoteroconnector-import-type-label": "Type of import",
+	"zoteroconnector-import-type-reference": "Reference",
+	"zoteroconnector-import-type-attachment": "Attachment",
+	"zoteroconnector-no-redirect": "The requested attachment could not be retrieved",
+	"zoteroconnector-import-key-label": "Item key",
+	"zoteroconnector-import-error-top": "The value <code>top</code> has special meaning and is not a real key",
+	"zoteroconnector-import-reference-is-attachment": "Key $1 corresponds to an attachment, switching import mode",
+	"zoteroconnector-import-reference-no-change": "No reference page changed, latest version of [[$1]] already present",
+	"zoteroconnector-import-reference-successful": "Reference page updated, see [[$1]]",
+	"zoteroconnector-upload-attachment-no-change": "No attachment upload performed, latest version of [[File:$1.pdf]] already present",
+	"zoteroconnector-attachment-page-updated": "No attachment upload performed, latest version of [[File:$1.pdf]] already present, but page content updated",
+	"zoteroconnector-upload-attachment-successful": "Attachment uploaded, see [[File:$1.pdf]]",
+	"zotero-non-file-with-version": "Non-files that attempt to store a file version",
+	"zotero-file-with-invalid-version": "Files that attempt to store an invalid version",
+	"zotero-file-current-version-info": "File version in Zotero"
+}

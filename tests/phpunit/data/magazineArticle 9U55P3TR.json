@@ -1,0 +1,87 @@
+{
+    "key": "9U55P3TR",
+    "version": 113,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/9U55P3TR",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/9U55P3TR",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/FI6L86BD",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 10599614
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Price",
+        "parsedDate": "1936-04",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "9U55P3TR",
+        "version": 113,
+        "itemType": "magazineArticle",
+        "title": "Mysterious Micronesia: Yap, Map and other Islands under Japanese Mandate are Museums of Primitive Man",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Willard",
+                "lastName": "Price"
+            }
+        ],
+        "abstractNote": "",
+        "publicationTitle": "National Geographic",
+        "volume": "",
+        "issue": "",
+        "date": "1936-04",
+        "pages": "481-510",
+        "language": "",
+        "ISSN": "",
+        "shortTitle": "",
+        "url": "",
+        "accessDate": "2024-03-19",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "Place: Washington, DC",
+        "tags": [
+            {
+                "tag": "Japanese Period (1914-1941)",
+                "type": 1
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:51Z",
+        "dateModified": "2024-05-30T16:47:51Z"
+    }
+}

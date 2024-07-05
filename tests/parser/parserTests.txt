@@ -1,0 +1,64 @@
+!! Version 2
+
+# We do *not* use `functionhooks` to ensure that the extension is loaded, so
+# that if the extension is not loaded the tests will fail instead of being
+# skipped
+
+!! test
+Non-file page error
+!! options
+title=[[Main Page]]
+cat
+property=zotero-file-current-version
+!! wikitext
+{{#ZOTERO_FILE_VERSION:}}
+!! html
+<p></p>
+!! html/php
+cat=Non-files_that_attempt_to_store_a_file_version sort=
+property[zotero-file-current-version]=
+!! end
+
+!! test
+File with no version
+!! options
+title=[[File:Example.pdf]]
+cat
+property=zotero-file-current-version
+!! wikitext
+{{#ZOTERO_FILE_VERSION:}}
+!! html
+<p></p>
+!! html/php
+cat=Files_that_attempt_to_store_an_invalid_version sort=
+property[zotero-file-current-version]=
+!! end
+
+!! test
+File with invalid version
+!! options
+title=[[File:Example.pdf]]
+cat
+property=zotero-file-current-version
+!! wikitext
+{{#ZOTERO_FILE_VERSION:abc}}
+!! html
+<p></p>
+!! html/php
+cat=Files_that_attempt_to_store_an_invalid_version sort=
+property[zotero-file-current-version]=
+!! end
+
+!! test
+File with valid version
+!! options
+title=[[File:Example.pdf]]
+cat
+property=zotero-file-current-version
+!! wikitext
+{{#ZOTERO_FILE_VERSION:123}}
+!! html
+<p></p>
+!! html/php
+property[zotero-file-current-version]=123
+!! end

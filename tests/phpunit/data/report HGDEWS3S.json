@@ -1,0 +1,83 @@
+{
+    "key": "HGDEWS3S",
+    "version": 113,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/HGDEWS3S",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/HGDEWS3S",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/ATUADHIE",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 4103929
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Gray",
+        "parsedDate": "1974",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "HGDEWS3S",
+        "version": 113,
+        "itemType": "report",
+        "title": "Modernization in Micronesia: Acculturation, Colonialism and Modernization in Micronesia: Acculturation, Colonialism and Culture Change Culture Change",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Kirk L",
+                "lastName": "Gray"
+            }
+        ],
+        "abstractNote": "",
+        "reportNumber": "",
+        "reportType": "",
+        "seriesTitle": "",
+        "place": "",
+        "institution": "",
+        "date": "1974",
+        "pages": "",
+        "language": "",
+        "shortTitle": "",
+        "url": "https://scholarworks.wmich.edu/masters_theses",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:51Z",
+        "dateModified": "2024-05-30T16:47:51Z"
+    }
+}

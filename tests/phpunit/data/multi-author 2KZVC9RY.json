@@ -1,0 +1,96 @@
+{
+    "key": "2KZVC9RY",
+    "version": 62,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/2KZVC9RY",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/2KZVC9RY",
+            "type": "text/html"
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Robinson et al.",
+        "parsedDate": "1964",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "2KZVC9RY",
+        "version": 62,
+        "itemType": "journalArticle",
+        "title": "Bryoflora of the Atolls of Micronesia",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Harold",
+                "lastName": "Robinson"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "H. A.",
+                "lastName": "Miller"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "H. O.",
+                "lastName": "Whittier"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "C. E. B.",
+                "lastName": "Bonner"
+            }
+        ],
+        "abstractNote": "Catalog and identification of the bryophytes (mosses, liverworts, and hornworts) found in on coral atolls of the Gilbert, Marshalls and Caroline Islands. Miller and Whittier were academic botonists, Booner led the Conservatory and Botanical Garden of the city of Geneva. Published book, softcover.",
+        "publicationTitle": "The Bryologist",
+        "volume": "67",
+        "issue": "2",
+        "pages": "242",
+        "date": "1964",
+        "series": "",
+        "seriesTitle": "",
+        "seriesText": "",
+        "journalAbbreviation": "",
+        "language": "",
+        "DOI": "10.2307/3240821",
+        "ISSN": "00072745",
+        "shortTitle": "",
+        "url": "https://www.jstor.org/stable/3240821?origin=crossref",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-05-30T16:47:44Z",
+        "dateModified": "2024-05-30T16:47:44Z"
+    }
+}

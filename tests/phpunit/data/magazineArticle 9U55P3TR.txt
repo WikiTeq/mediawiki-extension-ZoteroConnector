@@ -1,0 +1,15 @@
+{{Cite magazine
+|title = Mysterious Micronesia: Yap, Map and other Islands under Japanese Mandate are Museums of Primitive Man
+|date = April 1936
+|access-date = 2024-03-19
+|pages = 481-510
+|work = National Geographic
+|last1 = Price
+|first1 = Willard
+}}
+{{ZoteroDetails
+|key = 9U55P3TR
+|itemType = magazineArticle
+|version = 113
+|attachment = FI6L86BD
+}}

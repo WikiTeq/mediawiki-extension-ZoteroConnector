@@ -1,0 +1,16 @@
+{{Cite book
+|title = A Ulithian Grammar
+|date = 1973
+|url = https://archive.org/details/ulithiangrammar0027sohn/mode/2up
+|ISBN = 978-0-85883-098-1
+|access-date = 2024-04-10
+|author1 = Ho-min Sohn
+|last2 = Bender
+|first2 = Byron W.
+}}
+{{ZoteroDetails
+|key = 2WSA5G4S
+|itemType = book
+|version = 53
+|attachment = RTBKECLI
+}}
