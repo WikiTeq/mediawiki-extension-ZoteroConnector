@@ -13,7 +13,8 @@ $magicWords = [];
 
 /** English (English) */
 $magicWords['en'] = [
-	// This magic word is case sensitive, as indicated by the '1' - it should
-	// only be set via the automated imports
+	// These magic words are case sensitive, as indicated by the '1' - they
+	// should only be set via the automated imports
 	'ZOTERO_FILE_VERSION' => [ '1', 'ZOTERO_FILE_VERSION' ],
+	'ZOTERO_REFERENCE_TITLE' => [ '1', 'ZOTERO_REFERENCE_TITLE' ],
 ];

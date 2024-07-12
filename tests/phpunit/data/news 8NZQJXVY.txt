@@ -9,6 +9,7 @@
 {{ZoteroDetails
 |key = 8NZQJXVY
 |itemType = newspaperArticle
+|title = Telling It Like It Is
 |version = 147
 |attachment = 7ECBYKZ8
 }}

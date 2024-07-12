@@ -23,6 +23,7 @@
 {{ZoteroDetails
 |key = KUWNE75R
 |itemType = bookSection
+|title = Prototype Analyses of Emotion Terms in Palau, Micronesia
 |version = 132
 |abstractNote = chapter: describes 3 tests for evidence of a prototypical internal structure to the concept of emotion in Palau, a small island nation in Western Micronesia / each replicated a study reported by B. Fehr and J. Russell (1984), paralleling ongoing and coordinated replications in China, Estonia, Japan, Spain, Turkey and Uganda / is there a Palauan equivalent to emotion / if so, what are its boundaries, and how elaborate is the emotion domain / which exemplars come most readily to mind / do Palauans distinguish emotions from experiences considered non-emotions in other languages / do Palauans use emotion terms that lack clear non-emotions in other languages / do Palauans lack emotion terms present in other languages / &#91;Ss for the 3 studies were high school students with a mean age of 17 yrs&#93; (PsycINFO Database Record (c) 2004 APA, all rights reserved)
 }}

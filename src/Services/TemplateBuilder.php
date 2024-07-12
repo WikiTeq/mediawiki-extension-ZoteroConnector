@@ -186,10 +186,12 @@ class TemplateBuilder {
 	 */
 	private static function getZoteroTemplate( stdClass $itemObj ): string {
 		// Template noting the extra Zotero details, so that we can store them
-		// in a structured way
+		// in a structured way (and also the title, for use in parser functions)
 		$template = new FluentTemplate( 'ZoteroDetails' );
 		$data = $itemObj->data;
-		$params = [ 'key', 'itemType', 'version', 'abstractNote' ];
+		// for `title` here for book chapters we want to store the chapter name,
+		// so no need for fancy magic
+		$params = [ 'key', 'itemType', 'title', 'version', 'abstractNote' ];
 		foreach ( $params as $p ) {
 			if ( isset( $data->$p ) && $data->$p !== '' ) {
 				$template->setParam( $p, $data->$p );

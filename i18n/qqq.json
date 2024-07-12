@@ -31,5 +31,6 @@
 	"zoteroconnector-upload-attachment-successful": "Message when attachment was uploaded\n\nParameters:\n* $1 - the attachment ID requested",
 	"zotero-non-file-with-version": "Tracking category description",
 	"zotero-file-with-invalid-version": "Tracking category description",
+	"zotero-non-reference-with-title": "Tracking category description",
 	"zotero-file-current-version-info": "Label for version in action=info output"
 }

@@ -16,16 +16,22 @@ use Title;
  */
 class ParserHandlerTest extends MediaWikiUnitTestCase {
 
-	public function testHookRegistered() {
+	public function testHooksRegistered() {
 		$hooks = new ParserHandler(
 			$this->createNoOpMock( AttachmentManager::class )
 		);
 		$parser = $this->createNoOpMock( Parser::class, [ 'setFunctionHook' ] );
-		$parser->expects( $this->once() )
+		$parser->expects( $this->exactly( 2 ) )
 			->method( 'setFunctionHook' )
-			->with(
-				ParserHandler::PARSER_HOOK_NAME,
-				[ $hooks, 'setZoteroVersion' ],
+			->withConsecutive(
+				[
+					ParserHandler::FILE_VERSION_HOOK_NAME,
+					[ $hooks, 'setZoteroVersion' ],
+				],
+				[
+					ParserHandler::REFERENCE_TITLE_HOOK_NAME,
+					[ $hooks, 'setReferenceTitle' ]
+				]
 			);
 		$hooks->onParserFirstCallInit( $parser );
 	}
@@ -66,7 +72,7 @@ class ParserHandlerTest extends MediaWikiUnitTestCase {
 		$p3 = $this->createNoOpMock( Parser::class, [ 'getPage', 'addTrackingCategory' ] );
 		$p3->expects( $this->exactly( 2 ) )->method( 'getPage' )->willReturn( $filePage );
 		$p3->expects( $this->exactly( 2 ) )->method( 'addTrackingCategory' )
-			->with( ParserHandler::INVALID_TRACKING_CAT_NAME );
+			->with( ParserHandler::INVALID_VERSION_TRACKING_CAT_NAME );
 		$this->testVersionForParser( $p3, '' );
 		$this->testVersionForParser( $p3, 'abc' );
 
@@ -74,7 +80,7 @@ class ParserHandlerTest extends MediaWikiUnitTestCase {
 		$output = $this->createNoOpMock( ParserOutput::class, [ 'setPageProperty' ] );
 		$output->expects( $this->once() )
 			->method( 'setPageProperty' )
-			->with( ParserHandler::PAGE_PROP_NAME, 12345 );
+			->with( ParserHandler::FILE_VERSION_PROP_NAME, 12345 );
 		$p4 = $this->createNoOpMock( Parser::class, [ 'getPage', 'getOutput' ] );
 		$p4->expects( $this->once() )->method( 'getPage' )->willReturn( $filePage );
 		$p4->expects( $this->once() )->method( 'getOutput' )->willReturn( $output );
@@ -150,6 +156,45 @@ class ParserHandlerTest extends MediaWikiUnitTestCase {
 			] ],
 			$info
 		);
+	}
+
+	private function testTitleForParser(
+		Parser $parser,
+		string $title
+	) {
+		// Test is done via the expectations of the configured parser
+		$hooks = new ParserHandler(
+			$this->createNoOpMock( AttachmentManager::class )
+		);
+		$this->assertSame( '', $hooks->setReferenceTitle( $parser, $title ) );
+	}
+
+	public function testTitleSet() {
+		// No page set
+		$p1 = $this->createNoOpMock( Parser::class, [ 'getPage' ] );
+		$p1->expects( $this->once() )->method( 'getPage' )->willReturn( null );
+		$this->testTitleForParser( $p1, '' );
+
+		// Wrong namespace
+		$t2 = $this->createNoOpMock( Title::class, [ 'getNamespace' ] );
+		$t2->expects( $this->once() )->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$p2 = $this->createNoOpMock( Parser::class, [ 'getPage', 'addTrackingCategory' ] );
+		$p2->expects( $this->once() )->method( 'getPage' )->willReturn( $t2 );
+		$p2->expects( $this->once() )->method( 'addTrackingCategory' )
+			->with( ParserHandler::NONREFERENCE_TRACKING_CAT_NAME );
+		$this->testTitleForParser( $p2, '' );
+
+		// Success
+		$t3 = $this->createNoOpMock( Title::class, [ 'getNamespace' ] );
+		$t3->expects( $this->once() )->method( 'getNamespace' )->willReturn( NS_ZOTERO_REF );
+		$output = $this->createNoOpMock( ParserOutput::class, [ 'setDisplayTitle' ] );
+		$output->expects( $this->once() )
+			->method( 'setDisplayTitle' )
+			->with( 'abc&lt;123&gt;xyz' );
+		$p3 = $this->createNoOpMock( Parser::class, [ 'getPage', 'getOutput' ] );
+		$p3->expects( $this->once() )->method( 'getPage' )->willReturn( $t3 );
+		$p3->expects( $this->once() )->method( 'getOutput' )->willReturn( $output );
+		$this->testTitleForParser( $p3, 'abc<123>xyz' );
 	}
 
 }
