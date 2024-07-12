@@ -10,6 +10,7 @@
 {{ZoteroDetails
 |key = MTH3FHKK
 |itemType = conferencePaper
+|title = Out of the shadow: Biographical Details of Elisabeth Krämer-Bannow
 |version = 122
 |attachment = M5AWZV83
 }}

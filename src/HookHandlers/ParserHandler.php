@@ -9,10 +9,13 @@ use Parser;
 
 class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
 
-	public const PARSER_HOOK_NAME = 'ZOTERO_FILE_VERSION';
+	public const FILE_VERSION_HOOK_NAME = 'ZOTERO_FILE_VERSION';
 	public const NONFILE_TRACKING_CAT_NAME = 'zotero-non-file-with-version';
-	public const INVALID_TRACKING_CAT_NAME = 'zotero-file-with-invalid-version';
-	public const PAGE_PROP_NAME = 'zotero-file-current-version';
+	public const INVALID_VERSION_TRACKING_CAT_NAME = 'zotero-file-with-invalid-version';
+	public const FILE_VERSION_PROP_NAME = 'zotero-file-current-version';
+
+	public const REFERENCE_TITLE_HOOK_NAME = 'ZOTERO_REFERENCE_TITLE';
+	public const NONREFERENCE_TRACKING_CAT_NAME = 'zotero-non-reference-with-title';
 
 	private AttachmentManager $attachmentManager;
 
@@ -30,8 +33,12 @@ class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
 	 */
 	public function onParserFirstCallInit( $parser ) {
 		$parser->setFunctionHook(
-			self::PARSER_HOOK_NAME,
+			self::FILE_VERSION_HOOK_NAME,
 			[ $this, 'setZoteroVersion' ]
+		);
+		$parser->setFunctionHook(
+			self::REFERENCE_TITLE_HOOK_NAME,
+			[ $this, 'setReferenceTitle' ]
 		);
 	}
 
@@ -78,12 +85,44 @@ class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
 			return '';
 		}
 		if ( $version === '' || !ctype_digit( $version ) ) {
-			$parser->addTrackingCategory( self::INVALID_TRACKING_CAT_NAME );
+			$parser->addTrackingCategory( self::INVALID_VERSION_TRACKING_CAT_NAME );
 			return '';
 		}
 		$parser->getOutput()->setPageProperty(
-			self::PAGE_PROP_NAME,
+			self::FILE_VERSION_PROP_NAME,
 			(int)$version
+		);
+		return '';
+	}
+
+	/**
+	 * Handler for the magic word `#ZOTERO_REFERENCE_TITLE`. The arguments here
+	 * are the parser and then the arguments to the magic word, i.e. the title
+	 * to use.
+	 */
+	public function setReferenceTitle(
+		Parser $parser,
+		string $title
+	): string {
+		$page = $parser->getPage();
+		if ( $page === null ) {
+			// No page?
+			return '';
+		}
+		// Only works in the reference namespace, this is for overriding the
+		// display title with arbitrary data. Note that even though only the
+		// extension bot should be editing the reference namespace itself,
+		// transcluded templates might try and change things (and in fact, that
+		// is how the title will probably be set). Thus, we will allow
+		// arbitrary text (so that the title can be shown when it is unrelated
+		// to the item key) EXCEPT that we escape the HTML so that a malicious
+		// actor cannot use this as an attack vector
+		if ( $page->getNamespace() !== NS_ZOTERO_REF ) {
+			$parser->addTrackingCategory( self::NONREFERENCE_TRACKING_CAT_NAME );
+			return '';
+		}
+		$parser->getOutput()->setDisplayTitle(
+			htmlspecialchars( $title )
 		);
 		return '';
 	}

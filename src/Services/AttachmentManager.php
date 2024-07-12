@@ -56,7 +56,7 @@ class AttachmentManager {
 
 		$pages = $batch->getPageIdentities();
 		$this->pageProps->ensureCacheSize( count( $pages ) );
-		$props = $this->pageProps->getProperties( $pages, ParserHandler::PAGE_PROP_NAME );
+		$props = $this->pageProps->getProperties( $pages, ParserHandler::FILE_VERSION_PROP_NAME );
 
 		// properties get indexed by page id, not attachment id, in the result
 		// $props, but we want to cache by attachment id (with .pdf to simplify)
@@ -78,7 +78,7 @@ class AttachmentManager {
 		}
 		$props = $this->pageProps->getProperties(
 			$file,
-			ParserHandler::PAGE_PROP_NAME
+			ParserHandler::FILE_VERSION_PROP_NAME
 		);
 		$result = $props[ $file->getId() ] ?? null;
 		$this->versionCache[ $file->getDBkey() ] = $result;

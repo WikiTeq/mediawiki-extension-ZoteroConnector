@@ -11,6 +11,7 @@
 {{ZoteroDetails
 |key = WUNN2XBZ
 |itemType = thesis
+|title = A Sketch Grammar Of Satawalese, The Language Of Satawal Island, Yap State, Micronesia
 |version = 52
 |attachment = QMFRJVME
 }}

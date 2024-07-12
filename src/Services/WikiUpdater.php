@@ -90,7 +90,7 @@ class WikiUpdater {
 		$status = $targetPage->doUserEditContent(
 			new WikitextContent( $pageContent ),
 			$systemUser,
-			'/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */'
+			'/* ' . CommentHandler::AUTO_UPDATE_KEY . ' */'
 		);
 
 		return $status;

@@ -66,6 +66,14 @@
 				"ContentLanguage"
 			]
 		},
+		"link": {
+			"class": "\\MediaWiki\\Extension\\ZoteroConnector\\HookHandlers\\LinkHandler",
+			"services": [
+				"PageProps",
+				"TitleFactory",
+				"TitleFormatter"
+			]
+		},
 		"parser": {
 			"class": "\\MediaWiki\\Extension\\ZoteroConnector\\HookHandlers\\ParserHandler",
 			"services": [
@@ -75,12 +83,14 @@
 	},
 	"Hooks": {
 		"FormatAutocomments": "comment",
+		"HtmlPageLinkRendererBegin": "link",
 		"InfoAction": "parser",
 		"ParserFirstCallInit": "parser"
 	},
 	"TrackingCategories": [
 		"zotero-non-file-with-version",
-		"zotero-file-with-invalid-version"
+		"zotero-file-with-invalid-version",
+		"zotero-non-reference-with-title"
 	],
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"

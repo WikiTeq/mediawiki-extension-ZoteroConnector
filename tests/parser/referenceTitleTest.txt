@@ -1,0 +1,57 @@
+!! Version 2
+
+# We do *not* use `functionhooks` to ensure that the extension is loaded, so
+# that if the extension is not loaded the tests will fail instead of being
+# skipped
+
+!! test
+Non-reference page error
+!! config
+wgAllowDisplayTitle=false
+wgRestrictDisplayTitle=false
+!! options
+title=[[Main Page]]
+cat
+property=displaytitle
+!! wikitext
+{{#ZOTERO_REFERENCE_TITLE:}}
+!! html
+<p></p>
+!! html/php
+cat=Non-references_that_attempt_to_use_the_reference_title_display sort=
+property[displaytitle]=
+!! end
+
+!! test
+Title with no display text - allowed
+!! config
+wgAllowDisplayTitle=false
+wgRestrictDisplayTitle=false
+!! options
+title=[[Zotero reference:ABC123]]
+cat
+property=displaytitle
+!! wikitext
+{{#ZOTERO_REFERENCE_TITLE:}}
+!! html
+<p></p>
+!! html/php
+property[displaytitle]=
+!! end
+
+!! test
+Reference title gets escaped
+!! config
+wgAllowDisplayTitle=false
+wgRestrictDisplayTitle=false
+!! options
+title=[[Zotero reference:ABC123]]
+cat
+property=displaytitle
+!! wikitext
+{{#ZOTERO_REFERENCE_TITLE:abc<123>xyz}}
+!! html
+<p></p>
+!! html/php
+property[displaytitle]=abc&lt;123&gt;xyz
+!! end

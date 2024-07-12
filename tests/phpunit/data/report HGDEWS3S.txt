@@ -8,6 +8,7 @@
 {{ZoteroDetails
 |key = HGDEWS3S
 |itemType = report
+|title = Modernization in Micronesia: Acculturation, Colonialism and Modernization in Micronesia: Acculturation, Colonialism and Culture Change Culture Change
 |version = 113
 |attachment = ATUADHIE
 }}

@@ -31,5 +31,6 @@
 	"zoteroconnector-upload-attachment-successful": "Attachment uploaded, see [[File:$1.pdf]]",
 	"zotero-non-file-with-version": "Non-files that attempt to store a file version",
 	"zotero-file-with-invalid-version": "Files that attempt to store an invalid version",
+	"zotero-non-reference-with-title": "Non-references that attempt to use the reference title display",
 	"zotero-file-current-version-info": "File version in Zotero"
 }

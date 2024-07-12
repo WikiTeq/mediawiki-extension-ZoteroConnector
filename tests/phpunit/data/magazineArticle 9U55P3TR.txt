@@ -10,6 +10,7 @@
 {{ZoteroDetails
 |key = 9U55P3TR
 |itemType = magazineArticle
+|title = Mysterious Micronesia: Yap, Map and other Islands under Japanese Mandate are Museums of Primitive Man
 |version = 113
 |attachment = FI6L86BD
 }}
