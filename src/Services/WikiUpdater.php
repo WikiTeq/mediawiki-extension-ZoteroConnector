@@ -165,9 +165,9 @@ class WikiUpdater {
 		// an argument, while the base UploadBase class doesn't
 		'@phan-var UploadFromUrl $upload';
 		$status = $upload->fetchFile( [
-			// Use a longer timeout than the default of 25 seconds - hopefully
-			// a minute is enough
-			'timeout' => 60,
+			// Use a longer timeout than the default of 25 seconds;
+			// unfortunately sometimes even a minute is not long enough
+			'timeout' => 2 * 60,
 		] );
 		if ( !$status->isGood() ) {
 			$this->logger->debug(
@@ -201,6 +201,9 @@ class WikiUpdater {
 		// Don't break on duplicates - see HI1-2
 		if ( isset( $warnings['duplicate'] ) ) {
 			unset( $warnings['duplicate'] );
+		}
+		if ( isset( $warnings['duplicate-archive'] ) ) {
+			unset( $warnings['duplicate-archive'] );
 		}
 		if ( $warnings ) {
 			if ( isset( $warnings[ 'no-change' ] ) ) {
