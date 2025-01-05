@@ -16,6 +16,7 @@ class FluentTemplate {
 
 	public function __construct( string $templateName ) {
 		$this->templateName = $templateName;
+		$this->templateParams = [];
 	}
 
 	public static function escape( string $rawArg ): string {
