@@ -3,8 +3,12 @@
 |date = 1972-03-02
 |place = Saipan
 |work = Marianas Variety
-|last1 = Uludong
-|first1 = Francisco
+|creators = {{Creator
+|last name = Uludong
+|first name = Francisco
+|creator type = author
+|item order = 1
+}}
 }}
 {{ZoteroDetails
 |key = 8NZQJXVY

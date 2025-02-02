@@ -8,12 +8,22 @@
 |volume = 2
 |pages = 443-492
 |chapter = Nautical Cartography and Traditional Navigation in Oceania
-|last1 = Finney
-|first1 = Ben
-|editor1-last = Woodward
-|editor1-first = David
-|editor2-last = Lewis
-|editor2-first = Malcom G.
+|creators = {{Creator
+|last name = Finney
+|first name = Ben
+|creator type = author
+|item order = 1
+}}{{Creator
+|last name = Woodward
+|first name = David
+|creator type = editor
+|item order = 1
+}}{{Creator
+|last name= Lewis
+|first name = Malcom G.
+|creator type = editor
+|item order = 2
+}}
 }}
 {{ZoteroDetails
 |key = DGLY94S8

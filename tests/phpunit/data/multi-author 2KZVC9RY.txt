@@ -8,14 +8,27 @@
 |issue = 2
 |pages = 242
 |work = The Bryologist
-|last1 = Robinson
-|first1 = Harold
-|last2 = Miller
-|first2 = H. A.
-|last3 = Whittier
-|first3 = H. O.
-|last4 = Bonner
-|first4 = C. E. B.
+|creators={{Creator
+|last name = Robinson
+|first name = Harold
+|creator type = author
+|item order = 0
+}}{{Creator
+|last name = Miller
+|first name = H. A.
+|creator type = author
+|item order = 1
+}}{{Creator
+|last name = Whittier
+|first name = H. O.
+|creator type = author
+|item order = 2
+}}{{Creator
+|last name = Bonner
+|first name = C. E. B.
+|creator type = author
+|item order = 3
+}}
 }}
 {{ZoteroDetails
 |key = 2KZVC9RY

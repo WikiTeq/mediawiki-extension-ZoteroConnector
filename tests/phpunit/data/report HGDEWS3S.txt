@@ -2,8 +2,12 @@
 |title = Modernization in Micronesia: Acculturation, Colonialism and Modernization in Micronesia: Acculturation, Colonialism and Culture Change Culture Change
 |date = 1974
 |url = https://scholarworks.wmich.edu/masters_theses
-|last1 = Gray
-|first1 = Kirk L
+|creators = {{Creator
+|last name = Gray
+|first name = Kirk L
+|creator type = author
+|item order = 1
+}}
 }}
 {{ZoteroDetails
 |key = HGDEWS3S

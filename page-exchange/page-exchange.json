@@ -1,0 +1,49 @@
+{
+  "publisher": "WikiTeq",
+  "author": "WikiTeq",
+  "language": "en",
+  "url": "https:\/\/github.com\/WikiTeq\/mediawiki-extension-ZoteroConnector",
+  "packages": {
+    "News": {
+      "globalID": "com.wikiteq.ZoteroConnector",
+      "description": null,
+      "version": "0.1",
+      "pages": [
+        {
+          "name": "Creator type",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FCreator%20type.mediawiki"
+        },
+        {
+          "name": "First name",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FFirst%20name.mediawiki"
+        },
+        {
+          "name": "Last name",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FLast%20name.mediawiki"
+        },
+        {
+          "name": "Full name",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FFull%20name.mediawiki"
+        },
+        {
+          "name": "Item order",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FItem%20order.mediawiki"
+        },
+        {
+          "name": "Creator",
+          "namespace": "NS_TEMPLATE",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Template%2FCreator.mediawiki"
+        }
+      ],
+      "requiredExtensions": [
+        "ParserFunctions",
+        "SemanticMediaWiki"
+      ]
+    }
+  }
+}

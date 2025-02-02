@@ -4,8 +4,12 @@
 |access-date = 2024-03-19
 |pages = 481-510
 |work = National Geographic
-|last1 = Price
-|first1 = Willard
+|creators = {{Creator
+|last name = Price
+|first name = Willard
+|creator type = author
+|item order = 1
+}}
 }}
 {{ZoteroDetails
 |key = 9U55P3TR

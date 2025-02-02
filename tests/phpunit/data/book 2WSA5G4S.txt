@@ -4,9 +4,16 @@
 |url = https://archive.org/details/ulithiangrammar0027sohn/mode/2up
 |ISBN = 978-0-85883-098-1
 |access-date = 2024-04-10
-|author1 = Ho-min Sohn
-|last2 = Bender
-|first2 = Byron W.
+|creators = {{Creator
+|full name = Ho-min Sohn
+|creator type = author
+|item order = 1
+}}{{Creator
+|last name = Bender
+|first name = Byron W.
+|creator type = author
+|item order = 2
+}}
 }}
 {{ZoteroDetails
 |key = 2WSA5G4S

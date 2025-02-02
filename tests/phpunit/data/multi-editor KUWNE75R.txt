@@ -7,18 +7,37 @@
 |volume = NATO ASI, vol. 81
 |pages = 85-102
 |chapter = Prototype Analyses of Emotion Terms in Palau, Micronesia
-|last1 = Smith
-|first1 = Kyle D.
-|last2 = Tkel-Sbal
-|first2 = Debbie
-|editor1-last = Russell
-|editor1-first = James
-|editor2-last = Fernadez-Dols
-|editor2-first = Jose-Miguel
-|editor3-last = Manstead
-|editor3-first = Antony
-|editor4-last = Wellenkamp
-|editor4-first = J.C.
+|creators = {{Creator
+|last name = Smith
+|first name = Kyle D.
+|creator type = author
+|item order = 1
+}}{{Creator
+|last name = Tkel-Sbal
+|first name = Debbie
+|creator type = author
+|item order = 2
+}}{{Creator
+|last name = Russell
+|first name = James
+|creator type = editor
+|item order = 1
+}}{{Creator
+|last name = Fernadez-Dols
+|first name= Jose-Miguel
+|creator type = editor
+|item order = 2
+}}{{Creator
+|last name = Manstead
+|first name = Antony
+|creator type = editor
+|item order = 3
+}}{{Creator
+|last name = Wellenkamp
+|first name = J.C.
+|creator type = editor
+|item order = 4
+}}
 }}
 {{ZoteroDetails
 |key = KUWNE75R

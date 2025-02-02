@@ -7,8 +7,12 @@
 |issue = 1
 |pages = 141-189
 |work = Micronesica
-|last1 = Wiles
-|first1 = Gary J
+|creators = {{Creator
+|last name = Wiles
+|first name = Gary J
+|creator type = author
+|item order = 1
+}}
 }}
 {{ZoteroDetails
 |key = GQMP44EH
