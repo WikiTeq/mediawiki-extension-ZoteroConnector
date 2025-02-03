@@ -107,20 +107,19 @@ class TemplateBuilder {
 	}
 
 	/**
-	 * Add the details of a creator to the template, generally for
-	 * authors but supports other roles too; the array passed by reference
+	 * Convert the details of a creator to a `{{Creator}}` template, generally
+	 * for authors but supports other roles too; the array passed by reference
 	 * checks the number of each role already used, to identify the next number
 	 * to use
 	 *
-	 * @param FluentTemplate $template
 	 * @param stdClass $creatorObj
 	 * @param int[] &$creatorTypesUsed
+	 * @return FluentTemplate with the `{{Creator}}` to use
 	 */
-	private static function addCreator(
-		FluentTemplate $template,
+	private static function formatCreator(
 		stdClass $creatorObj,
 		array &$creatorTypesUsed
-	): void {
+	): FluentTemplate {
 		$type = $creatorObj->creatorType ?? 'author';
 		if ( !isset( $creatorTypesUsed[ $type ] ) ) {
 			$creatorTypesUsed[ $type ] = 1;
@@ -129,28 +128,20 @@ class TemplateBuilder {
 		}
 		$nextNum = $creatorTypesUsed[ $type ];
 
+		$template = new FluentTemplate( 'Creator' );
+
 		if ( isset( $creatorObj->name ) ) {
-			// here we need authorN, not just N, and do not want a - afterwards
-			$template->setParam( "$type$nextNum", $creatorObj->name );
+			$template->setParam( "full name", $creatorObj->name );
 		}
-		// For authors, we want `last1`, `first1`, etc.
-		// For other roles, like editor, we want `editor1-last`, `editor1-first`
-		$creatorPrefix = ( $type === 'author' ? '' : "$type-" );
-		$result = '';
 		if ( isset( $creatorObj->lastName ) ) {
-			if ( $type === 'author' ) {
-				$template->setParam( "last$nextNum", $creatorObj->lastName );
-			} else {
-				$template->setParam( "$type$nextNum-last", $creatorObj->lastName );
-			}
+			$template->setParam( 'last name', $creatorObj->lastName );
 		}
 		if ( isset( $creatorObj->firstName ) ) {
-			if ( $type === 'author' ) {
-				$template->setParam( "first$nextNum", $creatorObj->firstName );
-			} else {
-				$template->setParam( "$type$nextNum-first", $creatorObj->firstName );
-			}
+			$template->setParam( 'first name', $creatorObj->firstName );
 		}
+		$template->setParam( 'creator type', $type );
+		$template->setParam( 'item order', (string)$nextNum );
+		return $template;
 	}
 
 	public static function getAttachment( stdClass $itemObj ): ?string {
@@ -194,7 +185,7 @@ class TemplateBuilder {
 		$params = [ 'key', 'itemType', 'title', 'version', 'abstractNote' ];
 		foreach ( $params as $p ) {
 			if ( isset( $data->$p ) && $data->$p !== '' ) {
-				$template->setParam( $p, $data->$p );
+				$template->setParam( $p, (string)$data->$p );
 			}
 		}
 		$attachmentId = self::getAttachment( $itemObj );
@@ -237,11 +228,13 @@ class TemplateBuilder {
 			);
 		}
 
-		if ( isset( $data->creators ) ) {
+		if ( isset( $data->creators ) && $data->creators ) {
+			$creators = '';
 			$creatorTypesUsed = [];
 			foreach ( $data->creators as $creator ) {
-				self::addCreator( $template, $creator, $creatorTypesUsed );
+				$creators .= self::formatCreator( $creator, $creatorTypesUsed )->getWikitext();
 			}
+			$template->setParam( 'creators', new RawWikitext( $creators ) );
 		}
 		$template = $template->getWikitext();
 		return $template . "\n" . self::getZoteroTemplate( $itemObj );
