@@ -19,7 +19,7 @@
 |creator type = editor
 |item order = 1
 }}{{Creator
-|last name= Lewis
+|last name = Lewis
 |first name = Malcom G.
 |creator type = editor
 |item order = 2
