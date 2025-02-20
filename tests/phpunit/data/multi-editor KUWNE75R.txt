@@ -24,7 +24,7 @@
 |item order = 1
 }}{{Creator
 |last name = Fernadez-Dols
-|first name= Jose-Miguel
+|first name = Jose-Miguel
 |creator type = editor
 |item order = 2
 }}{{Creator
