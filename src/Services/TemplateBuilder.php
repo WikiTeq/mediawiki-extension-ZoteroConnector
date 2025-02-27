@@ -107,6 +107,74 @@ class TemplateBuilder {
 	}
 
 	/**
+	 * Add the details of a creator to the template, generally for
+	 * authors but supports other roles too; the array passed by reference
+	 * checks the number of each role already used, to identify the next number
+	 * to use
+	 *
+	 * @param FluentTemplate $template
+	 * @param stdClass $creatorObj
+	 * @param int[] &$creatorTypesUsed
+	 */
+	private static function addCreator(
+		FluentTemplate $template,
+		stdClass $creatorObj,
+		array &$creatorTypesUsed
+	): void {
+		$type = $creatorObj->creatorType ?? 'author';
+		if ( !isset( $creatorTypesUsed[ $type ] ) ) {
+			$creatorTypesUsed[ $type ] = 1;
+		} else {
+			$creatorTypesUsed[ $type ]++;
+		}
+		$nextNum = $creatorTypesUsed[ $type ];
+
+		if ( isset( $creatorObj->name ) ) {
+			// here we need authorN, not just N, and do not want a - afterwards
+			$template->setParam( "$type$nextNum", $creatorObj->name );
+		}
+		// For authors, we want `last1`, `first1`, etc.
+		// For other roles, like editor, we want `editor1-last`, `editor1-first`
+		$creatorPrefix = ( $type === 'author' ? '' : "$type-" );
+		$result = '';
+		if ( isset( $creatorObj->lastName ) ) {
+			if ( $type === 'author' ) {
+				$template->setParam( "last$nextNum", $creatorObj->lastName );
+			} else {
+				$template->setParam( "$type$nextNum-last", $creatorObj->lastName );
+			}
+		}
+		if ( isset( $creatorObj->firstName ) ) {
+			if ( $type === 'author' ) {
+				$template->setParam( "first$nextNum", $creatorObj->firstName );
+			} else {
+				$template->setParam( "$type$nextNum-first", $creatorObj->firstName );
+			}
+		}
+		// For authors and editors, links include the type
+		$browseName = false;
+		if ( isset( $creatorObj->name ) ) {
+			$browseName = $creatorObj->name;
+		} elseif ( isset( $creatorObj->lastName ) && isset( $creatorObj->firstName ) ) {
+			$browseName = $creatorObj->lastName . ", " . $creatorObj->firstName;
+		}
+		if ( $browseName ) {
+			// Work around SMW's encoding
+			$browseName = strtr(
+				$browseName,
+				[
+					'-' => '-2D',
+					' ' => '-20',
+				]
+			);
+			$template->setParam(
+				"$type$nextNum-link",
+				"Special:Browse/:$browseName"
+			);
+		}
+	}
+
+	/**
 	 * Convert the details of a creator to a `{{Creator}}` template, generally
 	 * for authors but supports other roles too; the array passed by reference
 	 * checks the number of each role already used, to identify the next number
@@ -228,15 +296,24 @@ class TemplateBuilder {
 			);
 		}
 
+		$creators = '';
 		if ( isset( $data->creators ) && $data->creators ) {
-			$creators = '';
 			$creatorTypesUsed = [];
+			// Add creators to the citation template
+			foreach ( $data->creators as $creator ) {
+				self::addCreator( $template, $creator, $creatorTypesUsed );
+			}
+			$creatorTypesUsed = [];
+			// Get the {{Creator}} template calls for SMW
 			foreach ( $data->creators as $creator ) {
 				$creators .= self::formatCreator( $creator, $creatorTypesUsed )->getWikitext();
 			}
-			$template->setParam( 'creators', new RawWikitext( $creators ) );
 		}
 		$template = $template->getWikitext();
-		return $template . "\n" . self::getZoteroTemplate( $itemObj );
+		$result = $template . "\n" . self::getZoteroTemplate( $itemObj );
+		if ( $creators ) {
+			$result .= $creators;
+		}
+		return $result;
 	}
 }
