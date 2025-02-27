@@ -4,7 +4,19 @@
 |url = https://archive.org/details/ulithiangrammar0027sohn/mode/2up
 |ISBN = 978-0-85883-098-1
 |access-date = 2024-04-10
-|creators = {{Creator
+|author1 = Ho-min Sohn
+|author1-link = Special:Browse/:Ho-2Dmin-20Sohn
+|last2 = Bender
+|first2 = Byron W.
+|author2-link = Special:Browse/:Bender,-20Byron-20W.
+}}
+{{ZoteroDetails
+|key = 2WSA5G4S
+|itemType = book
+|title = A Ulithian Grammar
+|version = 53
+|attachment = RTBKECLI
+}}{{Creator
 |full name = Ho-min Sohn
 |creator type = author
 |item order = 1
@@ -13,12 +25,4 @@
 |first name = Byron W.
 |creator type = author
 |item order = 2
-}}
-}}
-{{ZoteroDetails
-|key = 2WSA5G4S
-|itemType = book
-|title = A Ulithian Grammar
-|version = 53
-|attachment = RTBKECLI
 }}

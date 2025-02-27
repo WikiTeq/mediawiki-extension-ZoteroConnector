@@ -8,7 +8,26 @@
 |issue = 2
 |pages = 242
 |work = The Bryologist
-|creators = {{Creator
+|last1 = Robinson
+|first1 = Harold
+|author1-link = Special:Browse/:Robinson,-20Harold
+|last2 = Miller
+|first2 = H. A.
+|author2-link = Special:Browse/:Miller,-20H.-20A.
+|last3 = Whittier
+|first3 = H. O.
+|author3-link = Special:Browse/:Whittier,-20H.-20O.
+|last4 = Bonner
+|first4 = C. E. B.
+|author4-link = Special:Browse/:Bonner,-20C.-20E.-20B.
+}}
+{{ZoteroDetails
+|key = 2KZVC9RY
+|itemType = journalArticle
+|title = Bryoflora of the Atolls of Micronesia
+|version = 62
+|abstractNote = Catalog and identification of the bryophytes (mosses, liverworts, and hornworts) found in on coral atolls of the Gilbert, Marshalls and Caroline Islands. Miller and Whittier were academic botonists, Booner led the Conservatory and Botanical Garden of the city of Geneva. Published book, softcover.
+}}{{Creator
 |last name = Robinson
 |first name = Harold
 |creator type = author
@@ -28,12 +47,4 @@
 |first name = C. E. B.
 |creator type = author
 |item order = 4
-}}
-}}
-{{ZoteroDetails
-|key = 2KZVC9RY
-|itemType = journalArticle
-|title = Bryoflora of the Atolls of Micronesia
-|version = 62
-|abstractNote = Catalog and identification of the bryophytes (mosses, liverworts, and hornworts) found in on coral atolls of the Gilbert, Marshalls and Caroline Islands. Miller and Whittier were academic botonists, Booner led the Conservatory and Botanical Garden of the city of Geneva. Published book, softcover.
 }}
