@@ -1,7 +1,0 @@
-<includeonly>{{#subobject:
-|Creator type={{{creator type|}}}
-|Last name={{{last name|}}}
-|First name={{{first name|}}}
-|Full name={{{full name|{{{last name|}}}, {{{first name|}}} }}}
-|Item order={{{item order|}}}
-}}</includeonly>

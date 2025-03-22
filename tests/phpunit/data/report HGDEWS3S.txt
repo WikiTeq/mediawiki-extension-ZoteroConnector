@@ -12,9 +12,5 @@
 |title = Modernization in Micronesia: Acculturation, Colonialism and Modernization in Micronesia: Acculturation, Colonialism and Culture Change Culture Change
 |version = 113
 |attachment = ATUADHIE
-}}{{Creator
-|last name = Gray
-|first name = Kirk L
-|creator type = author
-|item order = 1
 }}
+[[Author::Gray, Kirk L| ]]

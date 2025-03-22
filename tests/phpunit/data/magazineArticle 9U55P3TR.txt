@@ -3,7 +3,7 @@
 |date = April 1936
 |access-date = 2024-03-19
 |pages = 481-510
-|work = National Geographic
+|work = [[Special:Browse/:National-20Geographic|National Geographic]]
 |last1 = Price
 |first1 = Willard
 |author1-link = Special:Browse/:Price,-20Willard
@@ -14,9 +14,6 @@
 |title = Mysterious Micronesia: Yap, Map and other Islands under Japanese Mandate are Museums of Primitive Man
 |version = 113
 |attachment = FI6L86BD
-}}{{Creator
-|last name = Price
-|first name = Willard
-|creator type = author
-|item order = 1
 }}
+[[Author::Price, Willard| ]]
+[[Publication::National Geographic| ]]

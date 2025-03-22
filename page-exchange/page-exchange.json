@@ -7,37 +7,27 @@
     "News": {
       "globalID": "com.wikiteq.ZoteroConnector",
       "description": null,
-      "version": "0.1",
+      "version": "0.2",
       "pages": [
         {
-          "name": "Creator type",
+          "name": "Author",
           "namespace": "SMW_NS_PROPERTY",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FCreator%20type.mediawiki"
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FAuthor.mediawiki"
         },
         {
-          "name": "First name",
+          "name": "Editor",
           "namespace": "SMW_NS_PROPERTY",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FFirst%20name.mediawiki"
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FEditor.mediawiki"
         },
         {
-          "name": "Last name",
+          "name": "Publication",
           "namespace": "SMW_NS_PROPERTY",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FLast%20name.mediawiki"
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FPublication.mediawiki"
         },
         {
-          "name": "Full name",
+          "name": "Publisher",
           "namespace": "SMW_NS_PROPERTY",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FFull%20name.mediawiki"
-        },
-        {
-          "name": "Item order",
-          "namespace": "SMW_NS_PROPERTY",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FItem%20order.mediawiki"
-        },
-        {
-          "name": "Creator",
-          "namespace": "NS_TEMPLATE",
-          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Template%2FCreator.mediawiki"
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FPublisher.mediawiki"
         }
       ],
       "requiredExtensions": [

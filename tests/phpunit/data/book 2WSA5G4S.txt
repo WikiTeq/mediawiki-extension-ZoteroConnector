@@ -16,13 +16,6 @@
 |title = A Ulithian Grammar
 |version = 53
 |attachment = RTBKECLI
-}}{{Creator
-|full name = Ho-min Sohn
-|creator type = author
-|item order = 1
-}}{{Creator
-|last name = Bender
-|first name = Byron W.
-|creator type = author
-|item order = 2
 }}
+[[Author::Ho-min Sohn| ]]
+[[Author::Bender, Byron W.| ]]

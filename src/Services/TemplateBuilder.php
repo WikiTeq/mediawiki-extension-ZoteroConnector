@@ -175,41 +175,31 @@ class TemplateBuilder {
 	}
 
 	/**
-	 * Convert the details of a creator to a `{{Creator}}` template, generally
-	 * for authors but supports other roles too; the array passed by reference
-	 * checks the number of each role already used, to identify the next number
-	 * to use
+	 * Convert the details of a creator to an SMW property setting, generally
+	 * for authors but supports other roles too
 	 *
 	 * @param stdClass $creatorObj
-	 * @param int[] &$creatorTypesUsed
-	 * @return FluentTemplate with the `{{Creator}}` to use
+	 * @return string with the wikitext to add
 	 */
-	private static function formatCreator(
-		stdClass $creatorObj,
-		array &$creatorTypesUsed
-	): FluentTemplate {
-		$type = $creatorObj->creatorType ?? 'author';
-		if ( !isset( $creatorTypesUsed[ $type ] ) ) {
-			$creatorTypesUsed[ $type ] = 1;
-		} else {
-			$creatorTypesUsed[ $type ]++;
-		}
-		$nextNum = $creatorTypesUsed[ $type ];
-
-		$template = new FluentTemplate( 'Creator' );
-
+	private static function formatCreator( stdClass $creatorObj ): string {
+		// The `| ` at the end is to suppress display
+		$type = ucfirst( $creatorObj->creatorType ?? 'author' );
 		if ( isset( $creatorObj->name ) ) {
-			$template->setParam( "full name", $creatorObj->name );
+			$name = $creatorObj->name;
+			return "[[$type::$name| ]]\n";
 		}
-		if ( isset( $creatorObj->lastName ) ) {
-			$template->setParam( 'last name', $creatorObj->lastName );
+		$lastName = $creatorObj->lastName ?? null;
+		$firstName = $creatorObj->firstName ?? null;
+		if ( $lastName && $firstName ) {
+			return "[[$type::$lastName, $firstName| ]]\n";
+		} elseif ( $lastName ) {
+			return "[[$type::$lastName| ]]\n";
+		} elseif ( $firstName ) {
+			return "[[$type::$firstName| ]]\n";
+		} else {
+			// Should ever happen, but don't break
+			return "";
 		}
-		if ( isset( $creatorObj->firstName ) ) {
-			$template->setParam( 'first name', $creatorObj->firstName );
-		}
-		$template->setParam( 'creator type', $type );
-		$template->setParam( 'item order', (string)$nextNum );
-		return $template;
 	}
 
 	public static function getAttachment( stdClass $itemObj ): ?string {
@@ -296,23 +286,43 @@ class TemplateBuilder {
 			);
 		}
 
-		$creators = '';
+		$smwProps = '';
 		if ( isset( $data->creators ) && $data->creators ) {
 			$creatorTypesUsed = [];
 			// Add creators to the citation template
 			foreach ( $data->creators as $creator ) {
 				self::addCreator( $template, $creator, $creatorTypesUsed );
 			}
-			$creatorTypesUsed = [];
-			// Get the {{Creator}} template calls for SMW
+			// Get the various [[Author::]], etc. calls for SMW
 			foreach ( $data->creators as $creator ) {
-				$creators .= self::formatCreator( $creator, $creatorTypesUsed )->getWikitext();
+				$smwProps .= self::formatCreator( $creator );
 			}
 		}
-		$template = $template->getWikitext();
-		$result = $template . "\n" . self::getZoteroTemplate( $itemObj );
-		if ( $creators ) {
-			$result .= $creators;
+		if ( $template->hasParam( 'publisher' ) ) {
+			$publisher = $template->getParam( 'publisher' );
+			$encPublisher = strtr( $publisher, [ '-' => '-2D', ' ' => '-20', ] );
+			$escapedPublisher = FluentTemplate::escape( $publisher );
+			$template->setParam(
+				'publisher',
+				new RawWikitext( "[[Special:Browse/:$encPublisher|$escapedPublisher]]" )
+			);
+			$smwProps .= "[[Publisher::$publisher| ]]\n";
+		}
+		if ( $template->hasParam( 'work' ) ) {
+			$work = $template->getParam( 'work' );
+			$encWork = strtr( $work, [ '-' => '-2D', ' ' => '-20', ] );
+			$escapedWork = FluentTemplate::escape( $work );
+			$template->setParam(
+				'work',
+				new RawWikitext( "[[Special:Browse/:$encWork|$escapedWork]]" )
+			);
+			$smwProps .= "[[Publication::$work| ]]\n";
+		}
+
+		$result = $template->getWikitext();
+		$result .= "\n" . self::getZoteroTemplate( $itemObj );
+		if ( $smwProps ) {
+			$result .= "\n" . $smwProps;
 		}
 		return $result;
 	}
