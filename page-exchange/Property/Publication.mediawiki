@@ -1,1 +1,1 @@
-[[Has type::Text]]
+[[Has type::Page]]
