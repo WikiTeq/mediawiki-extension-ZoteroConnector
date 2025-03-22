@@ -3,10 +3,10 @@
 |date = April 1936
 |access-date = 2024-03-19
 |pages = 481-510
-|work = [[Special:Browse/:National-20Geographic|National Geographic]]
+|work = [[Special:Browse/National Geographic|National Geographic]]
 |last1 = Price
 |first1 = Willard
-|author1-link = Special:Browse/:Price,-20Willard
+|author1-link = Special:Browse/Price, Willard
 }}
 {{ZoteroDetails
 |key = 9U55P3TR

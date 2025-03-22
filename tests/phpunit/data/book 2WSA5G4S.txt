@@ -5,10 +5,10 @@
 |ISBN = 978-0-85883-098-1
 |access-date = 2024-04-10
 |author1 = Ho-min Sohn
-|author1-link = Special:Browse/:Ho-2Dmin-20Sohn
+|author1-link = Special:Browse/Ho-min Sohn
 |last2 = Bender
 |first2 = Byron W.
-|author2-link = Special:Browse/:Bender,-20Byron-20W.
+|author2-link = Special:Browse/Bender, Byron W.
 }}
 {{ZoteroDetails
 |key = 2WSA5G4S

@@ -1,7 +1,7 @@
 {{Cite book
 |title = Everyday Conceptions of Emotion
 |date = 1995
-|publisher = [[Special:Browse/:Springer|Springer]]
+|publisher = [[Special:Browse/Springer|Springer]]
 |place = Dordrecht
 |ISBN = 978-90-481-4551-5
 |volume = NATO ASI, vol. 81
@@ -9,22 +9,22 @@
 |chapter = Prototype Analyses of Emotion Terms in Palau, Micronesia
 |last1 = Smith
 |first1 = Kyle D.
-|author1-link = Special:Browse/:Smith,-20Kyle-20D.
+|author1-link = Special:Browse/Smith, Kyle D.
 |last2 = Tkel-Sbal
 |first2 = Debbie
-|author2-link = Special:Browse/:Tkel-2DSbal,-20Debbie
+|author2-link = Special:Browse/Tkel-Sbal, Debbie
 |editor1-last = Russell
 |editor1-first = James
-|editor1-link = Special:Browse/:Russell,-20James
+|editor1-link = Special:Browse/Russell, James
 |editor2-last = Fernadez-Dols
 |editor2-first = Jose-Miguel
-|editor2-link = Special:Browse/:Fernadez-2DDols,-20Jose-2DMiguel
+|editor2-link = Special:Browse/Fernadez-Dols, Jose-Miguel
 |editor3-last = Manstead
 |editor3-first = Antony
-|editor3-link = Special:Browse/:Manstead,-20Antony
+|editor3-link = Special:Browse/Manstead, Antony
 |editor4-last = Wellenkamp
 |editor4-first = J.C.
-|editor4-link = Special:Browse/:Wellenkamp,-20J.C.
+|editor4-link = Special:Browse/Wellenkamp, J.C.
 }}
 {{ZoteroDetails
 |key = KUWNE75R

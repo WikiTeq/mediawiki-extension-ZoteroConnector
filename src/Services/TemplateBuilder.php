@@ -159,17 +159,9 @@ class TemplateBuilder {
 			$browseName = $creatorObj->lastName . ", " . $creatorObj->firstName;
 		}
 		if ( $browseName ) {
-			// Work around SMW's encoding
-			$browseName = strtr(
-				$browseName,
-				[
-					'-' => '-2D',
-					' ' => '-20',
-				]
-			);
 			$template->setParam(
 				"$type$nextNum-link",
-				"Special:Browse/:$browseName"
+				"Special:Browse/$browseName"
 			);
 		}
 	}
@@ -300,21 +292,19 @@ class TemplateBuilder {
 		}
 		if ( $template->hasParam( 'publisher' ) ) {
 			$publisher = $template->getParam( 'publisher' );
-			$encPublisher = strtr( $publisher, [ '-' => '-2D', ' ' => '-20', ] );
 			$escapedPublisher = FluentTemplate::escape( $publisher );
 			$template->setParam(
 				'publisher',
-				new RawWikitext( "[[Special:Browse/:$encPublisher|$escapedPublisher]]" )
+				new RawWikitext( "[[Special:Browse/$publisher|$escapedPublisher]]" )
 			);
 			$smwProps .= "[[Publisher::$publisher| ]]\n";
 		}
 		if ( $template->hasParam( 'work' ) ) {
 			$work = $template->getParam( 'work' );
-			$encWork = strtr( $work, [ '-' => '-2D', ' ' => '-20', ] );
 			$escapedWork = FluentTemplate::escape( $work );
 			$template->setParam(
 				'work',
-				new RawWikitext( "[[Special:Browse/:$encWork|$escapedWork]]" )
+				new RawWikitext( "[[Special:Browse/$work|$escapedWork]]" )
 			);
 			$smwProps .= "[[Publication::$work| ]]\n";
 		}

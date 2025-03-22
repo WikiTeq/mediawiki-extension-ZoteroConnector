@@ -6,10 +6,10 @@
 |volume = 38
 |issue = 1
 |pages = 141-189
-|work = [[Special:Browse/:Micronesica|Micronesica]]
+|work = [[Special:Browse/Micronesica|Micronesica]]
 |last1 = Wiles
 |first1 = Gary J
-|author1-link = Special:Browse/:Wiles,-20Gary-20J
+|author1-link = Special:Browse/Wiles, Gary J
 }}
 {{ZoteroDetails
 |key = GQMP44EH

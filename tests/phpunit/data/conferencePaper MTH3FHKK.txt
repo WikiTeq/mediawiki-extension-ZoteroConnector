@@ -3,10 +3,10 @@
 |date = 2008-08-12
 |url = https://docplayer.net/45718164-Out-of-the-shadow-biographical-details-of-elisabeth-kramer-bannow-or-the-woman-behind-dr-augustin-kramer.html
 |access-date = 2024-03-18
-|work = [[Special:Browse/:Graduate-20Conference-20Day,-20Department-20of-20History|Graduate Conference Day, Department of History]]
+|work = [[Special:Browse/Graduate Conference Day, Department of History|Graduate Conference Day, Department of History]]
 |last1 = Monter
 |first1 = Sven
-|author1-link = Special:Browse/:Monter,-20Sven
+|author1-link = Special:Browse/Monter, Sven
 }}
 {{ZoteroDetails
 |key = MTH3FHKK

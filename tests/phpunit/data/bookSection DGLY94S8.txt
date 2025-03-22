@@ -1,7 +1,7 @@
 {{Cite book
 |title = History of Cartography
 |date = 1996
-|publisher = [[Special:Browse/:University-20of-20Chicago-20Press|University of Chicago Press]]
+|publisher = [[Special:Browse/University of Chicago Press|University of Chicago Press]]
 |place = Chicago
 |url = https://www.semanticscholar.org/paper/Nautical-Cartography-and-Traditional-Navigation-in-Finney/bde415d1d8fb58f0a90488ea3d478e705a771dad
 |access-date = 2024-03-18
@@ -10,13 +10,13 @@
 |chapter = Nautical Cartography and Traditional Navigation in Oceania
 |last1 = Finney
 |first1 = Ben
-|author1-link = Special:Browse/:Finney,-20Ben
+|author1-link = Special:Browse/Finney, Ben
 |editor1-last = Woodward
 |editor1-first = David
-|editor1-link = Special:Browse/:Woodward,-20David
+|editor1-link = Special:Browse/Woodward, David
 |editor2-last = Lewis
 |editor2-first = Malcom G.
-|editor2-link = Special:Browse/:Lewis,-20Malcom-20G.
+|editor2-link = Special:Browse/Lewis, Malcom G.
 }}
 {{ZoteroDetails
 |key = DGLY94S8
