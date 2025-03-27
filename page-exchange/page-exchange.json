@@ -1,0 +1,39 @@
+{
+  "publisher": "WikiTeq",
+  "author": "WikiTeq",
+  "language": "en",
+  "url": "https:\/\/github.com\/WikiTeq\/mediawiki-extension-ZoteroConnector",
+  "packages": {
+    "News": {
+      "globalID": "com.wikiteq.ZoteroConnector",
+      "description": null,
+      "version": "0.2",
+      "pages": [
+        {
+          "name": "Author",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FAuthor.mediawiki"
+        },
+        {
+          "name": "Editor",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FEditor.mediawiki"
+        },
+        {
+          "name": "Publication",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FPublication.mediawiki"
+        },
+        {
+          "name": "Publisher",
+          "namespace": "SMW_NS_PROPERTY",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FPublisher.mediawiki"
+        }
+      ],
+      "requiredExtensions": [
+        "ParserFunctions",
+        "SemanticMediaWiki"
+      ]
+    }
+  }
+}

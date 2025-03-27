@@ -1,7 +1,7 @@
 {{Cite book
 |title = Everyday Conceptions of Emotion
 |date = 1995
-|publisher = Springer
+|publisher = [[Special:Browse/Springer|Springer]]
 |place = Dordrecht
 |ISBN = 978-90-481-4551-5
 |volume = NATO ASI, vol. 81
@@ -9,16 +9,22 @@
 |chapter = Prototype Analyses of Emotion Terms in Palau, Micronesia
 |last1 = Smith
 |first1 = Kyle D.
+|author1-link = Special:Browse/Smith, Kyle D.
 |last2 = Tkel-Sbal
 |first2 = Debbie
+|author2-link = Special:Browse/Tkel-Sbal, Debbie
 |editor1-last = Russell
 |editor1-first = James
+|editor1-link = Special:Browse/Russell, James
 |editor2-last = Fernadez-Dols
 |editor2-first = Jose-Miguel
+|editor2-link = Special:Browse/Fernadez-Dols, Jose-Miguel
 |editor3-last = Manstead
 |editor3-first = Antony
+|editor3-link = Special:Browse/Manstead, Antony
 |editor4-last = Wellenkamp
 |editor4-first = J.C.
+|editor4-link = Special:Browse/Wellenkamp, J.C.
 }}
 {{ZoteroDetails
 |key = KUWNE75R
@@ -26,4 +32,13 @@
 |title = Prototype Analyses of Emotion Terms in Palau, Micronesia
 |version = 132
 |abstractNote = chapter: describes 3 tests for evidence of a prototypical internal structure to the concept of emotion in Palau, a small island nation in Western Micronesia / each replicated a study reported by B. Fehr and J. Russell (1984), paralleling ongoing and coordinated replications in China, Estonia, Japan, Spain, Turkey and Uganda / is there a Palauan equivalent to emotion / if so, what are its boundaries, and how elaborate is the emotion domain / which exemplars come most readily to mind / do Palauans distinguish emotions from experiences considered non-emotions in other languages / do Palauans use emotion terms that lack clear non-emotions in other languages / do Palauans lack emotion terms present in other languages / &#91;Ss for the 3 studies were high school students with a mean age of 17 yrs&#93; (PsycINFO Database Record (c) 2004 APA, all rights reserved)
+}}
+{{#set:
+|Author=Smith, Kyle D.
+|Author=Tkel-Sbal, Debbie
+|Editor=Russell, James
+|Editor=Fernadez-Dols, Jose-Miguel
+|Editor=Manstead, Antony
+|Editor=Wellenkamp, J.C.
+|Publisher=Springer
 }}

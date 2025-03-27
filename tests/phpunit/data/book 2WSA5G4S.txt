@@ -5,8 +5,10 @@
 |ISBN = 978-0-85883-098-1
 |access-date = 2024-04-10
 |author1 = Ho-min Sohn
+|author1-link = Special:Browse/Ho-min Sohn
 |last2 = Bender
 |first2 = Byron W.
+|author2-link = Special:Browse/Bender, Byron W.
 }}
 {{ZoteroDetails
 |key = 2WSA5G4S
@@ -14,4 +16,8 @@
 |title = A Ulithian Grammar
 |version = 53
 |attachment = RTBKECLI
+}}
+{{#set:
+|Author=Ho-min Sohn
+|Author=Bender, Byron W.
 }}

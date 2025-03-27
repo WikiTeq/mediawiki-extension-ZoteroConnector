@@ -2,9 +2,10 @@
 |title = Telling It Like It Is
 |date = 1972-03-02
 |place = Saipan
-|work = Marianas Variety
+|work = [[Special:Browse/Marianas Variety|Marianas Variety]]
 |last1 = Uludong
 |first1 = Francisco
+|author1-link = Special:Browse/Uludong, Francisco
 }}
 {{ZoteroDetails
 |key = 8NZQJXVY
@@ -12,4 +13,8 @@
 |title = Telling It Like It Is
 |version = 147
 |attachment = 7ECBYKZ8
+}}
+{{#set:
+|Author=Uludong, Francisco
+|Publication=Marianas Variety
 }}

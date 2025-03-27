@@ -4,9 +4,10 @@
 |place = Honolulu
 |url = https://scholarspace.manoa.hawaii.edu/items/0c007d97-67a5-4635-87de-2474a21ad066
 |access-date = 2024-04-10
-|publisher = University of Hawaii
+|publisher = [[Special:Browse/University of Hawaii|University of Hawaii]]
 |last1 = Roddy
 |first1 = Kevin
+|author1-link = Special:Browse/Roddy, Kevin
 }}
 {{ZoteroDetails
 |key = WUNN2XBZ
@@ -14,4 +15,8 @@
 |title = A Sketch Grammar Of Satawalese, The Language Of Satawal Island, Yap State, Micronesia
 |version = 52
 |attachment = QMFRJVME
+}}
+{{#set:
+|Author=Roddy, Kevin
+|Publisher=University of Hawaii
 }}

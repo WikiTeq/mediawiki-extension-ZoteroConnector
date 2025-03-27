@@ -12,6 +12,9 @@ class CommentHandlerTest extends MediaWikiIntegrationTestCase {
 
 	/** @dataProvider provideCases */
 	public function testHookApplied( string $comment, string $expected ) {
+		// SMW complains when the language code changes, turn off that path
+		$this->clearHook( 'CanonicalNamespaces' );
+
 		$this->setContentLang( 'qqx' );
 		$commentFormatter = $this->getServiceContainer()->getCommentFormatter();
 		$formatted = $commentFormatter->format( $comment );

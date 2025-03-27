@@ -4,6 +4,7 @@
 |url = https://scholarworks.wmich.edu/masters_theses
 |last1 = Gray
 |first1 = Kirk L
+|author1-link = Special:Browse/Gray, Kirk L
 }}
 {{ZoteroDetails
 |key = HGDEWS3S
@@ -11,4 +12,7 @@
 |title = Modernization in Micronesia: Acculturation, Colonialism and Modernization in Micronesia: Acculturation, Colonialism and Culture Change Culture Change
 |version = 113
 |attachment = ATUADHIE
+}}
+{{#set:
+|Author=Gray, Kirk L
 }}
