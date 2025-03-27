@@ -171,23 +171,23 @@ class TemplateBuilder {
 	 * for authors but supports other roles too
 	 *
 	 * @param stdClass $creatorObj
-	 * @return string with the wikitext to add
+	 * @return string with the wikitext to add to the #set call
 	 */
 	private static function formatCreator( stdClass $creatorObj ): string {
 		// The `| ` at the end is to suppress display
 		$type = ucfirst( $creatorObj->creatorType ?? 'author' );
 		if ( isset( $creatorObj->name ) ) {
 			$name = $creatorObj->name;
-			return "[[$type::$name| ]]\n";
+			return "|$type=$name\n";
 		}
 		$lastName = $creatorObj->lastName ?? null;
 		$firstName = $creatorObj->firstName ?? null;
 		if ( $lastName && $firstName ) {
-			return "[[$type::$lastName, $firstName| ]]\n";
+			return "|$type=$lastName, $firstName\n";
 		} elseif ( $lastName ) {
-			return "[[$type::$lastName| ]]\n";
+			return "|$type=$lastName\n";
 		} elseif ( $firstName ) {
-			return "[[$type::$firstName| ]]\n";
+			return "|$type=$firstName\n";
 		} else {
 			// Should ever happen, but don't break
 			return "";
@@ -297,7 +297,7 @@ class TemplateBuilder {
 				'publisher',
 				new RawWikitext( "[[Special:Browse/$publisher|$escapedPublisher]]" )
 			);
-			$smwProps .= "[[Publisher::$publisher| ]]\n";
+			$smwProps .= "|Publisher=$publisher\n";
 		}
 		if ( $template->hasParam( 'work' ) ) {
 			$work = $template->getParam( 'work' );
@@ -306,13 +306,13 @@ class TemplateBuilder {
 				'work',
 				new RawWikitext( "[[Special:Browse/$work|$escapedWork]]" )
 			);
-			$smwProps .= "[[Publication::$work| ]]\n";
+			$smwProps .= "|Publication=$work\n";
 		}
 
 		$result = $template->getWikitext();
 		$result .= "\n" . self::getZoteroTemplate( $itemObj );
 		if ( $smwProps ) {
-			$result .= "\n" . $smwProps;
+			$result .= "\n" . "{{#set:\n$smwProps}}";
 		}
 		return $result;
 	}

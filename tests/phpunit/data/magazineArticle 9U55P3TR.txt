@@ -15,5 +15,7 @@
 |version = 113
 |attachment = FI6L86BD
 }}
-[[Author::Price, Willard| ]]
-[[Publication::National Geographic| ]]
+{{#set:
+|Author=Price, Willard
+|Publication=National Geographic
+}}

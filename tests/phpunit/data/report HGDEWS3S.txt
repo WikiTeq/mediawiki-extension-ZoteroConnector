@@ -13,4 +13,6 @@
 |version = 113
 |attachment = ATUADHIE
 }}
-[[Author::Gray, Kirk L| ]]
+{{#set:
+|Author=Gray, Kirk L
+}}

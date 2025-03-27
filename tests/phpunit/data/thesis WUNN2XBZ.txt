@@ -16,5 +16,7 @@
 |version = 52
 |attachment = QMFRJVME
 }}
-[[Author::Roddy, Kevin| ]]
-[[Publisher::University of Hawaii| ]]
+{{#set:
+|Author=Roddy, Kevin
+|Publisher=University of Hawaii
+}}

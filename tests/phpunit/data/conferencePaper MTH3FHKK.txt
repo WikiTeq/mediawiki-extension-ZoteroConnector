@@ -15,5 +15,7 @@
 |version = 122
 |attachment = M5AWZV83
 }}
-[[Author::Monter, Sven| ]]
-[[Publication::Graduate Conference Day, Department of History| ]]
+{{#set:
+|Author=Monter, Sven
+|Publication=Graduate Conference Day, Department of History
+}}

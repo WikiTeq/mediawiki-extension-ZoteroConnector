@@ -14,5 +14,7 @@
 |version = 147
 |attachment = 7ECBYKZ8
 }}
-[[Author::Uludong, Francisco| ]]
-[[Publication::Marianas Variety| ]]
+{{#set:
+|Author=Uludong, Francisco
+|Publication=Marianas Variety
+}}

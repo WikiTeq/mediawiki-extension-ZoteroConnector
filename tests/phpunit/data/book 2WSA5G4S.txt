@@ -17,5 +17,7 @@
 |version = 53
 |attachment = RTBKECLI
 }}
-[[Author::Ho-min Sohn| ]]
-[[Author::Bender, Byron W.| ]]
+{{#set:
+|Author=Ho-min Sohn
+|Author=Bender, Byron W.
+}}
