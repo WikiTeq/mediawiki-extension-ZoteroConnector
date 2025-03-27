@@ -4,7 +4,6 @@
 |publisher = [[Special:Browse/University of Chicago Press|University of Chicago Press]]
 |place = Chicago
 |url = https://www.semanticscholar.org/paper/Nautical-Cartography-and-Traditional-Navigation-in-Finney/bde415d1d8fb58f0a90488ea3d478e705a771dad
-|access-date = 2024-03-18
 |volume = 2
 |pages = 443-492
 |chapter = Nautical Cartography and Traditional Navigation in Oceania
