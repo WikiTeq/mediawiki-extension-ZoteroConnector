@@ -285,7 +285,7 @@ class TemplateBuilder {
 			foreach ( $data->creators as $creator ) {
 				self::addCreator( $template, $creator, $creatorTypesUsed );
 			}
-			// Get the various [[Author::]], etc. calls for SMW
+			// Get the contents of the `#set` call for SMW
 			foreach ( $data->creators as $creator ) {
 				$smwProps .= self::formatCreator( $creator );
 			}
