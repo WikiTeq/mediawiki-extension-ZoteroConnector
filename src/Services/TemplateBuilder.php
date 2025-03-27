@@ -27,14 +27,10 @@ class TemplateBuilder {
 		'ISSN' => 'ISSN',
 		'DOI' => 'DOI',
 
-		// Access
-		'accessDate' => 'access-date',
-
 		// Journal articles
 		'volume' => 'volume',
 		'issue' => 'issue',
 		'pages' => 'pages',
-		'journalAbbreviation' => 'journalAbbreviation',
 		// TODO we should add some way of showing abstracts...
 		// 'abstractNote' => 'abstractNote',
 

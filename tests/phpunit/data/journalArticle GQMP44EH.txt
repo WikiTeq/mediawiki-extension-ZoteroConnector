@@ -2,7 +2,6 @@
 |title = A Checklist of the Birds and Mammals of Micronesia
 |date = 2005
 |url = https://www.semanticscholar.org/paper/A-Checklist-of-the-Birds-and-Mammals-of-Micronesia-Wiles/aff743be6fa7a773a63bad03664a55a152159f1e
-|access-date = 2024-03-26
 |volume = 38
 |issue = 1
 |pages = 141-189

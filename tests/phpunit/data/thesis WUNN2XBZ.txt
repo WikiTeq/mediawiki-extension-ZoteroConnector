@@ -3,7 +3,6 @@
 |date = August 2007
 |place = Honolulu
 |url = https://scholarspace.manoa.hawaii.edu/items/0c007d97-67a5-4635-87de-2474a21ad066
-|access-date = 2024-04-10
 |publisher = [[Special:Browse/University of Hawaii|University of Hawaii]]
 |last1 = Roddy
 |first1 = Kevin
