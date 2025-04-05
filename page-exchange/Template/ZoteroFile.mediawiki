@@ -1,0 +1,2 @@
+{{#if:{{{parentItem|}}}|* Used for [[Zotero reference:{{{parentItem}}}]]}}
+{{#if:{{{version|}}}|{{#ZOTERO_FILE_VERSION:{{{version}}}}}}}

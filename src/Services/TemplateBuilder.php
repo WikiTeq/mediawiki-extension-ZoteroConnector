@@ -228,7 +228,7 @@ class TemplateBuilder {
 		$data = $itemObj->data;
 		// for `title` here for book chapters we want to store the chapter name,
 		// so no need for fancy magic
-		$params = [ 'key', 'itemType', 'title', 'version', 'abstractNote' ];
+		$params = [ 'key', 'itemType', 'title', 'version', 'abstractNote', 'extra' ];
 		foreach ( $params as $p ) {
 			if ( isset( $data->$p ) && $data->$p !== '' ) {
 				$template->setParam( $p, (string)$data->$p );

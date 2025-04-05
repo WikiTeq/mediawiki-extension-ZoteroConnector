@@ -12,6 +12,7 @@
 |itemType = magazineArticle
 |title = Mysterious Micronesia: Yap, Map and other Islands under Japanese Mandate are Museums of Primitive Man
 |version = 113
+|extra = Place: Washington, DC
 |attachment = FI6L86BD
 }}
 {{#set:
