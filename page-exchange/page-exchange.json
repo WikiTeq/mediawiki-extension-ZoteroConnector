@@ -28,6 +28,16 @@
           "name": "Publisher",
           "namespace": "SMW_NS_PROPERTY",
           "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Property%2FPublisher.mediawiki"
+        },
+        {
+          "name": "ZoteroDetails",
+          "namespace": "NS_TEMPALTE",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Template%2FZoteroDetails.mediawiki"
+        },
+        {
+          "name": "ZoteroFile",
+          "namespace": "NS_TEMPALTE",
+          "url": "https:\/\/raw.githubusercontent.com\/WikiTeq\/mediawiki-extension-ZoteroConnector\/master\/page-exchange\/Template%2FZoteroFile.mediawiki"
         }
       ],
       "requiredExtensions": [
