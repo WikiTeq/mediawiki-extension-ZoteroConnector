@@ -1,0 +1,89 @@
+{
+    "key": "58L3QDCP",
+    "version": 28611,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/58L3QDCP",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/58L3QDCP",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/YZ4U3799",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 27323483
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "parsedDate": "2022-06",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "58L3QDCP",
+        "version": 28611,
+        "itemType": "report",
+        "title": "2022 Economic Brief - Republic of Palau",
+        "creators": [],
+        "abstractNote": "Palau’s economy is projected to decline by a three-year total of -23% in FY22 from FY19 pre-pandemic levels. Due to the impact of COVID-19, GDP contracted by -8.9% in FY20 and a further -13.1% in FY21, and is projected to fall by a further -2.7% in FY22 before recovery is anticipated. Without the positive support of the CROSS and US CARES Act mitigation programs, the economic impact would have been dire. In the tourism sector FY20, which had been projected to improve to 120,000 visitors from the weak performance in the late 2010s, actually fell to 41,674 in FY20 and to just 3,412 in FY21 due to the global pandemic.\n\nInflation is currently rising rapidly and projected to reach 13.7% during FY22. After many years of low inflation, prices began rising in 2021. As the global economy emerged from lockdowns, fuel prices increased in Palau. However, there was a lag before the utility prices changed and only a small increase of 0.5% occurred in FY21. However, by the end of the first quarter of FY22, these dampening effects had worked their way through the system and the CPI recorded an 11.9% increase. For the whole year an inflation rate of 13.7% is projected. Mitigation programs including the CROSS Act and U.S. CARES Act proved highly effective. At the start of the pandemic Palau reacted quickly, passing the CROSS Act by the end of April 2020, and distributing the first financial support in May 2020..",
+        "reportNumber": "",
+        "reportType": "",
+        "seriesTitle": "",
+        "place": "Washington, DC",
+        "institution": "Pacific and Virgin Islands Training Initiatives (PITI-VITI)",
+        "date": "2022-06",
+        "pages": "44",
+        "language": "en",
+        "shortTitle": "",
+        "url": "https://pitiviti.org/storage/dm/2022/07/palau-fy22-econbrief-digital-remediated-20220710043051112.pdf",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "Zotero",
+        "callNumber": "",
+        "rights": "Public Domain (US Gov Publication)",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Art"
+            },
+            {
+                "tag": "Economic"
+            },
+            {
+                "tag": "Palau"
+            },
+            {
+                "tag": "Tourism"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2025-03-21T16:19:25Z",
+        "dateModified": "2025-04-10T19:22:51Z"
+    }
+}

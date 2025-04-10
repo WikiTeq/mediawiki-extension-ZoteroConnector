@@ -241,6 +241,22 @@ class TemplateBuilder {
 		return $template->getWikitext();
 	}
 
+	/**
+	 * Convert the `tags` to categories
+	 */
+	private static function getCategories( stdClass $itemObj ): string {
+		$categories = [];
+		$tagsData = $itemObj->data->tags;
+		foreach ( $tagsData as $tag ) {
+			$categories[] = "[[Category:" . $tag->tag . "]]";
+		}
+		return implode( "\n", $categories );
+	}
+
+	/**
+	 * For an item representing the returned information from Zotero, get the
+	 * wikitext for the reference page
+	 */
 	public static function getSource( stdClass $itemObj ): string {
 		$data = $itemObj->data;
 		$template = new FluentTemplate( self::getCitationTemplate( $itemObj ) );
@@ -309,6 +325,10 @@ class TemplateBuilder {
 		$result .= "\n" . self::getZoteroTemplate( $itemObj );
 		if ( $smwProps ) {
 			$result .= "\n" . "{{#set:\n$smwProps}}";
+		}
+		$categories = self::getCategories( $itemObj );
+		if ( $categories ) {
+			$result .= "\n" . $categories;
 		}
 		return $result;
 	}
