@@ -357,7 +357,7 @@ class ImportZoteroData extends Maintenance {
 				// Clean up unterminated line
 				$this->output( "\n" );
 				$this->error( "$attachment - got null redirect" );
-				$summary['errors'][] = $attachment;
+				$summary['errors'][$attachment] = 'null-redirect';
 				continue;
 			}
 			if ( $dryRun ) {
