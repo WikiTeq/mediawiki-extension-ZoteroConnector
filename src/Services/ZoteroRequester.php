@@ -158,10 +158,11 @@ class ZoteroRequester {
 		if ( !is_array( $asJson ) ) {
 			// API returned bad JSON?
 			$this->logger->debug(
-				__METHOD__ . ': non-array JSON when processing batch ({raw}): {status}',
+				__METHOD__ . ': non-array JSON when processing offset {offset} ({raw}): {status}',
 				[
 					'status' => $status->__toString(),
 					'raw' => $content,
+					'offset' => $offset,
 				]
 			);
 			throw new UnexpectedValueException( "Not an array" );
