@@ -1,5 +1,5 @@
 {{#if:{{{title|}}}|{{#ZOTERO_REFERENCE_TITLE:{{{title}}}}}}}
-{{#if:{{{attachment|}}}|* Has attachment: [[File:{{{attachment}}}.pdf]]}}
+{{#if:{{{attachment|}}}|* Has attachment: [[:File:{{{attachment}}}.pdf]]}}
 {{#if:{{{abstractNote|}}}|'''Abstract''': {{{abstractNote}}}<br>}}
 
 {{#if:{{{extra|}}}|
