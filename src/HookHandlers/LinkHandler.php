@@ -60,11 +60,7 @@ class LinkHandler implements HtmlPageLinkRendererBeginHook {
 			return true;
 		}
 		$displayText = $displayProps[ $asTitle->getId() ];
-		// Add the namespace prefix though so things are clear; its not needed
-		// on the actual page display but is helpful in links
-		$nsName = $this->titleFormatter->getNamespaceName( NS_ZOTERO_REF, '' );
-		$nsName = strtr( $nsName, '_', ' ' );
-		$text = $nsName . ':' . $displayText;
+		$text = $displayText;
 		// Stop processing
 		return false;
 	}
