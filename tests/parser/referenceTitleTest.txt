@@ -55,3 +55,20 @@ property=displaytitle
 !! html/php
 property[displaytitle]=abc&lt;123&gt;xyz
 !! end
+
+!! test
+Quotes are not escaped
+!! config
+wgAllowDisplayTitle=false
+wgRestrictDisplayTitle=false
+!! options
+title=[[Zotero reference:ABC123]]
+cat
+property=displaytitle
+!! wikitext
+{{#ZOTERO_REFERENCE_TITLE:abc'123"xyz}}
+!! html
+<p></p>
+!! html/php
+property[displaytitle]=abc'123"xyz
+!! end

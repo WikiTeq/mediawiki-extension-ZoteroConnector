@@ -122,7 +122,11 @@ class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
 			return '';
 		}
 		$parser->getOutput()->setDisplayTitle(
-			htmlspecialchars( $title )
+			// Default flags except no escaping quotes
+			htmlspecialchars(
+				$title,
+				ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_HTML401
+			)
 		);
 		return '';
 	}
