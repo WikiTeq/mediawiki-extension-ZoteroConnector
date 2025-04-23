@@ -195,6 +195,18 @@ class ParserHandlerTest extends MediaWikiUnitTestCase {
 		$p3->expects( $this->once() )->method( 'getPage' )->willReturn( $t3 );
 		$p3->expects( $this->once() )->method( 'getOutput' )->willReturn( $output );
 		$this->testTitleForParser( $p3, 'abc<123>xyz' );
+
+		// Success (quotes not escaped)
+		$t4 = $this->createNoOpMock( Title::class, [ 'getNamespace' ] );
+		$t4->expects( $this->once() )->method( 'getNamespace' )->willReturn( NS_ZOTERO_REF );
+		$output = $this->createNoOpMock( ParserOutput::class, [ 'setDisplayTitle' ] );
+		$output->expects( $this->once() )
+			->method( 'setDisplayTitle' )
+			->with( 'abc\'123"xyz' );
+		$p4 = $this->createNoOpMock( Parser::class, [ 'getPage', 'getOutput' ] );
+		$p4->expects( $this->once() )->method( 'getPage' )->willReturn( $t4 );
+		$p4->expects( $this->once() )->method( 'getOutput' )->willReturn( $output );
+		$this->testTitleForParser( $p4, 'abc\'123"xyz' );
 	}
 
 }
