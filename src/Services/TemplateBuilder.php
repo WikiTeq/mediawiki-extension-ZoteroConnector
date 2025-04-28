@@ -228,11 +228,19 @@ class TemplateBuilder {
 		$data = $itemObj->data;
 		// for `title` here for book chapters we want to store the chapter name,
 		// so no need for fancy magic
-		$params = [ 'key', 'itemType', 'title', 'version', 'abstractNote', 'extra' ];
+		// Don't escape links for the abstract
+		$params = [ 'key', 'itemType', 'title', 'version', 'extra' ];
 		foreach ( $params as $p ) {
 			if ( isset( $data->$p ) && $data->$p !== '' ) {
 				$template->setParam( $p, (string)$data->$p );
 			}
+		}
+		if ( isset( $data->abstractNote ) && $data->abstractNote !== '' ) {
+			$abstract = strtr(
+				$data->abstractNote,
+				[ '{' => '&#123;', '}' => '&#125;', ]
+			);
+			$template->setParam( 'abstractNote', new RawWikitext( $abstract ) );
 		}
 		$attachmentId = self::getAttachment( $itemObj );
 		if ( $attachmentId ) {

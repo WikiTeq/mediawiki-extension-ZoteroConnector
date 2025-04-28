@@ -1,0 +1,107 @@
+{
+    "key": "8WP3QPF3",
+    "version": 30632,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/8WP3QPF3",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/8WP3QPF3",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/SH9MX5HI",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 2883025
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Hezel",
+        "parsedDate": "2002-06",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "8WP3QPF3",
+        "version": 30632,
+        "itemType": "report",
+        "title": "Taking Responsibility for Our Schools: a Series of Four Articles on Education in Micronesia",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Francis X.",
+                "lastName": "Hezel"
+            }
+        ],
+        "abstractNote": "Mobilizing communities to support educational improvements is one of the challenges confronting educators in the Freely Associated States ([[FAS]]), which consists of the [[Federated States of Micronesia]], the [[Republic of the Marshall Islands]], and the [[Republic of Palau]]. This booklet aims to establish a consensus on broad educational goals and to rebuild the sense of community ownership of schools that is missing today. \n\n\"What Should Our Schools Be Doing?\" describes conflicting views about whether education should provide for manpower training, cultural preservation, or academic skills, given the current poor academic achievement in the FAS and high rates of emigration to find work. It is suggested that a new education system can accommodate all three visions. \n\n\"How Good Are Our Schools?\" attempts to show the current status of schooling in each country but is hampered by incomplete data. Although test scores are the only data consistently available, there are other measures for school success. The challenge is to identify and track those criteria. \n\n\"The Myth of Education: A Second Look\" describes how the lure of easy jobs abroad has attracted young people away from completing education, particularly college. If this emigration trend continues, it will impact the ability of these new island nations to compete in a global economy. \n\n\"Islands of Excellence\" features good schools across the region and their innovative approaches to curriculum adaptation and management strategies. The lesson is that with community support and strong school leadership, successful schools are possible regardless of limited resources and lack of trained teachers.\n\nIndex: \n[[Angaur]] 28\n[[Chuuk State]] 6 – 7, 18 – 19, 22 – 25, 30 – 31, 38 – 41\n[[Eauripik]] 38\n[[Faichuk]] 19\n[[Fais]] 21\n[[Fefan]] 19\n[[Gagil]] 21, 38\n[[Jaluit]] 26 – 28\n[[Kosrae]] 7, 19 – 20, 22 – 25, 30 – 31, 38, 41\n[[Maap]] 21, 42 – 43\n[[Majuro]] 26, 48\n[[Republic of the Marshall Islands]] 1, 6 – 7, 11 – 12, 17, 27 – 28, 38, 44, 48\n[[Modekngei]] 29\n[[Namoluk]] 19, 38\nOuter Islands 23, 34\n[[Palau]] 1, 7, 11 – 13, 16, 28 – 31, 38, 45 – 46, 48\n[[Peleliu]] 28, 38, 45 – 46\n[[Pohnpei]] 6 – 7, 13 – 14, 19 – 25, 30 – 31, 38, 41 – 42, 48\n[[Sokehs]] 21\n[[Ulithi]] 21, 23\n[[Utwe]] 20, 38\n[[Woleai]] 22\n[[Wonei]] 19\n[[Wotje]] 25 – 26, 38\n[[Yap]] 7, 19, 21 – 25, 30 – 31, 38, 42 – 43\nYapese 43",
+        "reportNumber": "ED 467541",
+        "reportType": "",
+        "seriesTitle": "",
+        "place": "Honolulu, HI",
+        "institution": "Pacific Resources for Education and Learning",
+        "date": "2002-06",
+        "pages": "1-49",
+        "language": "en",
+        "shortTitle": "Ed467541",
+        "url": "https://archive.org/details/ERIC_ED467541",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "Public Domain (US Gov Publication)",
+        "extra": "MAG: 143930551\nOpenAlex: W143930551\nCorpusID: 150909422",
+        "tags": [
+            {
+                "tag": "Education"
+            },
+            {
+                "tag": "FAS"
+            },
+            {
+                "tag": "Marshall Islands"
+            },
+            {
+                "tag": "MicSem"
+            },
+            {
+                "tag": "Migration"
+            },
+            {
+                "tag": "Palau"
+            },
+            {
+                "tag": "Publications"
+            }
+        ],
+        "collections": [],
+        "relations": {
+            "dc:replaces": "http://zotero.org/groups/4511960/items/42TFQJGJ"
+        },
+        "dateAdded": "2024-10-08T15:03:25Z",
+        "dateModified": "2025-04-27T16:29:16Z"
+    }
+}
