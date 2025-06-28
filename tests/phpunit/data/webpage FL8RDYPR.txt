@@ -1,7 +1,8 @@
-{{Cite book
+{{Cite web
 |title = Joint Statement on the United States Department of Defense and Federated States of Micronesia
 |date = 2025-03-27
 |url = https://www.defense.gov/News/Releases/Release/Article/4136656/joint-statement-on-the-united-states-department-of-defense-and-federated-states/https%3A%2F%2Fwww.defense.gov%2FNews%2FReleases%2FRelease%2FArticle%2F4136656%2Fjoint-statement-on-the-united-states-department-of-defense-and-federated-states%2F
+|website = U.S. Department of Defense
 |last1 = Hegseth
 |first1 = Pete
 |author1-link = Special:Browse/Hegseth, Pete
