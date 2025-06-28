@@ -1,0 +1,90 @@
+{
+    "key": "FL8RDYPR",
+    "version": 31186,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/FL8RDYPR",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/FL8RDYPR",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/S4H59HZJ",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 63810
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Hegseth and Simina",
+        "parsedDate": "2025-03-27",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "FL8RDYPR",
+        "version": 31186,
+        "itemType": "webpage",
+        "title": "Joint Statement on the United States Department of Defense and Federated States of Micronesia",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Pete",
+                "lastName": "Hegseth"
+            },
+            {
+                "creatorType": "author",
+                "firstName": "Wesley W.",
+                "lastName": "Simina"
+            }
+        ],
+        "abstractNote": "Defense Secretary Pete Hegseth and Micronesia's President Wesley Simina announced they reached a mutual understanding to enable DOD to begin planning and construction on key infrastructure projects in",
+        "websiteTitle": "U.S. Department of Defense",
+        "websiteType": "",
+        "date": "2025-03-27",
+        "shortTitle": "",
+        "url": "https://www.defense.gov/News/Releases/Release/Article/4136656/joint-statement-on-the-united-states-department-of-defense-and-federated-states/https%3A%2F%2Fwww.defense.gov%2FNews%2FReleases%2FRelease%2FArticle%2F4136656%2Fjoint-statement-on-the-united-states-department-of-defense-and-federated-states%2F",
+        "accessDate": "2025-03-27T19:09:27Z",
+        "language": "en",
+        "rights": "Public Domain (US Gov Publication)",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Defense"
+            },
+            {
+                "tag": "Infrastructure"
+            },
+            {
+                "tag": "Publications"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2025-03-27T19:09:27Z",
+        "dateModified": "2025-05-20T15:36:39Z"
+    }
+}

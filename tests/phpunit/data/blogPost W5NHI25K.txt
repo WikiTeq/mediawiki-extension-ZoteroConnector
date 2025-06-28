@@ -1,0 +1,27 @@
+{{Cite book
+|title = President Simina and Us Secretary of Defense Hegseth Hold First High-level Bilateral Under New Us Administration – Yap Infrastructure Projects Advance
+|date = 2025-03-28
+|url = https://gov.fm/president-simina-and-u-s-secretary-of-defense-hegseth-hold-first-high-level-bilateral-under-new-u-s-administration-yap-infrastructure-projects-advance/
+|last1 = Fredrick
+|first1 = Marly
+|author1-link = Special:Browse/Fredrick, Marly
+}}
+{{ZoteroDetails
+|key = W5NHI25K
+|itemType = blogPost
+|title = President Simina and Us Secretary of Defense Hegseth Hold First High-level Bilateral Under New Us Administration – Yap Infrastructure Projects Advance
+|version = 30942
+|abstractNote = is Excellency President Wesley W. Simina of the [[Federated States of Micronesia]] (FSM) met with U.S. Secretary of Defense Pete Hegseth on March 27, 2025 at Andersen Air Force Base in Guam, marking the first high-level bilateral engagement between the FSM and the United States under the new U.S. Administration. The meeting reaffirmed the enduring partnership between the two nations under the Compact of Free Association and set the tone for continued strategic cooperation in the Indo-Pacific.
+
+In a Joint Statement by the U.S. Department of Defense and the FSM, the meeting resulted in a mutual understanding enabling the U.S. Department of Defense (DoD) to begin planning and construction on key infrastructure projects in the State of [[Yap]]. This milestone follows several years of close coordination and reflects both nations’ shared commitment to strengthening regional security and local development.
+
+These Yap-based projects—expected to exceed $2 billion in future U.S. investments—will provide strategic operational and exercise capabilities for U.S. forces and serve as a cornerstone of renewed defense cooperation. “The principals committed to continuing to work closely together as projects advance.” the two governments affirmed in the joint statement..
+|attachment = 38C4NKTC
+}}
+{{#set:
+|Author=Fredrick, Marly
+}}
+[[Category:COFA]]
+[[Category:Defense]]
+[[Category:Publications]]
+[[Category:Yap]]
