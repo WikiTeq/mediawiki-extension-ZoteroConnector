@@ -48,14 +48,17 @@ class DebugZoteroTypes extends Maintenance {
 
 		$maxTypeLen = 1 + max( array_map( 'strlen', array_keys( $typeMap ) ) );
 		$maxValLen = 1 + max( array_map( 'strlen', array_values( $typeMap ) ) );
-		$maxCountLen = 1 + max( array_map( 'strlen', array_values( $counts ) ) );
+		$maxCountLen = 1 + max( array_map(
+			static fn ( $v ) => strlen( (string)$v ),
+			array_values( $counts )
+		) );
 		$this->output( 'Found: ' . count( $typeMap ) . " types of items:\n" );
 		foreach ( $typeMap as $type => $example ) {
 			$this->output(
 				'| '
 				. str_pad( $type, $maxTypeLen )
 				. '| used: '
-				. str_pad( $counts[ $type ], $maxCountLen )
+				. str_pad( (string)$counts[ $type ], $maxCountLen )
 				. '| eg: '
 				. str_pad( $example, $maxValLen )
 				. '| '
