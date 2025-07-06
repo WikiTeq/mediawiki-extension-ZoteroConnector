@@ -53,7 +53,7 @@ class TemplateBuilder {
 	 * Citation templates - map of the Zotero `itemType` to the name of the
 	 * on-wiki template to use
 	 */
-	private const CITATION_TEMPLATES = [
+	public const CITATION_TEMPLATES = [
 		'book' => 'Cite book',
 		'bookSection' => 'Cite book',
 		'conferencePaper' => 'Cite conference',
