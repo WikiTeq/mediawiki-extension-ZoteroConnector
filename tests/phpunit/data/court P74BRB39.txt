@@ -1,0 +1,18 @@
+{{Cite book
+|url = https://www.cambridge.org/core/journals/international-law-reports/article/abs/alig-v-trust-territory-of-the-pacific-islands/71F77AD0FFF6914B70E0420956D0075A
+|author1 = Appellate Division of the High Court
+|author1-link = Special:Browse/Appellate Division of the High Court
+}}
+{{ZoteroDetails
+|key = P74BRB39
+|itemType = case
+|version = 30314
+|abstractNote = "The complaint filed in the Trial Division by the plaintiff-appellant Jesus Guerrero Alig as administrator of the Estate of Jose Alig San Nicolas, also known as Jose San Nicolas Alig, deceased, alleged in substance that on or about 1931 the Government of Japan, unlawfully and against the will of the deceased made an unlawful and forcible entry into and upon two substantial pieces of land on Saipan, Mariana Islands, owned by the deceased, and unlawfully and forcibly ejected and expelled the deceased from the premises, and that the United States and the defendants in this action are trustees and legal successors of the Japanese Government and have wrongfully continued in the possession of the property. Wherefore the plain- tiff prayed, among other things, for judgment against the defendants for the restitution of the premises in question, damages for forcible and unlawful entry and forcible and unlawful detention, for monthly rents and profits, for treble damages and loss of rents, for a determination that the Trusteeship Agreement for the former Japanese Man- dated Islands is a valid and existing trust, and that the plaintiff be declared rightfully entitled to the cause or causes of the action set out in the complaint, that the plain- tiff be declared the true and lawful owner of the lands described, that the defendants be ordered to account to the plaintiff for all of the trust property and the rents, issues, and profits therefrom and be ordered and directed to deliver over to the plaintiff all such property. The Attorney General of the Trust Territory, appearing specially, moved to quash, set aside, and hold for naught the summonses and service thereof as to all defendants because this was an attempted action against the Government of the Trust Territory of the Pacific Islands, its officers and agents and it had not given its consent for itself or its officers or agents to be made defendants..."" "....Leaving aside any technical question as to what word or small group of words most accurately de- scribes the relation of the Trust Territory of the Pacific Islands to the United States of America, we hold that the delegation of legislative power outlined above to the Trust Territory of the Pacific Islands, even though subject to some limitations, gave the Trust Territory what United States courts have referred to, as noted above, as "quasi- sovereignty" or "qualified sovereignty",carrying with it the attribute of immunity from suit without its own consent. Nothing which we feel can fairly be considered as consent by the Trust Territory to be sued in this instance has been indicated."
+|attachment = GCLUHVPG
+}}
+{{#set:
+|Author=Appellate Division of the High Court
+}}
+[[Category:Mariana Islands]]
+[[Category:Political Status]]
+[[Category:Publications]]
