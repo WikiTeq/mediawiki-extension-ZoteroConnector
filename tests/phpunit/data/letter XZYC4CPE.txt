@@ -1,6 +1,7 @@
-{{Cite book
+{{Cite press release
 |title = Presidential Letter on Caustic Chinese Activities in Micronesia and Taiwan
 |date = 2023-09-03
+|type = Letter
 |last1 = Panuelo
 |first1 = David P.
 |author1-link = Special:Browse/Panuelo, David P.
