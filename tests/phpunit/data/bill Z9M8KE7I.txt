@@ -1,9 +1,7 @@
-{{Cite book
+{{Cite act
 |title = Yap State 11-27, Bill No. 11-11, D1
-|date = 2023-09-11
-|sponsor1-last = Chieng
-|sponsor1-first = Charles
-|sponsor1-link = Special:Browse/Chieng, Charles
+|date = 11 September 2023
+|legislature = Yap State Legislature
 }}
 {{ZoteroDetails
 |key = Z9M8KE7I
@@ -22,9 +20,6 @@ The bill was passed with unanimous support within the chamber, comprised of  Spe
 
 On October 26, the Governor of Yap, Charles S. Chieng, established an Executive Task Force, charged with disseminating public information, conducting public and political education, and to develop and implement programs and awareness to the voters, citizens, and Yap communities.
 |attachment = N3BBKJBW
-}}
-{{#set:
-|Sponsor=Chieng, Charles
 }}
 [[Category:Palau]]
 [[Category:Political Status]]
