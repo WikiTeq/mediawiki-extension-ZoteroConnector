@@ -1,0 +1,35 @@
+{{Cite book
+|title = Presidential Letter on Caustic Chinese Activities in Micronesia and Taiwan
+|date = 2023-09-03
+|last1 = Panuelo
+|first1 = David P.
+|author1-link = Special:Browse/Panuelo, David P.
+}}
+{{ZoteroDetails
+|key = XZYC4CPE
+|itemType = letter
+|title = Presidential Letter on Caustic Chinese Activities in Micronesia and Taiwan
+|version = 30928
+|abstractNote = Outgoing FSM President David Panuelo writes to Congressional Leaders, the four FSM Governors and the four FSM State Legislatures, making detailed accusations against the People's Republic of China (PRC).
+
+"...Simply put, we are witnessing Political Warfare in our country. We are witnessing Grey Zone activity in our country. Over the course of my administration, the scope has increased, as has the depth, as has the gravity..."
+
+Among claims made by the President:
+
+-We are aware of PRC activity in our Exclusive Economic Zone whose purpose includes mapping our maritime territory for potential resources, and mapping our territory for submarine travel-paths. We are aware of PRC activity in our Exclusive Economic Zone whose purpose includes communicating with other PRC assets so as to help ensure that, in the event a missile—or group of missiles—ever needed to land a strike on the U.S. Territory of Guam that they would be successful in doing so...
+
+-The same Ambassador who relentlessly shouts that the PRC does not interfere in the governance of other countries was himself actively attempting to interfere in our country's governance, so as to accomplish his mandate beneficial to the PRC but not to the FSM...
+
+-China has established a precedent of taking our private citizens in multilateral meetings to formally represent our country without our Government's awareness or approval thereof...
+
+...those who will succeed my administration, and likely continue to remain in political power at the National or State level—that i f your administration is like mine, you will have Cabinet who record bilateral meetings and transmit those recordings to China. You will have Cabinet and/or senior officials tell the Chinese Ambassador "I will help you if you help me" behind your back. You will have Cabinet accept gifts, such as envelopes filled with money, and alcohol. You will have Cabinet attend meetings with foreign officials—sometimes officials from countries the FSM doesn't recognize, or doesn't recognize yet—without your knowledge. It isn't going to be just one of them, and what one will tell you in public versus what they will tell you in private—or behind your back—may prove to be very different things...
+|attachment = KVPW82UW
+}}
+{{#set:
+|Author=Panuelo, David P.
+}}
+[[Category:China]]
+[[Category:Defense]]
+[[Category:FSM Congress]]
+[[Category:Political Status]]
+[[Category:Publications]]
