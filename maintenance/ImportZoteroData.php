@@ -447,17 +447,19 @@ class ImportZoteroData extends Maintenance {
 
 	/**
 	 * @codeCoverageIgnore
+	 * @inheritDoc
+	 * @return never
 	 */
 	protected function fatalError( $msg, $exitCode = 1 ) {
 		// Until 1.43 fatalError() would call exit() unconditionally, making it
 		// impossible to test fatalError() calls, see T272241
-		if ( version_compare( MW_VERSION, '1.43', '>=' ) ) {
-			return parent::fatalError( $msg, $exitCode );
+		if ( version_compare( MW_VERSION, '1.43', '>=' )
+			|| !defined( 'MW_PHPUNIT_TEST' )
+		) {
+			parent::fatalError( $msg, $exitCode );
+		} else {
+			throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
 		}
-		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-			return parent::fatalError( $msg, $exitCode );
-		}
-		throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
 	}
 }
 

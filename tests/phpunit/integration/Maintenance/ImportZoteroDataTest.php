@@ -14,7 +14,7 @@ use WikitextContent;
 
 /**
  * @covers \MediaWiki\Extension\ZoteroConnector\Maintenance\ImportZoteroData
- * @group database
+ * @group Database
  */
 class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
