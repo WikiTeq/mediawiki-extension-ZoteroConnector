@@ -47,6 +47,10 @@ class TemplateBuilder {
 		'university' => 'publisher',
 		// Report - institution can be publisher if not set separately
 		'institution' => 'publisher',
+
+		// Webpage title
+		'websiteTitle' => 'website',
+		'blogTitle' => 'website',
 	];
 
 	/**
@@ -63,6 +67,8 @@ class TemplateBuilder {
 		'newspaperArticle' => 'Cite news',
 		'report' => 'Cite report',
 		'thesis' => 'Cite thesis',
+		'webpage' => 'Cite web',
+		'blogPost' => 'Cite web',
 	];
 
 	// For formatting dates

@@ -1,0 +1,88 @@
+{
+    "key": "W5NHI25K",
+    "version": 30942,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/W5NHI25K",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/W5NHI25K",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/38C4NKTC",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 2845645
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Fredrick",
+        "parsedDate": "2025-03-28",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "W5NHI25K",
+        "version": 30942,
+        "itemType": "blogPost",
+        "title": "President Simina and Us Secretary of Defense Hegseth Hold First High-level Bilateral Under New Us Administration – Yap Infrastructure Projects Advance",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Marly",
+                "lastName": "Fredrick"
+            }
+        ],
+        "abstractNote": "is Excellency President Wesley W. Simina of the [[Federated States of Micronesia]] (FSM) met with U.S. Secretary of Defense Pete Hegseth on March 27, 2025 at Andersen Air Force Base in Guam, marking the first high-level bilateral engagement between the FSM and the United States under the new U.S. Administration. The meeting reaffirmed the enduring partnership between the two nations under the Compact of Free Association and set the tone for continued strategic cooperation in the Indo-Pacific.\n\nIn a Joint Statement by the U.S. Department of Defense and the FSM, the meeting resulted in a mutual understanding enabling the U.S. Department of Defense (DoD) to begin planning and construction on key infrastructure projects in the State of [[Yap]]. This milestone follows several years of close coordination and reflects both nations’ shared commitment to strengthening regional security and local development.\n\nThese Yap-based projects—expected to exceed $2 billion in future U.S. investments—will provide strategic operational and exercise capabilities for U.S. forces and serve as a cornerstone of renewed defense cooperation. “The principals committed to continuing to work closely together as projects advance.” the two governments affirmed in the joint statement..",
+        "blogTitle": "",
+        "websiteType": "FSM Government",
+        "date": "2025-03-28",
+        "url": "https://gov.fm/president-simina-and-u-s-secretary-of-defense-hegseth-hold-first-high-level-bilateral-under-new-u-s-administration-yap-infrastructure-projects-advance/",
+        "accessDate": "2025-03-28T20:04:57Z",
+        "language": "en",
+        "shortTitle": "",
+        "rights": "Public Domain (US Gov Publication)",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "COFA"
+            },
+            {
+                "tag": "Defense"
+            },
+            {
+                "tag": "Publications"
+            },
+            {
+                "tag": "Yap"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2025-03-28T20:04:57Z",
+        "dateModified": "2025-04-24T18:31:05Z"
+    }
+}
