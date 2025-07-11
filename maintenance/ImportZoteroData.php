@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
+use Exception;
 use Maintenance;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
 use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
@@ -120,7 +121,7 @@ class ImportZoteroData extends Maintenance {
 
 		[ $referencePages, $attachmentIds ] = $this->extractItems( $allItems );
 		$this->output(
-			'After processing: ' . count( $referencePages ) . ' refereneces, and ' .
+			'After processing: ' . count( $referencePages ) . ' references, and ' .
 			count( $attachmentIds ) . " attachments\n"
 		);
 
@@ -341,6 +342,10 @@ class ImportZoteroData extends Maintenance {
 		array $attachmentIds,
 		User $sysUser
 	): array {
+		if ( $attachmentIds === [] ) {
+			// Nothing to do, don't break on core's bad typehint
+			return [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [] ];
+		}
 		$this->manager->preloadAttachmentVersions( $attachmentIds );
 		$this->requester->preloadAttachmentData();
 
@@ -438,6 +443,23 @@ class ImportZoteroData extends Maintenance {
 		);
 		$curr = str_pad( (string)$curr, strlen( (string)$total ), " ", STR_PAD_LEFT );
 		echo "$type $curr/$total ($percent%): $item ...";
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @inheritDoc
+	 * @return never
+	 */
+	protected function fatalError( $msg, $exitCode = 1 ) {
+		// Until 1.43 fatalError() would call exit() unconditionally, making it
+		// impossible to test fatalError() calls, see T272241
+		if ( version_compare( MW_VERSION, '1.43', '>=' )
+			|| !defined( 'MW_PHPUNIT_TEST' )
+		) {
+			parent::fatalError( $msg, $exitCode );
+		} else {
+			throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
+		}
 	}
 }
 
