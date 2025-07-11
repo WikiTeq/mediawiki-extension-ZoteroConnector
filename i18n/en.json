@@ -15,6 +15,7 @@
 	"zoteroconnector-import-invalid-subpage": "The subpage should be in the form `reference/{id}` or `attachment/{id}`",
 	"zoteroconnector-auto-upload": "Automatic upload by ZoteroConnector extension",
 	"zoteroconnector-auto-update": "Automatic update by ZoteroConnector extension",
+	"zoteroconnector-auto-delete": "Automatic deletion by ZoteroConnector extension",
 	"zoteroimporter": "Zotero importer",
 	"zoteroconnector-import-submit": "Import from Zotero",
 	"zoteroconnector-import-type-label": "Type of import",

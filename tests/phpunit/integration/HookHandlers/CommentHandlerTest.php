@@ -30,6 +30,10 @@ class CommentHandlerTest extends MediaWikiIntegrationTestCase {
 			'/* ' . CommentHandler::AUTO_UPDATE_KEY . ' */',
 			'(' . CommentHandler::AUTO_UPDATE_KEY . ')',
 		];
+		yield 'Auto comment (delete)' => [
+			'/* ' . CommentHandler::AUTO_DELETE_KEY . ' */',
+			'(' . CommentHandler::AUTO_DELETE_KEY . ')',
+		];
 		yield 'Normal comment' => [ 'foo', 'foo' ];
 	}
 

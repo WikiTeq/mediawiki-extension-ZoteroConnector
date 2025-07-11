@@ -18,28 +18,43 @@ use WikitextContent;
  */
 class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
+	protected $tablesUsed = [ 'page' ];
+
 	protected function getMaintenanceClass(): string {
 		return ImportZoteroData::class;
 	}
 
-	public function testValidateType() {
+	/** @dataProvider provideInvalidArgs */
+	public function testInvalidArgs( array $args, string $expected ) {
 		$this->expectException( Exception::class );
-		$this->expectExceptionMessage(
-			'FATAL ERROR: Invalid value for `type`: should be `references`, '
-			. '`attachments`,  or `both`, got: invalid (exit code = 1)'
-		);
-		$this->maintenance->loadWithArgv( [ '--type', 'invalid' ] );
+		$this->expectExceptionMessage( "FATAL ERROR: $expected (exit code = 1)" );
+		$this->maintenance->loadWithArgv( $args);
 		$this->maintenance->execute();
 	}
 
-	public function testValidateFrom() {
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessage(
-			'FATAL ERROR: --from can only be used when specifying --type as '
-			. 'either `references` or `attachments`'
-		);
-		$this->maintenance->loadWithArgv( [ '--type', 'both', '--from', 'foo' ] );
-		$this->maintenance->execute();
+	public static function provideInvalidArgs() {
+		yield 'Invalid type' => [
+			[ '--type', 'invalid' ],
+			'Invalid value for `type`: should be `references`, `attachments`, '
+			. 'or `both`, got: invalid',
+		];
+		yield 'Invalid from for type=both' => [
+			[ '--type', 'both', '--from', 'foo' ],
+			'--from can only be used when specifying --type as either '
+			. '`references` or `attachments`',
+		];
+		yield 'No delete unknown refs with --from' => [
+			[ '--type', 'references', '--from', 'foo', '--do-delete-unknown-refs' ],
+			'--delete-unknown-refs cannot be used with --from',
+		];
+		yield 'No delete unknown refs with type=attachments' => [
+			[ '--type', 'attachments', '--do-delete-unknown-refs' ],
+			'--delete-unknown-refs cannot be used with --type=attachments',
+		];
+		yield 'No delete unknown refs with --item-list' => [
+			[ '--item-list', 'foo,bar', '--do-delete-unknown-refs' ],
+			'--delete-unknown-refs cannot be used with --item-list',
+		];
 	}
 
 	public function testDryRunReferences() {
@@ -61,7 +76,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN type=references\n";
+		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -70,6 +85,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "No unknown reference pages!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -99,7 +115,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $returnMap );
-		$expectRegex = "Manual list: " . implode( ',', $itemIds ) . "\n";
+		$expectRegex = "ImportZoteroData: mode=DRY-RUN type=references\n";
+		$expectRegex .= "Manual list: " . implode( ',', $itemIds ) . "\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
 		$expectRegex .= "(References +\d+\/$count \( *\d+%\): \S+ \.\.\.DRY RUN\n)";
@@ -145,7 +162,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DO-IMPORT type=references\n";
+		$expectRegex = "ImportZoteroData: mode=DO-IMPORT, PRINT-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -154,6 +171,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "References summary:\n$count updated\n0 unchanged\n0 errors\n";
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "No unknown reference pages!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -226,7 +244,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN type=attachments\n";
+		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -235,6 +253,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "No unknown reference pages!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -279,7 +298,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN type=attachments\n";
+		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -289,6 +308,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "No unknown reference pages!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -298,6 +318,230 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			'--no-reupload',
 		] );
 		$this->maintenance->execute();
+	}
+
+	public function testDryRunDeletion() {
+		// Table should start empty
+		$this->assertSelect(
+			'page',
+			'page_id',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[]
+		);
+		$this->getExistingTestPage( 'Zotero reference:Foo' );
+		$this->getExistingTestPage( 'Zotero reference:Bar' );
+		// Now just those two pages
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[
+				[ (string)NS_ZOTERO_REF, 'Bar' ],
+				[ (string)NS_ZOTERO_REF, 'Foo' ],
+			]
+		);
+
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( [] );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$expectStr = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=both\n";
+		$expectStr .= "Found: 0 references\n";
+		$expectStr .= "After processing: 0 references, and 0 attachments\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n0 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectStr .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
+		$expectStr .= "...would delete the 2 pages, but deletion not requested\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [] );
+		$this->maintenance->execute();
+
+		// Pages not deleted
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[
+				[ (string)NS_ZOTERO_REF, 'Bar' ],
+				[ (string)NS_ZOTERO_REF, 'Foo' ],
+			]
+		);
+	}
+
+	public function testDoDeletionNoImport() {
+		// Table should start empty
+		$this->assertSelect(
+			'page',
+			'page_id',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[]
+		);
+		$this->getExistingTestPage( 'Zotero reference:Foo' );
+		$this->getExistingTestPage( 'Zotero reference:Bar' );
+		// Now just those two pages
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[
+				[ (string)NS_ZOTERO_REF, 'Bar' ],
+				[ (string)NS_ZOTERO_REF, 'Foo' ],
+			]
+		);
+
+		$iterator = new GlobIterator(
+			dirname( __DIR__, 2 ) . '/data/*.json',
+			FilesystemIterator::CURRENT_AS_PATHNAME
+		);
+		$allItems = [];
+		$itemId = null;
+		foreach ( $iterator as $dataFile ) {
+			$allItems[] = json_decode( file_get_contents( $dataFile ) );
+			$itemId = explode( ' ', basename( $dataFile, '.json' ) )[1];
+		}
+		$this->assertNotNull( $itemId );
+		// Add a single page that already exists (but wrong content)
+		$this->getExistingTestPage( 'Zotero reference:' . $itemId );
+		$this->assertSelect(
+			'page',
+			'COUNT(*)',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			// Not matching the exact titles because order will depend on what
+			// isin the data and it doesn't really matter
+			[ [ 3 ] ]
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( $allItems );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$count = count( $allItems );
+		$expectRegex = "ImportZoteroData: mode=DRY-RUN, DELETE-UNKNOWN type=references\n";
+		$expectRegex .= "Found: $count references\n";
+		$expectRegex .= "After processing: $count references, and ";
+		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
+		$expectRegex .= "(References +\d+\/$count \( *\d+%\): \S+ \.\.\.DRY RUN\n)";
+		$expectRegex .= '{' . $count . '}';
+		$expectRegex .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectRegex .= "Attachment summary:\n0 uploaded\n";
+		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
+		$expectRegex .= "\.\.\.deleting the 2 pages\n";
+		$expectRegex .= "Deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
+		$expectRegex .= "Deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
+		$expectRegex .= "Deletion summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "Done\n";
+
+		$this->expectOutputRegex( "/$expectRegex/" );
+		$this->maintenance->loadWithArgv( [
+			'--type', 'references', '--do-delete-unknown-refs'
+		] );
+		$this->maintenance->execute();
+
+		// The one real page wasn't deleted, even though it wasn't updated
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[
+				[ (string)NS_ZOTERO_REF, $itemId ],
+			]
+		);
+	}
+
+	public function testDoDeletionAndImportRefs() {
+		// Table should start empty
+		$this->assertSelect(
+			'page',
+			'page_id',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[]
+		);
+		$this->getExistingTestPage( 'Zotero reference:Foo' );
+		$this->getExistingTestPage( 'Zotero reference:Bar' );
+		// Now just those two pages
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[
+				[ (string)NS_ZOTERO_REF, 'Bar' ],
+				[ (string)NS_ZOTERO_REF, 'Foo' ],
+			]
+		);
+
+		$iterator = new GlobIterator(
+			dirname( __DIR__, 2 ) . '/data/*.json',
+			FilesystemIterator::CURRENT_AS_PATHNAME
+		);
+		$allItems = [];
+		$itemId = null;
+		foreach ( $iterator as $dataFile ) {
+			$allItems[] = json_decode( file_get_contents( $dataFile ) );
+			$itemId = explode( ' ', basename( $dataFile, '.json' ) )[1];
+		}
+		$this->assertNotNull( $itemId );
+		// Add a single page that already exists (but wrong content)
+		$this->getExistingTestPage( 'Zotero reference:' . $itemId );
+		$this->assertSelect(
+			'page',
+			'COUNT(*)',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			// Not matching the exact titles because order will depend on what
+			// isin the data and it doesn't really matter
+			[ [ 3 ] ]
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( $allItems );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$count = count( $allItems );
+		$expectRegex = "ImportZoteroData: mode=DO-IMPORT, DELETE-UNKNOWN type=references\n";
+		$expectRegex .= "Found: $count references\n";
+		$expectRegex .= "After processing: $count references, and ";
+		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
+		$expectRegex .= "(References +\d+\/$count \( *\d+%\): \S+ \.\.\.updated\n)";
+		$expectRegex .= '{' . $count . '}';
+		$expectRegex .= "References summary:\n$count updated\n0 unchanged\n0 errors\n";
+		$expectRegex .= "Attachment summary:\n0 uploaded\n";
+		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectRegex .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
+		$expectRegex .= "\.\.\.deleting the 2 pages\n";
+		$expectRegex .= "Deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
+		$expectRegex .= "Deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
+		$expectRegex .= "Deletion summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "Done\n";
+
+		$this->expectOutputRegex( "/$expectRegex/" );
+		$this->maintenance->loadWithArgv( [
+			'--type', 'references', '--do-delete-unknown-refs', '--do-import'
+		] );
+		$this->maintenance->execute();
+
+		// Unknown pages were deleted, known page kept, other created
+		$this->assertSelect(
+			'page',
+			'COUNT(*)',
+			[ 'page_namespace' => NS_ZOTERO_REF ],
+			[ [ $count ] ]
+		);
 	}
 
 }
