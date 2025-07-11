@@ -14,7 +14,6 @@ use MediaWiki\Page\DeletePageFactory;
 use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
 use Status;
-use stdClass;
 use User;
 use WikiPage;
 
@@ -166,7 +165,7 @@ class ImportZoteroData extends Maintenance {
 			'After processing: ' . count( $referencePages ) . ' references, and ' .
 			count( $attachmentIds ) . " attachments\n"
 		);
-		
+
 		$allKnownReferences = array_keys( $referencePages );
 
 		$this->filterReferences( $referencePages );
@@ -532,9 +531,14 @@ class ImportZoteroData extends Maintenance {
 			$itemCount++;
 			$this->logProgress( 'Deletions', $itemCount, $unknownCount, $row->page_title );
 
-			assert( $row->page_namespace === NS_ZOTERO_REF );
+			// Make extra sure we don't delete anything other than a reference
+			if ( $row->page_namespace !== NS_ZOTERO_REF ) {
+				throw new RuntimeError( "Wrong row namespace: " . $row->page_namespace );
+			}
 			$page = $this->wikiPageFactory->newFromRow( $row );
-			assert( $page->getNamespace() === NS_ZOTERO_REF );
+			if ( $page->getNamespace() !== NS_ZOTERO_REF ) {
+				throw new RuntimeError( "Wrong page namespace: " . $page->getNamespace() );
+			}
 
 			$deletePage = $this->deletePageFactory->newDeletePage(
 				$page,
@@ -554,6 +558,7 @@ class ImportZoteroData extends Maintenance {
 			} else {
 				// Clean up unterminated line
 				$this->output( "\n" );
+				$pageTitleText = $row->page_title;
 				$this->error( "Zotero reference:$pageTitleText - failed to delete:" );
 				$this->error( $status->__toString() );
 				$summary['errors'][$pageTitleText] = implode(

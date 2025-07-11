@@ -18,6 +18,7 @@ use WikitextContent;
  */
 class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
+	/** @var string[] */
 	protected $tablesUsed = [ 'page' ];
 
 	protected function getMaintenanceClass(): string {
@@ -28,7 +29,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 	public function testInvalidArgs( array $args, string $expected ) {
 		$this->expectException( Exception::class );
 		$this->expectExceptionMessage( "FATAL ERROR: $expected (exit code = 1)" );
-		$this->maintenance->loadWithArgv( $args);
+		$this->maintenance->loadWithArgv( $args );
 		$this->maintenance->execute();
 	}
 
