@@ -533,7 +533,7 @@ class ImportZoteroData extends Maintenance {
 			$this->logProgress( 'Deletions', $itemCount, $unknownCount, $row->page_title );
 
 			// Make extra sure we don't delete anything other than a reference
-			if ( $row->page_namespace !== NS_ZOTERO_REF ) {
+			if ( $row->page_namespace !== (string)NS_ZOTERO_REF ) {
 				throw new RuntimeException( "Wrong row namespace: " . $row->page_namespace );
 			}
 			$page = $this->wikiPageFactory->newFromRow( $row );
