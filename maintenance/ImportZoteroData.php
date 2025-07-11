@@ -13,6 +13,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\DeletePageFactory;
 use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
+use RuntimeException;
 use Status;
 use User;
 use WikiPage;
@@ -533,11 +534,11 @@ class ImportZoteroData extends Maintenance {
 
 			// Make extra sure we don't delete anything other than a reference
 			if ( $row->page_namespace !== NS_ZOTERO_REF ) {
-				throw new RuntimeError( "Wrong row namespace: " . $row->page_namespace );
+				throw new RuntimeException( "Wrong row namespace: " . $row->page_namespace );
 			}
 			$page = $this->wikiPageFactory->newFromRow( $row );
 			if ( $page->getNamespace() !== NS_ZOTERO_REF ) {
-				throw new RuntimeError( "Wrong page namespace: " . $page->getNamespace() );
+				throw new RuntimeException( "Wrong page namespace: " . $page->getNamespace() );
 			}
 
 			$deletePage = $this->deletePageFactory->newDeletePage(
