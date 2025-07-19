@@ -77,7 +77,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -116,7 +116,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $returnMap );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN type=references\n";
 		$expectRegex .= "Manual list: " . implode( ',', $itemIds ) . "\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -163,7 +163,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DO-IMPORT, PRINT-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, PRINT-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -245,7 +245,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -299,7 +299,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -351,7 +351,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			->willReturn( [] );
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
-		$expectStr = "ImportZoteroData: mode=DRY-RUN, PRINT-UNKNOWN type=both\n";
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=both\n";
 		$expectStr .= "Found: 0 references\n";
 		$expectStr .= "After processing: 0 references, and 0 attachments\n";
 		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
@@ -416,7 +416,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			'COUNT(*)',
 			[ 'page_namespace' => NS_ZOTERO_REF ],
 			// Not matching the exact titles because order will depend on what
-			// isin the data and it doesn't really matter
+			// is in the data and it doesn't really matter
 			[ [ 3 ] ]
 		);
 		$requester = $this->createNoOpMock(
@@ -429,7 +429,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DRY-RUN, DELETE-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, DELETE-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -501,7 +501,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			'COUNT(*)',
 			[ 'page_namespace' => NS_ZOTERO_REF ],
 			// Not matching the exact titles because order will depend on what
-			// isin the data and it doesn't really matter
+			// is in the data and it doesn't really matter
 			[ [ 3 ] ]
 		);
 		$requester = $this->createNoOpMock(
@@ -514,7 +514,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: mode=DO-IMPORT, DELETE-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, DELETE-UNKNOWN type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";

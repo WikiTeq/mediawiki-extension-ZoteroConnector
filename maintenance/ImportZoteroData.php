@@ -130,7 +130,7 @@ class ImportZoteroData extends Maintenance {
 			// fetch everything
 			$mode .= $deleteUnknown ? ', DELETE-UNKNOWN' : ', PRINT-UNKNOWN';
 		}
-		$this->output( "ImportZoteroData: mode=$mode type=$type\n" );
+		$this->output( "ImportZoteroData: import-mode=$mode type=$type\n" );
 
 		if ( $this->hasOption( 'item-list' ) ) {
 			if ( $deleteUnknown ) {
