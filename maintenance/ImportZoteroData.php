@@ -4,14 +4,19 @@ namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
 use Exception;
 use Maintenance;
+use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
 use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
 use MediaWiki\Extension\ZoteroConnector\Services\WikiUpdater;
 use MediaWiki\Extension\ZoteroConnector\Services\ZoteroRequester;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\DeletePageFactory;
+use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
+use RuntimeException;
 use Status;
 use User;
+use WikiPage;
 
 $IP = getenv( 'MW_INSTALL_PATH' );
 if ( $IP === false ) {
@@ -22,6 +27,8 @@ require_once "$IP/maintenance/Maintenance.php";
 class ImportZoteroData extends Maintenance {
 
 	private AttachmentManager $manager;
+	private DeletePageFactory $deletePageFactory;
+	private WikiPageFactory $wikiPageFactory;
 	private WikiUpdater $updater;
 	private ZoteroRequester $requester;
 
@@ -65,11 +72,23 @@ class ImportZoteroData extends Maintenance {
 			'do-import',
 			'Really do the import (default: dry run)'
 		);
+
+		// Cannot be used with
+		// * --from
+		// * --type=attachments
+		// * --item-list
+		$this->addOption(
+			'do-delete-unknown-refs',
+			'Delete any pages in the Zotero Reference namespace that do not '
+				. 'correspond to entries in Zotero (default: report)'
+		);
 	}
 
 	private function initServices() {
 		$services = MediaWikiServices::getInstance();
 		$this->manager = $services->getService( 'ZoteroConnector.AttachmentManager' );
+		$this->deletePageFactory = $services->getDeletePageFactory();
+		$this->wikiPageFactory = $services->getWikiPageFactory();
 		$this->updater = $services->getService( 'ZoteroConnector.WikiUpdater' );
 		$this->requester = $services->getService( 'ZoteroConnector.ZoteroRequester' );
 	}
@@ -79,7 +98,7 @@ class ImportZoteroData extends Maintenance {
 		$type = $this->getOption( 'type', 'both' );
 		if ( !in_array( $type, [ 'references', 'attachments', 'both' ], true ) ) {
 			$this->fatalError(
-				'Invalid value for `type`: should be `references`, `attachments`, ' .
+				'Invalid value for `type`: should be `references`, `attachments`,' .
 				' or `both`, got: ' . $type
 			);
 		}
@@ -90,12 +109,35 @@ class ImportZoteroData extends Maintenance {
 				'`references` or `attachments`'
 			);
 		}
+		$deleteUnknown = $this->hasOption( 'do-delete-unknown-refs' );
+		if ( $deleteUnknown ) {
+			if ( $from !== null ) {
+				$this->fatalError(
+					'--delete-unknown-refs cannot be used with --from'
+				);
+			}
+			if ( $type === 'attachments' ) {
+				$this->fatalError(
+					'--delete-unknown-refs cannot be used with --type=attachments'
+				);
+			}
+		}
 		$dryRun = !$this->hasOption( 'do-import' );
 
 		$mode = $dryRun ? 'DRY-RUN' : 'DO-IMPORT';
-		$this->output( "ImportZoteroData: mode=$mode type=$type\n" );
+		if ( !$this->hasOption( 'item-list' ) ) {
+			// Won't even be printed when there is an item-list since we don't
+			// fetch everything
+			$mode .= $deleteUnknown ? ', DELETE-UNKNOWN' : ', PRINT-UNKNOWN';
+		}
+		$this->output( "ImportZoteroData: import-mode=$mode type=$type\n" );
 
 		if ( $this->hasOption( 'item-list' ) ) {
+			if ( $deleteUnknown ) {
+				$this->fatalError(
+					'--delete-unknown-refs cannot be used with --item-list'
+				);
+			}
 			$itemList = $this->getOption( 'item-list' );
 			$this->output( "Manual list: $itemList\n" );
 			$itemIds = explode( ',', $itemList );
@@ -125,10 +167,17 @@ class ImportZoteroData extends Maintenance {
 			count( $attachmentIds ) . " attachments\n"
 		);
 
+		$allKnownReferences = array_keys( $referencePages );
+
 		$this->filterReferences( $referencePages );
 		$this->filterAttachments( $attachmentIds );
 
 		$this->doAllImports( $referencePages, $attachmentIds );
+
+		if ( !$this->hasOption( 'item-list' ) ) {
+			// Either delete or just print all unknown references
+			$this->handleUnknownReferences( $allKnownReferences, $deleteUnknown );
+		}
 
 		$this->output( "Done\n" );
 	}
@@ -424,6 +473,118 @@ class ImportZoteroData extends Maintenance {
 			}
 		}
 		return $summary;
+	}
+
+	/**
+	 * Given the list of known references, identify all pages in the zotero
+	 * reference namespace that are unknown and then either delete them or
+	 * just report about them
+	 *
+	 * @param string[] $knownReferences array of keys
+	 */
+	private function handleUnknownReferences(
+		array $knownReferences,
+		bool $deleteUnknown
+	) {
+		// Titles start with a capital letter
+		$knownReferences = array_map(
+			'ucfirst',
+			$knownReferences
+		);
+		$db = $this->getDb( DB_REPLICA );
+		$queryInfo = WikiPage::getQueryInfo();
+		$unknown = $db->newSelectQueryBuilder()
+			->select( $queryInfo['fields'] )
+			->from( 'page' )
+			->where( [
+				'page_namespace' => NS_ZOTERO_REF,
+				'page_title NOT IN (' . $db->makeList( $knownReferences ) . ')'
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$unknownCount = count( $unknown );
+		if ( $unknownCount === 0 ) {
+			$this->output( "No unknown reference pages!\n" );
+			return;
+		}
+		$this->output( "There are $unknownCount unknown reference pages: " );
+		$pages = [];
+		foreach ( $unknown as $row ) {
+			$pages[] = 'Zotero_reference:' . $row->page_title;
+		}
+		$this->output( implode( ', ', $pages ) );
+		$this->output( "\n" );
+		if ( !$deleteUnknown ) {
+			$this->output(
+				"...would delete the $unknownCount pages, but deletion not requested\n"
+			);
+			return;
+		}
+		$this->output( "...deleting the $unknownCount pages\n" );
+
+		$summary = [ 'already-deleted' => 0, 'deleted' => 0, 'errors' => [] ];
+		$itemCount = 0;
+
+		[ $sysUser, $scope ] = $this->updater->makeRequestScope(
+			[ 'delete' ]
+		);
+		foreach ( $unknown as $row ) {
+			$itemCount++;
+			$this->logProgress( 'Deletions', $itemCount, $unknownCount, $row->page_title );
+
+			// Make extra sure we don't delete anything other than a reference
+			if ( $row->page_namespace !== (string)NS_ZOTERO_REF ) {
+				throw new RuntimeException( "Wrong row namespace: " . $row->page_namespace );
+			}
+			$page = $this->wikiPageFactory->newFromRow( $row );
+			if ( $page->getNamespace() !== NS_ZOTERO_REF ) {
+				throw new RuntimeException( "Wrong page namespace: " . $page->getNamespace() );
+			}
+
+			$deletePage = $this->deletePageFactory->newDeletePage(
+				$page,
+				$sysUser
+			);
+			$status = $deletePage->forceImmediate( true )
+				// bypass any permission checks, we still add the `delete`
+				// permission just in case
+				->deleteUnsafe( '/* ' . CommentHandler::AUTO_DELETE_KEY . ' */' );
+
+			if ( $status->hasMessage( 'cannotdelete' ) ) {
+				$this->output( "already deleted\n" );
+				$summary['already-deleted']++;
+			} elseif ( $status->isGood() ) {
+				$summary['deleted']++;
+				$this->output( "deleted\n" );
+			} else {
+				// Clean up unterminated line
+				$this->output( "\n" );
+				$pageTitleText = $row->page_title;
+				$this->error( "Zotero reference:$pageTitleText - failed to delete:" );
+				$this->error( $status->__toString() );
+				$summary['errors'][$pageTitleText] = implode(
+					',',
+					array_map(
+						static function ( $err ) {
+							if ( $err['message'] instanceof MessageSpecifier ) {
+								return $err['message']->getKey();
+							}
+							return $err['message'];
+						},
+						$status->getErrors()
+					)
+				);
+			}
+		}
+		$this->output( "Deletion summary:\n" );
+		$this->output( $summary['deleted'] . " deleted\n" );
+		$this->output( $summary['already-deleted'] . " were already deleted\n" );
+		$this->output( count( $summary['errors'] ) . " errors\n" );
+		if ( $summary['errors'] ) {
+			foreach ( $summary['errors'] as $page => $error ) {
+				$this->output( "$page: $error\n" );
+			}
+		}
 	}
 
 	/**

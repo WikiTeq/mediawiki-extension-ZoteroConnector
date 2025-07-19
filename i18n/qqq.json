@@ -15,6 +15,7 @@
 	"zoteroconnector-import-invalid-subpage": "Error message when accessing [[Special:ZoteroImporter]] with a bad subpage",
 	"zoteroconnector-auto-upload": "Automatic upload edit summary",
 	"zoteroconnector-auto-update": "Automatic attachment page update edit summary",
+	"zoteroconnector-auto-delete": "Automatic deletion log summary",
 	"zoteroimporter": "Special page title",
 	"zoteroconnector-import-submit": "Submit button label",
 	"zoteroconnector-import-type-label": "Radio input label",

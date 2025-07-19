@@ -12,6 +12,7 @@ class CommentHandler implements FormatAutocommentsHook {
 
 	public const AUTO_UPLOAD_KEY = 'zoteroconnector-auto-upload';
 	public const AUTO_UPDATE_KEY = 'zoteroconnector-auto-update';
+	public const AUTO_DELETE_KEY = 'zoteroconnector-auto-delete';
 
 	private ITextFormatter $textFormatter;
 
@@ -50,7 +51,8 @@ class CommentHandler implements FormatAutocommentsHook {
 		$wikiId
 	) {
 		if ( $auto === self::AUTO_UPLOAD_KEY ||
-			$auto === self::AUTO_UPDATE_KEY
+			$auto === self::AUTO_UPDATE_KEY ||
+			$auto === self::AUTO_DELETE_KEY
 		) {
 			$comment = $this->textFormatter->format(
 				new MessageValue( $auto )
