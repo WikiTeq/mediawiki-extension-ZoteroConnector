@@ -1,11 +1,9 @@
-{{Cite book
+{{Citation
 |title = Secrecy and Disclosure Subcommittee Hearings
 |date = 1978-02-23
 |publisher = [[Special:Browse/United States Senate|United States Senate]]
 |place = Washington, DC
 |pages = 2214-2217
-|contributor1 = United States Senate
-|contributor1-link = Special:Browse/United States Senate
 }}
 {{ZoteroDetails
 |key = WMLFQTU6
@@ -16,7 +14,6 @@
 |attachment = 4SDWYAYC
 }}
 {{#set:
-|Contributor=United States Senate
 |Publisher=United States Senate
 }}
 [[Category:Publications]]

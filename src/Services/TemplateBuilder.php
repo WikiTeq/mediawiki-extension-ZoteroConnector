@@ -60,6 +60,9 @@ class TemplateBuilder {
 		// Webpage title
 		'websiteTitle' => 'website',
 		'blogTitle' => 'website',
+
+		// Encyclopedia articles
+		'encyclopediaTitle' => 'encyclopedia',
 	];
 
 	/**
@@ -73,6 +76,9 @@ class TemplateBuilder {
 		'case' => 'Cite court',
 		'conferencePaper' => 'Cite conference',
 		'document' => 'Cite document',
+		'encyclopediaArticle' => 'Cite encyclopedia',
+		// No dedicated citation type for hearings
+		'hearing' => 'Citation',
 		'journalArticle' => 'Cite journal',
 		'magazineArticle' => 'Cite magazine',
 		'newspaperArticle' => 'Cite news',
@@ -333,8 +339,9 @@ class TemplateBuilder {
 		}
 
 		$smwProps = '';
-		// No creators for court cases
+		// No creators for court cases or hearings
 		if ( $templateName !== 'Cite court'
+			&& ( $itemObj->data->itemType ?? null ) !== 'hearing'
 			&& isset( $data->creators )
 			&& $data->creators
 		) {
