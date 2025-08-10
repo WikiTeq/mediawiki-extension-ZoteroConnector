@@ -1,0 +1,97 @@
+{
+    "key": "V9AV76ZZ",
+    "version": 29752,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/V9AV76ZZ",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/V9AV76ZZ",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/FT9TTIWM",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 293859
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Howes",
+        "parsedDate": "2018",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "V9AV76ZZ",
+        "version": 29752,
+        "itemType": "encyclopediaArticle",
+        "title": "A Perceptive Observer in the Pacific: Life and Work of Otto Finsch",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "Hilary",
+                "lastName": "Howes"
+            }
+        ],
+        "abstractNote": "Otto Finsch was a German ornithologist and ethnologist, His first exploration to the Pacific was in 1879 and was funded by the Humboldt Foundation. His second trip was in 1884 and was not for scientific exploration, but for finding land suitable for habitation. This trip was organised by the South Sea Plotters – a group of influential Germans wanting to set up German colonies in the Pacific – of which Finsch was a member. Finsch returned to Germany and ethnological studies in the late 1880s.",
+        "encyclopediaTitle": "",
+        "series": "",
+        "seriesNumber": "",
+        "volume": "",
+        "numberOfVolumes": "",
+        "edition": "",
+        "place": "Paris",
+        "publisher": "Berose",
+        "date": "2018",
+        "pages": "",
+        "ISBN": "",
+        "shortTitle": "",
+        "url": "https://www.berose.fr/article1468.html",
+        "accessDate": "2024-06-13",
+        "language": "en",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Biographies"
+            },
+            {
+                "tag": "German Period (1899-1914)"
+            },
+            {
+                "tag": "Publications"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-09-20T18:13:09Z",
+        "dateModified": "2025-04-18T17:05:27Z"
+    }
+}

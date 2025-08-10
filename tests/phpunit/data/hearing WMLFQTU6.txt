@@ -1,0 +1,22 @@
+{{Cite book
+|title = Secrecy and Disclosure Subcommittee Hearings
+|date = 1978-02-23
+|publisher = [[Special:Browse/United States Senate|United States Senate]]
+|place = Washington, DC
+|pages = 2214-2217
+|contributor1 = United States Senate
+|contributor1-link = Special:Browse/United States Senate
+}}
+{{ZoteroDetails
+|key = WMLFQTU6
+|itemType = hearing
+|title = Secrecy and Disclosure Subcommittee Hearings
+|version = 28705
+|abstractNote = Remarks by then Senator Biden on activities of the CIA; manner in which legislative oversight and media reports indicate problems in disclosure and accountability, possibly including alledged easedroping on Micronesian Status Negotiations...
+|attachment = 4SDWYAYC
+}}
+{{#set:
+|Contributor=United States Senate
+|Publisher=United States Senate
+}}
+[[Category:Publications]]

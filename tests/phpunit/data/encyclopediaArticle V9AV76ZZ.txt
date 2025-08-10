@@ -1,0 +1,25 @@
+{{Cite book
+|title = A Perceptive Observer in the Pacific: Life and Work of Otto Finsch
+|date = 2018
+|publisher = [[Special:Browse/Berose|Berose]]
+|place = Paris
+|url = https://www.berose.fr/article1468.html
+|last1 = Howes
+|first1 = Hilary
+|author1-link = Special:Browse/Howes, Hilary
+}}
+{{ZoteroDetails
+|key = V9AV76ZZ
+|itemType = encyclopediaArticle
+|title = A Perceptive Observer in the Pacific: Life and Work of Otto Finsch
+|version = 29752
+|abstractNote = Otto Finsch was a German ornithologist and ethnologist, His first exploration to the Pacific was in 1879 and was funded by the Humboldt Foundation. His second trip was in 1884 and was not for scientific exploration, but for finding land suitable for habitation. This trip was organised by the South Sea Plotters – a group of influential Germans wanting to set up German colonies in the Pacific – of which Finsch was a member. Finsch returned to Germany and ethnological studies in the late 1880s.
+|attachment = FT9TTIWM
+}}
+{{#set:
+|Author=Howes, Hilary
+|Publisher=Berose
+}}
+[[Category:Biographies]]
+[[Category:German Period (1899-1914)]]
+[[Category:Publications]]
