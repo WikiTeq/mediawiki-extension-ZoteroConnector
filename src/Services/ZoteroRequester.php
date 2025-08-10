@@ -189,9 +189,14 @@ class ZoteroRequester {
 			);
 		}
 		// Exclude items with type `note` for now
+		// Also exclude `annotation`s, these are metadata for attachments and
+		// not actual references
 		$results = array_filter(
 			$results,
-			static fn ( $r ) => ( ( $r->data->itemType ?? '' ) !== 'note' )
+			static function ( $r ) {
+				$type = ( $r->data->itemType ?? '' );
+				return $type !== 'note' && $type !== 'annotation';
+			}
 		);
 		return $results;
 	}
