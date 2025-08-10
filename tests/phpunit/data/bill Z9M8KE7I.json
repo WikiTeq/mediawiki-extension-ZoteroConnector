@@ -1,0 +1,94 @@
+{
+    "key": "Z9M8KE7I",
+    "version": 30885,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/Z9M8KE7I",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/Z9M8KE7I",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/N3BBKJBW",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 139607
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Chieng",
+        "parsedDate": "2023-09-11",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "Z9M8KE7I",
+        "version": 30885,
+        "itemType": "bill",
+        "title": "Yap State 11-27, Bill No. 11-11, D1",
+        "creators": [
+            {
+                "creatorType": "sponsor",
+                "firstName": "Charles",
+                "lastName": "Chieng"
+            }
+        ],
+        "abstractNote": "Over several centuries, Yap and its outer islands have been administratively grouped by foreign powers into political units with other distant islands, including Palau, the Central Caroline Islands and the Eastern Caroline Islands. Despite this, the People of Yap have always retained unique, distinctive and cohesive linguistic, social and cultural identities.\n\nAt the close of the US administered Trust Territory, elected leaders - and the voters of Yap - opted to join the nascent [[Federated States of Micronesia]], which entered into Free Association with the United States. Questions about Yap's Political Status have remained a significant theme in politics and culture throughout Yap for decades. \n\nIn March of 2023, [[Yap State]] Senators Terrence R Fong, Victor Bamog, Anne-Marie Laamar, John Mafel, Nicholas Figirlaarwon, John Masiwemai and Pius Talimeisei jointly introduced legislation that would pose to the voters of Yap the question of whether or not to review political status. There is no mention of secession anywhere on the bill or on any ballot that would be a direct result of the bill. As the Governor later observed \"While it is a distinct possibility, it is only a potential idea for discussion, and not the main issue in the bill.\"\n\nOn September 11, 2023, the Yap State Legislature passed Bill 11-11, which stated \"The Governor of the State of Yap is hereby authorized to submit to the voters of the State of Yap the question: \"Shall the State of Yap commence a review of its political status in an election.\" Yap State Law No. 1-27 was signed into law on October 13, 2023, providing that \"The Governor of the State of Yap is authorized to submit to the voters of the State of Yap the question: Shall the State of Yap commence a review of its political status?\" in an election.\n\nThe bill was passed with unanimous support within the chamber, comprised of  Speaker Nicholas Figirlaarwon, Vice Speaker Theodore Rutun, as well as Senator Ann-Marie Laamar, Senator Victor Bamog, Senator John Masiwemai, Senator John Mafel, Senator Pius Talimeisei, Senator Liyon Sulog, and Floor Leader Terrance Fong.\n\nOn October 26, the Governor of Yap, Charles S. Chieng, established an Executive Task Force, charged with disseminating public information, conducting public and political education, and to develop and implement programs and awareness to the voters, citizens, and Yap communities.",
+        "billNumber": "11-11, D1",
+        "code": "",
+        "codeVolume": "",
+        "section": "",
+        "codePages": "",
+        "legislativeBody": "Yap State Legislature",
+        "session": "11",
+        "history": "",
+        "date": "2023-09-11",
+        "language": "en",
+        "url": "",
+        "accessDate": "",
+        "shortTitle": "",
+        "rights": "",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Palau"
+            },
+            {
+                "tag": "Political Status"
+            },
+            {
+                "tag": "Publications"
+            },
+            {
+                "tag": "Yap"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-09-20T18:13:02Z",
+        "dateModified": "2025-04-28T22:29:15Z"
+    }
+}

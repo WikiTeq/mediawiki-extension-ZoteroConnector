@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Services;
 
+use DateTimeImmutable;
 use stdClass;
 
 // To figure out:
@@ -38,6 +39,14 @@ class TemplateBuilder {
 		// `bookTitle` to be set as the template `title` and `title` to be
 		// set as the template `chapter`
 
+		// Bills
+		'legislativeBody' => 'legislature',
+
+		// Court cases
+		'caseName' => 'litigants',
+		'reporter' => 'reporter',
+		'dateDecided' => 'date',
+
 		// Magazines, journals, etc. - name of the journal or magazine,
 		'publicationTitle' => 'work',
 		'seriesTitle' => 'work',
@@ -58,8 +67,10 @@ class TemplateBuilder {
 	 * on-wiki template to use
 	 */
 	public const CITATION_TEMPLATES = [
+		'bill' => 'Cite act',
 		'book' => 'Cite book',
 		'bookSection' => 'Cite book',
+		'case' => 'Cite court',
 		'conferencePaper' => 'Cite conference',
 		'document' => 'Cite document',
 		'journalArticle' => 'Cite journal',
@@ -124,6 +135,10 @@ class TemplateBuilder {
 		array &$creatorTypesUsed
 	): void {
 		$type = $creatorObj->creatorType ?? 'author';
+		// Bill sponsors are not included
+		if ( $type === 'sponsor' ) {
+			return;
+		}
 		if ( !isset( $creatorTypesUsed[ $type ] ) ) {
 			$creatorTypesUsed[ $type ] = 1;
 		} else {
@@ -178,6 +193,10 @@ class TemplateBuilder {
 	private static function formatCreator( stdClass $creatorObj ): string {
 		// The `| ` at the end is to suppress display
 		$type = ucfirst( $creatorObj->creatorType ?? 'author' );
+		// Bill sponsors are not included
+		if ( $type === 'Sponsor' ) {
+			return '';
+		}
 		if ( isset( $creatorObj->name ) ) {
 			$name = $creatorObj->name;
 			return "|$type=$name\n";
@@ -273,7 +292,8 @@ class TemplateBuilder {
 	 */
 	public static function getSource( stdClass $itemObj ): string {
 		$data = $itemObj->data;
-		$template = new FluentTemplate( self::getCitationTemplate( $itemObj ) );
+		$templateName = self::getCitationTemplate( $itemObj );
+		$template = new FluentTemplate( $templateName );
 
 		// Some citation parameters can be drawn from *multiple* Zotero
 		// parameters, e.g. for a thesis if the publisher is not set but the
@@ -302,10 +322,22 @@ class TemplateBuilder {
 				'date',
 				self::normalizeDate( $template->getParam( 'date' ) )
 			);
+			// {{Cite act}} doesn't support all formats for dates
+			if ( $templateName === 'Cite act' ) {
+				$dateTime = new DateTimeImmutable( $template->getParam( 'date' ) );
+				$template->setParam(
+					'date',
+					$dateTime->format( 'j F Y' )
+				);
+			}
 		}
 
 		$smwProps = '';
-		if ( isset( $data->creators ) && $data->creators ) {
+		// No creators for court cases
+		if ( $templateName !== 'Cite court'
+			&& isset( $data->creators )
+			&& $data->creators
+		) {
 			$creatorTypesUsed = [];
 			// Add creators to the citation template
 			foreach ( $data->creators as $creator ) {
