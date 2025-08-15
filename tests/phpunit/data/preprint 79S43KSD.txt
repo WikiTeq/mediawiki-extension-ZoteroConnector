@@ -1,0 +1,32 @@
+{{Citation
+|title = The Archaeology of Nan Madol and Temwen Island, Pohnpei: Site Distribution, Architecture and Early Agricultural Features, Pohnpei, Federated States of Micronesia
+|date = 2015
+|url = http://rgdoi.net/10.13140/RG.2.1.4612.6800
+|DOI = 10.13140/RG.2.1.4612.6800
+|type = Preprint
+|mode = cs1
+|author1 = Maureece Jacqueline Levin
+|author1-link = Special:Browse/Maureece Jacqueline Levin
+|last2 = Seikel
+|first2 = Katherine
+|author2-link = Special:Browse/Seikel, Katherine
+|last3 = Ayres
+|first3 = William
+|author3-link = Special:Browse/Ayres, William
+}}
+{{ZoteroDetails
+|key = 79S43KSD
+|itemType = preprint
+|title = The Archaeology of Nan Madol and Temwen Island, Pohnpei: Site Distribution, Architecture and Early Agricultural Features, Pohnpei, Federated States of Micronesia
+|version = 30406
+|abstractNote = Archaeological study in the field and the laboratory represents a fundamental way that  we gain new information about the human past. This project at Nan Madol and adjacent areas  of Madolenihmw undertaken during 2011 provides much additional evidence about site  characteristics, ages, and conservation issues for the internationally-known Nan Madol  complex as well as for many lesser-known sites on Temwen. The field program included  survey examination of islets at Nan Madol and other land areas to locate places of  archaeological and cultural importance. The results of the recording and laboratory studies-including details concerning stone architecture and artifacts, as well as paleoethnobotanical  remains related to early cultivation--are significant in that they improve our knowledge of early  human colonization of Micronesia, of the changing material culture on [[Pohnpei]] over a period  of 2,000 years, and of natural environmental changes as well as the human induced ones. We  note that Pohnpei’s archaeological record is complex because of more than 2000 years of  human occupation and the thousands of archaeological sites. In addition, the poor  preservation of artifacts resulting from environmental conditions is a factor. This work reported  here has helped clarify Nan Madol’s position in the Pohnpeian context and in the prehistory of  central Micronesia. We can now recognize the great differences in preservation needs for  sites within Pohnpei and can pose specific conservation plans for individual islets at Nan  Madol. These needs exist as well for the archaeological places found on Temwen and  elsewhere throughout Pohnpei. The distinction between sites of national as compared to local  significance represents a further issue. Importantly, the evidence reported here helps the  Historic Preservation Office, and the people of Pohnpei more generally, make decisions about  cultural remains and places worthy of long term conservation and protection.
+|attachment = NYPVP6CK
+}}
+{{#set:
+|Author=Maureece Jacqueline Levin
+|Author=Seikel, Katherine
+|Author=Ayres, William
+}}
+[[Category:Nan Madol]]
+[[Category:Pohnpei]]
+[[Category:Publications]]

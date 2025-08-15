@@ -74,8 +74,14 @@ class TemplateBuilder {
 		'conferencePaper' => 'Cite conference',
 		'document' => 'Cite document',
 		'journalArticle' => 'Cite journal',
+		// Not using {{Cite letter}} because we cannot easily identify the
+		// recipient which is required by that template
+		'letter' => 'Cite press release',
 		'magazineArticle' => 'Cite magazine',
 		'newspaperArticle' => 'Cite news',
+		// Manually build up from the base citation template, there isn't a
+		// good template for generic preprints
+		'preprint' => 'Citation',
 		'report' => 'Cite report',
 		'thesis' => 'Cite thesis',
 		'webpage' => 'Cite web',
@@ -330,6 +336,15 @@ class TemplateBuilder {
 					$dateTime->format( 'j F Y' )
 				);
 			}
+		}
+
+		if ( isset( $data->itemType ) && $data->itemType === 'preprint' ) {
+			$template->setParam( 'type', 'Preprint' );
+			$template->setParam( 'mode', 'cs1' );
+		}
+
+		if ( isset( $data->itemType ) && $data->itemType === 'letter' ) {
+			$template->setParam( 'type', 'Letter' );
 		}
 
 		$smwProps = '';

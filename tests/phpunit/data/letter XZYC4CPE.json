@@ -1,0 +1,94 @@
+{
+    "key": "XZYC4CPE",
+    "version": 30928,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/XZYC4CPE",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/XZYC4CPE",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/KVPW82UW",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 5091062
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Panuelo",
+        "parsedDate": "2023-09-03",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "XZYC4CPE",
+        "version": 30928,
+        "itemType": "letter",
+        "title": "Presidential Letter on Caustic Chinese Activities in Micronesia and Taiwan",
+        "creators": [
+            {
+                "creatorType": "author",
+                "firstName": "David P.",
+                "lastName": "Panuelo"
+            }
+        ],
+        "abstractNote": "Outgoing FSM President David Panuelo writes to Congressional Leaders, the four FSM Governors and the four FSM State Legislatures, making detailed accusations against the People's Republic of China (PRC).\n\n\"...Simply put, we are witnessing Political Warfare in our country. We are witnessing Grey Zone activity in our country. Over the course of my administration, the scope has increased, as has the depth, as has the gravity...\"\n\nAmong claims made by the President:\n\n-We are aware of PRC activity in our Exclusive Economic Zone whose purpose includes mapping our maritime territory for potential resources, and mapping our territory for submarine travel-paths. We are aware of PRC activity in our Exclusive Economic Zone whose purpose includes communicating with other PRC assets so as to help ensure that, in the event a missile—or group of missiles—ever needed to land a strike on the U.S. Territory of Guam that they would be successful in doing so...\n\n-The same Ambassador who relentlessly shouts that the PRC does not interfere in the governance of other countries was himself actively attempting to interfere in our country's governance, so as to accomplish his mandate beneficial to the PRC but not to the FSM...\n\n-China has established a precedent of taking our private citizens in multilateral meetings to formally represent our country without our Government's awareness or approval thereof...\n\n...those who will succeed my administration, and likely continue to remain in political power at the National or State level—that i f your administration is like mine, you will have Cabinet who record bilateral meetings and transmit those recordings to China. You will have Cabinet and/or senior officials tell the Chinese Ambassador \"I will help you if you help me\" behind your back. You will have Cabinet accept gifts, such as envelopes filled with money, and alcohol. You will have Cabinet attend meetings with foreign officials—sometimes officials from countries the FSM doesn't recognize, or doesn't recognize yet—without your knowledge. It isn't going to be just one of them, and what one will tell you in public versus what they will tell you in private—or behind your back—may prove to be very different things...",
+        "letterType": "Letter to FSM Congress, State Legislatures and State Governors",
+        "date": "2023-09-03",
+        "language": "en",
+        "shortTitle": "Panuelo PRC letter",
+        "url": "",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "China"
+            },
+            {
+                "tag": "Defense"
+            },
+            {
+                "tag": "FSM Congress"
+            },
+            {
+                "tag": "Political Status"
+            },
+            {
+                "tag": "Publications"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2025-02-11T16:49:20Z",
+        "dateModified": "2025-04-29T03:30:43Z"
+    }
+}
