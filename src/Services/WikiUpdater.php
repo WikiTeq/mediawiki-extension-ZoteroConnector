@@ -205,6 +205,10 @@ class WikiUpdater {
 		if ( isset( $warnings['duplicate-archive'] ) ) {
 			unset( $warnings['duplicate-archive'] );
 		}
+		// Allow overwriting files that exist with new versions - HI1-23
+		if ( isset( $warnings['exists'] ) ) {
+			unset( $warnings['exists'] );
+		}
 		if ( $warnings ) {
 			if ( isset( $warnings[ 'no-change' ] ) ) {
 				return $this->updateFilePage(
