@@ -1,0 +1,85 @@
+{
+    "key": "WMLFQTU6",
+    "version": 28705,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/WMLFQTU6",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/WMLFQTU6",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/4SDWYAYC",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 875244
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "United States Senate",
+        "parsedDate": "1978-02-23",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "WMLFQTU6",
+        "version": 28705,
+        "itemType": "hearing",
+        "title": "Secrecy and Disclosure Subcommittee Hearings",
+        "creators": [
+            {
+                "creatorType": "contributor",
+                "name": "United States Senate"
+            }
+        ],
+        "abstractNote": "Remarks by then Senator Biden on activities of the CIA; manner in which legislative oversight and media reports indicate problems in disclosure and accountability, possibly including alledged easedroping on Micronesian Status Negotiations...",
+        "committee": "",
+        "place": "Washington, DC",
+        "publisher": "United States Senate",
+        "numberOfVolumes": "",
+        "documentNumber": "",
+        "pages": "2214-2217",
+        "legislativeBody": "",
+        "session": "",
+        "history": "",
+        "date": "1978-02-23",
+        "language": "en",
+        "shortTitle": "",
+        "url": "",
+        "accessDate": "",
+        "rights": "Public Domain (US Gov Publication)",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Publications"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2024-09-20T18:13:20Z",
+        "dateModified": "2025-04-11T16:52:21Z"
+    }
+}
