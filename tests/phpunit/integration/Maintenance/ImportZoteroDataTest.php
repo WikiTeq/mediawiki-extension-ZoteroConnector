@@ -6,10 +6,14 @@ use Exception;
 use FilesystemIterator;
 use GlobIterator;
 use MediaWiki\Extension\ZoteroConnector\Maintenance\ImportZoteroData;
+use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
 use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
+use MediaWiki\Extension\ZoteroConnector\Services\WikiUpdater;
 use MediaWiki\Extension\ZoteroConnector\Services\ZoteroRequester;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
+use Status;
 use Title;
+use User;
 use WikitextContent;
 
 /**
@@ -259,6 +263,166 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 		$this->expectOutputRegex( "/$expectRegex/" );
 		$this->maintenance->loadWithArgv( [ '--type', 'attachments' ] );
+		$this->maintenance->execute();
+	}
+
+	public function testAttachmentRetry() {
+		// We will mock the following:
+		// AAA111 - successful upload on first attempt
+		// BBB111 - page updated only, on first attempt
+		// CCC111 - page unchanged (null edit), on first attempt
+		// DDD111 - fail with null redirect first time, then succeed
+		// EEE111 - fail with time out first time, then succeed
+		// FFF111 - fail with file too big first time, not tried again
+		// GGG111 - fail with time out first and second time
+		$data = [ 'location' => 'not-null', 'pageContent' => 'not-null' ];
+		$firstUploadData = [
+			'AAA111' => $data,
+			'BBB111' => [ 'location' => false, 'pageContent' => 'real-edit' ],
+			'CCC111' => [ 'location' => false, 'pageContent' => 'null-edit' ],
+			'DDD111' => [ 'location' => null ],
+			'EEE111' => $data,
+			'FFF111' => $data,
+			'GGG111' => $data,
+		];
+		$secondUploadData = [
+			'DDD111' => $data,
+			'EEE111' => $data,
+			'GGG111' => $data,
+		];
+		$manager = $this->createNoOpMock(
+			AttachmentManager::class,
+			[ 'preloadAttachmentVersions', 'getUploadData' ]
+		);
+		$manager->expects( $this->exactly( 2 ) )
+			->method( 'preloadAttachmentVersions' )
+			->withConsecutive(
+				// All requested the first time:
+				[ array_keys( $firstUploadData ) ],
+				// Failures other than file too big requested a second time,
+				[ array_keys( $secondUploadData ) ]
+			);
+		$manager->expects( $this->exactly( count( $firstUploadData ) + count( $secondUploadData ) ) )
+			->method( 'getUploadData' )
+			->willReturnCallback(
+				function ( $key ) use ( &$firstUploadData, &$secondUploadData ) {
+					if ( isset( $firstUploadData[$key] ) ) {
+						$data = $firstUploadData[$key];
+						unset( $firstUploadData[$key] );
+						return $data;
+					}
+					$this->assertArrayHasKey( $key, $secondUploadData );
+					$data = $secondUploadData[$key];
+					unset( $secondUploadData[$key] );
+					return $data;
+				}
+			);
+		$this->setService( 'ZoteroConnector.AttachmentManager', $manager );
+
+		$allItems = array_map(
+			static function ( $key ) {
+				return (object)[
+					'key' => $key,
+					'data' => (object)[ 'itemType' => 'attachment' ],
+				];
+			},
+			// Pass the keys to construct the data with
+			array_keys( $firstUploadData ),
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems', 'preloadAttachmentData' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( $allItems );
+		$requester->expects( $this->exactly( 2 ) )->method( 'preloadAttachmentData' );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$updater = $this->createNoOpMock(
+			WikiUpdater::class,
+			[ 'makeRequestScope', 'updateFilePage', 'importPDFAttachment' ]
+		);
+		$updater->expects( $this->once() )
+			->method( 'makeRequestScope' )
+			->willReturn( [ $this->createNoOpMock( User::class ), 'does not matter' ] );
+		$updater->expects( $this->exactly( 2 ) )
+			->method( 'updateFilePage' )
+			->willReturnCallback(
+				function ( $key, $content, $user ) {
+					if ( $content === 'real-edit' ) {
+						return Status::newGood( 'zoteroconnector-attachment-page-updated' );
+					} elseif ( $content === 'null-edit' ) {
+						return Status::newGood( 'zoteroconnector-upload-attachment-no-change' );
+					} else {
+						$this->fail( "Bad content for $key: $content" );
+					}
+				}
+			);
+		$importResult1 = [
+			'AAA111' => Status::newGood(),
+			'EEE111' => Status::newFatal( 'http-timed-out' ),
+			'FFF111' => Status::newFatal( 'file-too-large' ),
+			'GGG111' => Status::newFatal( 'http-timed-out' ),
+		];
+		$importResult2 = [
+			'DDD111' => Status::newGood(),
+			'EEE111' => Status::newGood(),
+			'GGG111' => Status::newFatal( 'http-timed-out' ),
+		];
+		$updater->expects( $this->exactly( 7 ) )
+			->method( 'importPDFAttachment' )
+			->willReturnCallback(
+				function ( $key, $loc, $content, $user ) use ( &$importResult1, &$importResult2 ) {
+					if ( isset( $importResult1[$key] ) ) {
+						$data = $importResult1[$key];
+						unset( $importResult1[$key] );
+						return $data;
+					}
+					$this->assertArrayHasKey( $key, $importResult2 );
+					$data = $importResult2[$key];
+					unset( $importResult2[$key] );
+					return $data;
+				}
+			);
+		$this->setService( 'ZoteroConnector.WikiUpdater', $updater );
+
+		$count = count( $allItems );
+		$expectStr = "ImportZoteroData: import-mode=DO-IMPORT, PRINT-UNKNOWN type=attachments\n";
+		$expectStr .= "Found: 7 references\n";
+		$expectStr .= "After processing: 0 references, and 7 attachments\n";
+		$expectStr .= "Ignoring the references\n";
+		$expectStr .= "Attachments 1/7 ( 14%): AAA111 ...uploaded\n";
+		$expectStr .= "Attachments 2/7 ( 29%): BBB111 ...page updated, no file change\n";
+		$expectStr .= "Attachments 3/7 ( 43%): CCC111 ...no change\n";
+		$expectStr .= "Attachments 4/7 ( 57%): DDD111 ...\n";
+		$expectStr .= "DDD111 - got null redirect\n";
+		$expectStr .= "Attachments 5/7 ( 71%): EEE111 ...\n";
+		$expectStr .= "EEE111 - http timed out\n";
+		$expectStr .= "Attachments 6/7 ( 86%): FFF111 ...\n";
+		$expectStr .= "FFF111 - failed to upload:\n";
+		$expectStr .= Status::newFatal( 'file-too-large' )->__toString() . "\n";
+		$expectStr .= "Attachments 7/7 (100%): GGG111 ...\n";
+		$expectStr .= "GGG111 - http timed out\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n1 uploaded\n";
+		$expectStr .= "1 pages updated without file changes\n1 unchanged\n4 errors\n";
+		$expectStr .= "DDD111: null-redirect\n";
+		$expectStr .= "EEE111: http-timed-out\n";
+		$expectStr .= "FFF111: file-too-large\n";
+		$expectStr .= "GGG111: http-timed-out\n";
+		$expectStr .= "Retrying 3 errors not caused by file size: DDD111, EEE111, GGG111\n";
+		$expectStr .= "Attachments 1/3 ( 33%): DDD111 ...uploaded\n";
+		$expectStr .= "Attachments 2/3 ( 67%): EEE111 ...uploaded\n";
+		$expectStr .= "Attachments 3/3 (100%): GGG111 ...\nGGG111 - http timed out\n";
+		$expectStr .= "Attachment retry summary:\n2 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n1 errors\n";
+		$expectStr .= "GGG111: http-timed-out\n";
+		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [ '--type', 'attachments', '--do-import', '--do-attachment-page-update' ] );
 		$this->maintenance->execute();
 	}
 

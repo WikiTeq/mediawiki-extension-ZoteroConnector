@@ -60,6 +60,11 @@ class ZoteroRequester {
 	}
 
 	public function preloadAttachmentData() {
+		if ( count( $this->attachmentCache ) !== 0 ) {
+			// Attachment imports are being run a second time to retry some
+			// failures, the data here won't change though
+			return;
+		}
 		$totalCount = 0;
 		$results = $this->getItemsWithOffset( 0, self::MODE_ATTACHMENTS, $totalCount );
 		while ( count( $results ) < $totalCount ) {

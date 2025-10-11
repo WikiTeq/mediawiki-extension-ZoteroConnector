@@ -334,6 +334,23 @@ class ImportZoteroData extends Maintenance {
 				$this->output( "$id: $error\n" );
 			}
 		}
+		if ( $uploadSummary['retry'] !== [] ) {
+			$count = count( $uploadSummary['retry'] );
+			$this->output(
+				"Retrying $count errors not caused by file size: " . implode( ', ', $uploadSummary['retry'] ) . "\n"
+			);
+			$retrySummary = $this->importAttachments( $uploadSummary['retry'], $sysUser );
+			$this->output( "Attachment retry summary:\n" );
+			$this->output( $retrySummary['uploaded'] . " uploaded\n" );
+			$this->output( $retrySummary['page-updated'] . " pages updated without file changes\n" );
+			$this->output( $retrySummary['no-change'] . " unchanged\n" );
+			$this->output( count( $retrySummary['errors'] ) . " errors\n" );
+			if ( $retrySummary['errors'] ) {
+				foreach ( $retrySummary['errors'] as $id => $error ) {
+					$this->output( "$id: $error\n" );
+				}
+			}
+		}
 	}
 
 	/**
@@ -393,14 +410,14 @@ class ImportZoteroData extends Maintenance {
 	): array {
 		if ( $attachmentIds === [] ) {
 			// Nothing to do, don't break on core's bad typehint
-			return [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [] ];
+			return [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [], 'retry' => [] ];
 		}
 		$this->manager->preloadAttachmentVersions( $attachmentIds );
 		$this->requester->preloadAttachmentData();
 
 		$dryRun = !$this->hasOption( 'do-import' );
 		$updateContent = $this->hasOption( 'do-attachment-page-update' );
-		$summary = [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [] ];
+		$summary = [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [], 'retry' => [] ];
 		$itemCount = 0;
 		$totalCount = count( $attachmentIds );
 		foreach ( $attachmentIds as $attachment ) {
@@ -412,6 +429,7 @@ class ImportZoteroData extends Maintenance {
 				$this->output( "\n" );
 				$this->error( "$attachment - got null redirect" );
 				$summary['errors'][$attachment] = 'null-redirect';
+				$summary['retry'][] = $attachment;
 				continue;
 			}
 			if ( $dryRun ) {
@@ -457,6 +475,9 @@ class ImportZoteroData extends Maintenance {
 				} else {
 					$this->error( "$attachment - failed to upload:" );
 					$this->error( $status->__toString() );
+				}
+				if ( !$status->hasMessage( 'file-too-large' ) ) {
+					$summary['retry'][] = $attachment;
 				}
 				$summary['errors'][$attachment] = implode(
 					',',
@@ -620,6 +641,22 @@ class ImportZoteroData extends Maintenance {
 			parent::fatalError( $msg, $exitCode );
 		} else {
 			throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
+		}
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @inheritDoc
+	 */
+	protected function error( $err, $die = 0 ) {
+		// Parent method will use
+		// `fwrite( STDERR, $err . "\n" );` outside of tests
+		// but `print $err;` in tests, add an extra line ending for readability
+		// in tests
+		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
+			print( $err . "\n" );
+		} else {
+			parent::error( $err, $die );
 		}
 	}
 }
