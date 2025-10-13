@@ -492,6 +492,9 @@ class ImportZoteroData extends Maintenance {
 					)
 				);
 			}
+			// Only pause if we tried to actually do an upload or page edit,
+			// should not be needed for null redirects or dry-run imports
+			$this->addPause();
 		}
 		return $summary;
 	}
@@ -659,6 +662,20 @@ class ImportZoteroData extends Maintenance {
 			parent::error( $err, $die );
 		}
 	}
+
+	/**
+	 * In tests, this just reports the script would sleep, no need to slow down
+	 * the test execution. In production, this sleeps for a second, and doesn't
+	 * print anything because we don't need to spam the logs
+	 */
+	private function addPause() {
+		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
+			$this->output( "Would sleep for a second...\n" );
+		} else {
+			sleep( 1 );
+		}
+	}
+
 }
 
 $maintClass = ImportZoteroData::class;
