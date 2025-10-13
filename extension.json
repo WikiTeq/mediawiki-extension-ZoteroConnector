@@ -4,6 +4,7 @@
 		"Daniel Scherzer"
 	],
 	"descriptionmsg": "zoteroconnector-desc",
+	"license-name": "MIT",
 	"type": "other",
 	"requires": {
 		"MediaWiki": ">= 1.39"
