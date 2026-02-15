@@ -178,7 +178,7 @@ class ZoteroRequester {
 
 		if ( $totalCount !== null ) {
 			// Store the total count to allow for looping
-			$totalCount = $req->getResponseHeader( 'Total-Results' );
+			$totalCount = (int)( $req->getResponseHeader( 'Total-Results' ) ?? 0 );
 		}
 		return $asJson;
 	}

@@ -7,7 +7,7 @@ use MediaWiki\Hook\InfoActionHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
 use Parser;
 
-class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
+class ParserHandler implements InfoActionHook, ParserFirstCallInitHook {
 
 	public const FILE_VERSION_HOOK_NAME = 'ZOTERO_FILE_VERSION';
 	public const NONFILE_TRACKING_CAT_NAME = 'zotero-non-file-with-version';

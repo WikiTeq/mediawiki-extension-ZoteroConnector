@@ -291,6 +291,9 @@ class TemplateBuilder {
 	 */
 	private static function getCategories( stdClass $itemObj ): string {
 		$categories = [];
+		if ( !isset( $itemObj->data->tags ) || !is_array( $itemObj->data->tags ) ) {
+			return '';
+		}
 		$tagsData = $itemObj->data->tags;
 		foreach ( $tagsData as $tag ) {
 			$categories[] = "[[Category:" . $tag->tag . "]]";
