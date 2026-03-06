@@ -1,0 +1,76 @@
+{
+    "key": "MOCK123",
+    "version": 31186,
+    "library": {
+        "type": "group",
+        "id": 4511960,
+        "name": "habele",
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/groups/4511960",
+                "type": "text/html"
+            }
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://api.zotero.org/groups/4511960/items/MOCK123",
+            "type": "application/json"
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/4511960/items/MOCK123",
+            "type": "text/html"
+        },
+        "attachment": {
+            "href": "https://api.zotero.org/groups/4511960/items/MOCK321",
+            "type": "application/json",
+            "attachmentType": "application/pdf",
+            "attachmentSize": 63810
+        }
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 8697173,
+            "username": "Habele",
+            "name": "",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/habele",
+                    "type": "text/html"
+                }
+            }
+        },
+        "creatorSummary": "Daniel for regression testing",
+        "parsedDate": "2026-03-04",
+        "numChildren": 1
+    },
+    "data": {
+        "key": "MOCK123",
+        "version": 31186,
+        "itemType": "webpage",
+        "title": "Mock item for regression testing",
+        "creators": [],
+        "abstractNote": "Just a mock item for regression testing",
+        "websiteTitle": "",
+        "websiteType": "",
+        "date": "2026-03-04",
+        "shortTitle": "",
+        "url": "",
+        "accessDate": "2026-03-05T19:09:27Z",
+        "language": "en",
+        "rights": "",
+        "extra": "",
+        "tags": [
+            {
+                "tag": "Normal"
+            },
+            {
+                "tag": "has-public-file"
+            }
+        ],
+        "collections": [],
+        "relations": {},
+        "dateAdded": "2026-03-05T19:09:27Z",
+        "dateModified": "2026-03-05T19:09:27Z"
+    }
+}
