@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
-use Exception;
 use Maintenance;
 use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
@@ -644,7 +643,7 @@ class ImportZoteroData extends Maintenance {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			parent::fatalError( $msg, $exitCode );
 		} else {
-			throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
+			throw new RuntimeException( "FATAL ERROR: $msg (exit code = $exitCode)" );
 		}
 	}
 
