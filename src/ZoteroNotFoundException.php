@@ -10,7 +10,7 @@ class ZoteroNotFoundException extends RuntimeException {
 	public function __construct(
 		string $itemKey,
 		int $code = 0,
-		Throwable $previous = null
+		?Throwable $previous = null
 	) {
 		parent::__construct( "Not found: $itemKey", $code, $previous );
 	}

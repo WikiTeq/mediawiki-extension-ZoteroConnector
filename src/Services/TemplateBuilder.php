@@ -8,7 +8,7 @@ use stdClass;
 // To figure out:
 // `note` is like attachment (JKEHNHWN is a note on 4PMNHLSD)
 
-/* Utility to build template invocations */
+/** Utility to build template invocations */
 class TemplateBuilder {
 
 	/**
