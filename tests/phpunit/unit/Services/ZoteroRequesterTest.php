@@ -174,10 +174,7 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 		yield '400 status' => [ 400 ];
 	}
 
-	public function testSingleItemSuccess() {
-		$itemId = 'ITEM-ID-GOES-HERE';
-		$itemData = (object)[ 'Foo' => 'Bar' ];
-
+	private function makeSuccessfulRequest( string $data ): MWHttpRequest {
 		$req = $this->createNoOpMock(
 			MWHttpRequest::class,
 			[ 'setHeader', 'execute', 'getContent', 'getStatus' ]
@@ -204,12 +201,21 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 		$req->expects( $this->once() )
 			->method( 'getContent' )
 			->willReturnCallback(
-				function () use ( &$executed, $itemData ) {
+				function () use ( &$executed, $data ) {
 					$this->assertTrue( $executed );
-					return FormatJson::encode( $itemData );
+					return $data;
 				}
 			);
 		$req->expects( $this->once() )->method( 'getStatus' )->willReturn( 200 );
+
+		return $req;
+	}
+
+	public function testSingleItemSuccess() {
+		$itemId = 'ITEM-ID-GOES-HERE';
+		$itemData = (object)[ 'Foo' => 'Bar' ];
+
+		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
 
 		$httpRequestFactory = $this->createNoOpMock(
 			HttpRequestFactory::class,
@@ -229,6 +235,66 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 		$this->assertEquals(
 			$data,
 			$itemData
+		);
+	}
+
+	public function testGetAttachmentInfoUncachedMissing() {
+		$itemId = 'ITEM-ID-GOES-HERE';
+		$itemData = (object)[ 'data' => [ 'itemType' => 'attachment' ] ];
+
+		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
+
+		$httpRequestFactory = $this->createNoOpMock(
+			HttpRequestFactory::class,
+			[ 'create' ]
+		);
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				"https://api.zotero.org/groups/4511960/items/$itemId",
+				[],
+				ZoteroRequester::class . '::getSingleItem'
+			)
+			->willReturn( $req );
+
+		$requester = $this->makeRequester( $httpRequestFactory );
+		$data = $requester->getAttachmentInfo( $itemId );
+		$this->assertSame(
+			[ 'version' => '', 'parentItem' => '' ],
+			$data
+		);
+	}
+
+	public function testGetAttachmentInfoUncachedPresent() {
+		$itemId = 'ITEM-ID-GOES-HERE';
+		$itemData = (object)[
+			'data' => [
+				'itemType' => 'attachment',
+				'version' => 123,
+				'parentItem' => 'abc'
+			]
+		];
+
+		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
+
+		$httpRequestFactory = $this->createNoOpMock(
+			HttpRequestFactory::class,
+			[ 'create' ]
+		);
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				"https://api.zotero.org/groups/4511960/items/$itemId",
+				[],
+				ZoteroRequester::class . '::getSingleItem'
+			)
+			->willReturn( $req );
+
+		$requester = $this->makeRequester( $httpRequestFactory );
+		$data = $requester->getAttachmentInfo( $itemId );
+		$this->assertSame(
+			[ 'version' => '123', 'parentItem' => 'abc' ],
+			$data
 		);
 	}
 }
