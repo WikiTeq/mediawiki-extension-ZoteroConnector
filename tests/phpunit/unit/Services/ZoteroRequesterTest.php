@@ -213,7 +213,7 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 
 	public function testSingleItemSuccess() {
 		$itemId = 'ITEM-ID-GOES-HERE';
-		$itemData = (object)[ 'Foo' => 'Bar' ];
+		$itemData = (object)[ 'Foo' => 'Bar', 'key' => $itemId ];
 
 		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
 
@@ -240,7 +240,7 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 
 	public function testGetAttachmentInfoUncachedMissing() {
 		$itemId = 'ITEM-ID-GOES-HERE';
-		$itemData = (object)[ 'data' => [ 'itemType' => 'attachment' ] ];
+		$itemData = (object)[ 'data' => [ 'itemType' => 'attachment' ], 'key' => $itemId ];
 
 		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
 
@@ -260,40 +260,67 @@ class ZoteroRequesterTest extends MediaWikiUnitTestCase {
 		$requester = $this->makeRequester( $httpRequestFactory );
 		$data = $requester->getAttachmentInfo( $itemId );
 		$this->assertSame(
-			[ 'version' => '', 'parentItem' => '' ],
+			[ 'version' => '', 'parentItem' => '', 'makePublic' => false ],
 			$data
 		);
 	}
 
-	public function testGetAttachmentInfoUncachedPresent() {
+	public static function provideVisibilityCases() {
+		yield 'Should be public' => [
+			[ 'key' => 'abc',
+				'data' => [
+					'tags' => [
+						[ 'tag' => ZoteroRequester::TAG_FOR_PUBLIC_ATTACHMENT ]
+					]
+				]
+			],
+			true
+		];
+		yield 'Should be private' => [
+			[ 'key' => 'abc', ],
+			false
+		];
+	}
+
+	/** @dataProvider provideVisibilityCases */
+	public function testGetAttachmentInfoUncachedPresent( array $parentResponse, bool $shouldBePublic ) {
 		$itemId = 'ITEM-ID-GOES-HERE';
 		$itemData = (object)[
 			'data' => [
 				'itemType' => 'attachment',
 				'version' => 123,
 				'parentItem' => 'abc'
-			]
+			],
+			'key' => $itemId,
 		];
 
-		$req = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
+		$req1 = $this->makeSuccessfulRequest( FormatJson::encode( $itemData ) );
+		$req2 = $this->makeSuccessfulRequest( FormatJson::encode( $parentResponse ) );
 
 		$httpRequestFactory = $this->createNoOpMock(
 			HttpRequestFactory::class,
 			[ 'create' ]
 		);
-		$httpRequestFactory->expects( $this->once() )
+		$httpRequestFactory->expects( $this->exactly( 2 ) )
 			->method( 'create' )
-			->with(
-				"https://api.zotero.org/groups/4511960/items/$itemId",
-				[],
-				ZoteroRequester::class . '::getSingleItem'
+			->withConsecutive(
+				[
+					"https://api.zotero.org/groups/4511960/items/$itemId",
+					[],
+					ZoteroRequester::class . '::getSingleItem',
+				],
+				[
+					"https://api.zotero.org/groups/4511960/items/abc",
+					[],
+					ZoteroRequester::class . '::getSingleItem',
+				],
 			)
-			->willReturn( $req );
+			->willReturnOnConsecutiveCalls( $req1, $req2 );
 
 		$requester = $this->makeRequester( $httpRequestFactory );
 		$data = $requester->getAttachmentInfo( $itemId );
 		$this->assertSame(
-			[ 'version' => '123', 'parentItem' => 'abc' ],
+			[ 'version' => '123', 'parentItem' => 'abc', 'makePublic' => $shouldBePublic ],
 			$data
 		);
 	}

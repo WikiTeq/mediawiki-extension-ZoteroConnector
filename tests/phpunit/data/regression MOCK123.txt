@@ -11,4 +11,3 @@
 |attachment = MOCK321
 }}
 [[Category:Normal]]
-[[Category:has-public-file]]

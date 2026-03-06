@@ -109,6 +109,10 @@ class AttachmentManager {
 		$template->setParam( 'version', $latestInfo['version'] );
 		$pageContent = $template->getWikitext();
 
+		if ( $latestInfo['makePublic'] ) {
+			$pageContent .= "\n__MAKE_FILE_PUBLIC__";
+		}
+
 		if ( $latestInfo['version'] === $currVersion ) {
 			// No need to fetch a new version
 			$location = false;

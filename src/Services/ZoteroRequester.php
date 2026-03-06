@@ -24,6 +24,8 @@ class ZoteroRequester {
 	private const MODE_ATTACHMENTS = 'attachment';
 	private const MODE_NO_ATTACHMENTS = '-attachment';
 
+	public const TAG_FOR_PUBLIC_ATTACHMENT = 'has-public-file';
+
 	private ServiceOptions $options;
 	private LoggerInterface $logger;
 	private HttpRequestFactory $httpFactory;
@@ -34,6 +36,13 @@ class ZoteroRequester {
 	 * simplifyItem()
 	 */
 	private array $attachmentCache = [];
+
+	/**
+	 * Cache for MixedVisibilityFiles integration - keys are the id of the item
+	 * for an attachment (or really the id of any item), values are if the
+	 * item has the TAG_FOR_PUBLIC_ATTACHMENT tag or not
+	 */
+	private array $visibilityCache = [];
 
 	public function __construct(
 		ServiceOptions $options,
@@ -82,8 +91,10 @@ class ZoteroRequester {
 
 	/**
 	 * For a given item ID that should be for an attachment, return an
-	 * associative array with the current version number of the attachment and
-	 * what item uses it
+	 * associative array with
+	 * - the current version number of the attachment
+	 * - what item uses it
+	 * - whether that item indicates that the attachment should be public
 	 */
 	public function getAttachmentInfo( string $itemId ): array {
 		if ( isset( $this->attachmentCache[ $itemId ] ) ) {
@@ -105,10 +116,28 @@ class ZoteroRequester {
 			throw new RuntimeException( __METHOD__ . " got bad JSON response" );
 		}
 		$data = $item->data;
+		$parentKey = $data->parentItem ?? '';
 		return [
 			'version' => (string)( $data->version ?? '' ),
-			'parentItem' => $data->parentItem ?? '',
+			'parentItem' => $parentKey,
+			'makePublic' => $this->shouldMakeAttachmentsPublic( $parentKey ),
 		];
+	}
+
+	/**
+	 * Check if a parent item has the TAG_FOR_PUBLIC_ATTACHMENT tag
+	 */
+	private function shouldMakeAttachmentsPublic( string $parentKey ): bool {
+		if ( $parentKey === '' ) {
+			// No parent? Fail shut
+			return false;
+		}
+		if ( isset( $this->visibilityCache[ $parentKey ] ) ) {
+			return $this->visibilityCache[ $parentKey ];
+		}
+		// Called for side effects
+		$this->getSingleItem( $parentKey );
+		return $this->visibilityCache[ $parentKey ];
 	}
 
 	public function getAttachmentLocation( string $itemId ): ?string {
@@ -122,7 +151,7 @@ class ZoteroRequester {
 		return $req->getResponseHeader( 'Location' );
 	}
 
-	private static function simplifyItem( stdClass &$item ): void {
+	private function simplifyItem( stdClass &$item ): void {
 		// Remove some unneeded details; don't unset if not already set so that
 		// tests are simpler
 		unset( $item->library );
@@ -133,6 +162,18 @@ class ZoteroRequester {
 		if ( isset( $item->meta ) ) {
 			unset( $item->meta->createdByUser );
 		}
+		$public = false;
+		if ( isset( $item->data->tags ) ) {
+			$tagNames = array_map(
+				static fn ( $tag ) => $tag->tag,
+				$item->data->tags
+			);
+			$public = in_array(
+				self::TAG_FOR_PUBLIC_ATTACHMENT,
+				$tagNames
+			);
+		}
+		$this->visibilityCache[ $item->key ] = $public;
 		// if ( isset( $item->data ) ) {
 		// 	foreach ( (array)( $item->data ) as $k => $v ) {
 		// 		if ( $v === '' ) {
@@ -173,7 +214,8 @@ class ZoteroRequester {
 			throw new UnexpectedValueException( "Not an array" );
 		}
 		foreach ( $asJson as &$item ) {
-			self::simplifyItem( $item );
+			// simplifyItem will also cache the TAG_FOR_PUBLIC_ATTACHMENT presense
+			$this->simplifyItem( $item );
 		}
 
 		if ( $totalCount !== null ) {
@@ -240,7 +282,8 @@ class ZoteroRequester {
 		}
 		$asJson = $status->getValue();
 
-		self::simplifyItem( $asJson );
+		// simplifyItem will also cache the TAG_FOR_PUBLIC_ATTACHMENT presense
+		$this->simplifyItem( $asJson );
 		return $asJson;
 	}
 }
