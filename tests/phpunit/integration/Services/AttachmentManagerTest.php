@@ -24,7 +24,6 @@ class AttachmentManagerTest extends MediaWikiIntegrationTestCase {
 		$pageProps->method( 'getProperties' )
 			->willReturnCallback(
 				function ( $file, $prop ) {
-					wfDebug( 'getProperties called' );
 					$this->assertInstanceOf( PageIdentity::class, $file );
 					$this->assertSame( NS_FILE, $file->getNamespace() );
 					$this->assertSame( ParserHandler::FILE_VERSION_PROP_NAME, $prop );
