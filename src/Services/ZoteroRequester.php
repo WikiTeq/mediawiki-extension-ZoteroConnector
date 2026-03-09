@@ -135,7 +135,8 @@ class ZoteroRequester {
 		if ( isset( $this->visibilityCache[ $parentKey ] ) ) {
 			return $this->visibilityCache[ $parentKey ];
 		}
-		// Called for side effects
+		// Called for side effects, specifically for the fact that
+		// getSingleItem() calls simplifyItem() which sets the visibility cache.
 		$this->getSingleItem( $parentKey );
 		return $this->visibilityCache[ $parentKey ];
 	}
