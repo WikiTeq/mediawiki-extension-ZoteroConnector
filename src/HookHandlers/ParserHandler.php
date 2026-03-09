@@ -90,7 +90,7 @@ class ParserHandler implements InfoActionHook, ParserFirstcallInitHook {
 		}
 		$parser->getOutput()->setPageProperty(
 			self::FILE_VERSION_PROP_NAME,
-			(int)$version
+			$version
 		);
 		return '';
 	}

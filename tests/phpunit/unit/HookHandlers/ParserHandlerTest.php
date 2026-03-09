@@ -80,7 +80,7 @@ class ParserHandlerTest extends MediaWikiUnitTestCase {
 		$output = $this->createNoOpMock( ParserOutput::class, [ 'setPageProperty' ] );
 		$output->expects( $this->once() )
 			->method( 'setPageProperty' )
-			->with( ParserHandler::FILE_VERSION_PROP_NAME, 12345 );
+			->with( ParserHandler::FILE_VERSION_PROP_NAME, '12345' );
 		$p4 = $this->createNoOpMock( Parser::class, [ 'getPage', 'getOutput' ] );
 		$p4->expects( $this->once() )->method( 'getPage' )->willReturn( $filePage );
 		$p4->expects( $this->once() )->method( 'getOutput' )->willReturn( $output );

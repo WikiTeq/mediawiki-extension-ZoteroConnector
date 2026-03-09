@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
-use Exception;
 use Maintenance;
 use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
@@ -638,12 +637,13 @@ class ImportZoteroData extends Maintenance {
 	protected function fatalError( $msg, $exitCode = 1 ) {
 		// Until 1.43 fatalError() would call exit() unconditionally, making it
 		// impossible to test fatalError() calls, see T272241
-		if ( version_compare( MW_VERSION, '1.43', '>=' )
-			|| !defined( 'MW_PHPUNIT_TEST' )
-		) {
+		// Once support for earlier version of MediaWiki is dropped this
+		// override can be removed, until then ensure consistent handling in
+		// different versions so that we can easily test.
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			parent::fatalError( $msg, $exitCode );
 		} else {
-			throw new Exception( "FATAL ERROR: $msg (exit code = $exitCode)" );
+			throw new RuntimeException( "FATAL ERROR: $msg (exit code = $exitCode)" );
 		}
 	}
 

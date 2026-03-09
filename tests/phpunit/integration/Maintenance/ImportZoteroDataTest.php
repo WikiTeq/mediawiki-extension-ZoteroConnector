@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Tests\Integration\Maintenance;
 
-use Exception;
 use FilesystemIterator;
 use GlobIterator;
 use MediaWiki\Extension\ZoteroConnector\Maintenance\ImportZoteroData;
@@ -11,6 +10,7 @@ use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
 use MediaWiki\Extension\ZoteroConnector\Services\WikiUpdater;
 use MediaWiki\Extension\ZoteroConnector\Services\ZoteroRequester;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
+use RuntimeException;
 use Status;
 use Title;
 use User;
@@ -31,7 +31,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 	/** @dataProvider provideInvalidArgs */
 	public function testInvalidArgs( array $args, string $expected ) {
-		$this->expectException( Exception::class );
+		$this->expectException( RuntimeException::class );
 		$this->expectExceptionMessage( "FATAL ERROR: $expected (exit code = 1)" );
 		$this->maintenance->loadWithArgv( $args );
 		$this->maintenance->execute();
