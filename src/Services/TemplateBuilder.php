@@ -293,6 +293,10 @@ class TemplateBuilder {
 		$categories = [];
 		$tagsData = $itemObj->data->tags;
 		foreach ( $tagsData as $tag ) {
+			if ( $tag->tag === ZoteroRequester::TAG_FOR_PUBLIC_ATTACHMENT ) {
+				// Does not trigger categorization
+				continue;
+			}
 			$categories[] = "[[Category:" . $tag->tag . "]]";
 		}
 		return implode( "\n", $categories );

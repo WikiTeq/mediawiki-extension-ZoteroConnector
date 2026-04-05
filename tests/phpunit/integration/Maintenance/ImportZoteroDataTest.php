@@ -242,7 +242,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$requester->expects( $this->once() )->method( 'preloadAttachmentData' );
 		$requester->expects( $this->exactly( $attachmentCount ) )
 			->method( 'getAttachmentInfo' )
-			->willReturn( [ 'parentItem' => 'foo', 'version' => 'bar' ] );
+			->willReturn( [ 'parentItem' => 'foo', 'version' => 'bar', 'makePublic' => false ] );
 		$requester->expects( $this->exactly( $attachmentCount ) )
 			->method( 'getAttachmentLocation' )
 			->willReturn( 'MOCK' );
@@ -465,7 +465,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$requester->expects( $this->once() )->method( 'preloadAttachmentData' );
 		$requester->expects( $this->exactly( $processCount ) )
 			->method( 'getAttachmentInfo' )
-			->willReturn( [ 'parentItem' => 'foo', 'version' => 'bar' ] );
+			->willReturn( [ 'parentItem' => 'foo', 'version' => 'bar', 'makePublic' => false ] );
 		$requester->expects( $this->exactly( $processCount ) )
 			->method( 'getAttachmentLocation' )
 			->willReturn( 'MOCK' );
