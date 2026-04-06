@@ -13,7 +13,6 @@ use MediaWiki\Page\DeletePageFactory;
 use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
 use RuntimeException;
-use Status;
 use User;
 use WikiPage;
 
