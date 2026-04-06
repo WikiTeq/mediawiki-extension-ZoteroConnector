@@ -60,12 +60,6 @@ class ImportZoteroData extends Maintenance {
 			'no-reupload',
 			'Avoid uploading attachments if there is already a file by that name'
 		);
-		// Used so that we can skip updates in the common case of the generated
-		// content not changing
-		$this->addOption(
-			'do-attachment-page-update',
-			'Avoid updating attachments pages if no upload is performed'
-		);
 
 		$this->addOption(
 			'do-import',
@@ -415,7 +409,6 @@ class ImportZoteroData extends Maintenance {
 		$this->requester->preloadAttachmentData();
 
 		$dryRun = !$this->hasOption( 'do-import' );
-		$updateContent = $this->hasOption( 'do-attachment-page-update' );
 		$summary = [ 'no-change' => 0, 'uploaded' => 0, 'page-updated' => 0, 'errors' => [], 'retry' => [] ];
 		$itemCount = 0;
 		$totalCount = count( $attachmentIds );
@@ -437,16 +430,11 @@ class ImportZoteroData extends Maintenance {
 			}
 			// We might only need to update the page content
 			if ( $uploadData['location'] === false ) {
-				if ( $updateContent ) {
-					$status = $this->updater->updateFilePage(
-						$attachment,
-						$uploadData['pageContent'],
-						$sysUser
-					);
-				} else {
-					// so that we can reuse the existing logic below
-					$status = Status::newGood( 'zoteroconnector-upload-attachment-no-change' );
-				}
+				$status = $this->updater->updateFilePage(
+					$attachment,
+					$uploadData['pageContent'],
+					$sysUser
+				);
 			} else {
 				$status = $this->updater->importPDFAttachment(
 					$attachment,
