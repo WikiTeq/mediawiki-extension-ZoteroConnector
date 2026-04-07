@@ -431,7 +431,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "Done\n";
 
 		$this->expectOutputString( $expectStr );
-		$this->maintenance->loadWithArgv( [ '--type', 'attachments', '--do-import', '--do-attachment-page-update' ] );
+		$this->maintenance->loadWithArgv( [ '--type', 'attachments', '--do-import' ] );
 		$this->maintenance->execute();
 	}
 
