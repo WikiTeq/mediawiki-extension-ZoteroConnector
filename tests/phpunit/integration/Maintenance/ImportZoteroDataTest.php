@@ -12,6 +12,7 @@ use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
 use MediaWiki\Extension\ZoteroConnector\Services\WikiUpdater;
 use MediaWiki\Extension\ZoteroConnector\Services\ZoteroRequester;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
+use NukeNS;
 use RuntimeException;
 use Status;
 use Title;
@@ -37,6 +38,12 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 		// and has an actor id assigned
 		$maintUser->getActorId();
+		// and is different from the test sysop, that also has an actor id
+		// assigned
+		$this->assertNotSame(
+			$maintUser->getActorId(),
+			$this->getTestSysop()->getUser()->getActorId()
+		);
 	}
 
 	protected function getMaintenanceClass(): string {
@@ -45,8 +52,15 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 	private function uploadAttachment(
 		User $actor,
-		string $summary
+		string $summary,
+		string $name
 	) {
+		// Remove left over files
+		$maint = TestingAccessWrapper::newFromObject( new NukeNS() );
+		$maint->loadWithArgv( [ '--delete', '--ns', NS_FILE, '--all', '--quiet' ] );
+		$maint->execute();
+		$maint->cleanupChanneled();
+
 		// Using the importImages.php maintenance script
 		// Basically what MaintenanceBaseTestCase::createMaintenance() does
 		$maint = new ImportImages();
@@ -54,7 +68,11 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 		$fileDir = dirname( __DIR__, 2 ) . '/attachments';
 
+		// Make sure imports are to different locations with different names
+		rename( $fileDir . '/ExamplePDF.pdf', $fileDir . "/$name" );
+
 		$maint->loadWithArgv( [
+			'--overwrite',
 			'--user',
 			$actor->getName(),
 			'--summary',
@@ -66,6 +84,9 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		] );
 		$maint->execute();
 		$maint->cleanupChanneled();
+
+		// Make sure imports are to different locations with different names
+		rename( $fileDir . "/$name", $fileDir . '/ExamplePDF.pdf' );
 	}
 
 	public static function provideNotDeletedAttachmentCases() {
@@ -92,15 +113,20 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
+		// Unique files
+		static $count = 0;
+		$count++;
+
 		$this->uploadAttachment(
 			$isMaintUser ? $maintUser : $this->getTestSysop()->getUser(),
-			$isZoteroSummary ? $targetSummary : 'other'
+			$isZoteroSummary ? $targetSummary : 'other',
+			"ExamplePDFn$count.pdf"
 		);
 		if ( $addExtraEdit ) {
 			// Make an edit to the page as the correct maintenance user with the
 			// upload summary, still not enough to trigger it
 			$editStatus = $this->editPage(
-				'File:ExamplePDF.pdf',
+				"ExamplePDFn$count.pdf",
 				'Content',
 				$targetSummary,
 				NS_FILE,
@@ -138,7 +164,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace', 'page_title' ],
 			[ 'page_namespace' => NS_FILE ],
 			[
-				[ (string)NS_FILE, 'ExamplePDF.pdf' ],
+				[ (string)NS_FILE, "ExamplePDFn$count.pdf" ],
 			]
 		);
 	}
@@ -150,7 +176,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
-		$this->uploadAttachment( $maintUser, $targetSummary );
+		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDryRun.pdf' );
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems' ]
@@ -167,7 +193,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "Attachment summary:\n0 uploaded\n";
 		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectStr .= "No unknown reference pages!\n";
-		$expectStr .= "There are 1 unknown attachments: File:ExamplePDF.pdf\n";
+		$expectStr .= "There are 1 unknown attachments: File:ExamplePDFDryRun.pdf\n";
 		$expectStr .= "...would delete the 1 files, but deletion not requested\n";
 		$expectStr .= "Done\n";
 
@@ -181,7 +207,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace', 'page_title' ],
 			[ 'page_namespace' => NS_FILE ],
 			[
-				[ (string)NS_FILE, 'ExamplePDF.pdf' ],
+				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
 			]
 		);
 	}
@@ -193,7 +219,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
-		$this->uploadAttachment( $maintUser, $targetSummary );
+		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDelete.pdf' );
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems' ]
@@ -211,9 +237,9 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "Attachment summary:\n0 uploaded\n";
 		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectStr .= "No unknown reference pages!\n";
-		$expectStr .= "There are 1 unknown attachments: File:ExamplePDF.pdf\n";
+		$expectStr .= "There are 1 unknown attachments: File:ExamplePDFDelete.pdf\n";
 		$expectStr .= "...deleting the 1 files\n";
-		$expectStr .= "Attachment deletions 1/1 (100%): ExamplePDF.pdf ...deleted\n";
+		$expectStr .= "Attachment deletions 1/1 (100%): ExamplePDFDelete.pdf ...deleted\n";
 		$expectStr .= "Attachment deletions summary:\n";
 		$expectStr .= "1 deleted\n0 were already deleted\n0 errors\n";
 		$expectStr .= "Done\n";
@@ -238,10 +264,10 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		// and may be deleted; confirm that in such a situation, if it is still
 		// a known attachment in Zotero it is *not* deleted
 		// Reuse one of the items we already have and just set the attachment
-		// to be ExamplePDF instead of building a new item
+		// to be KnownPDF instead of building a new item
 		$abstractFile = dirname( __DIR__, 2 ) . '/data/abstract 8WP3QPF3.json';
 		$item = json_decode( file_get_contents( $abstractFile ) );
-		$item->links->attachment->href = "https://api.zotero.org/groups/4511960/items/ExamplePDF";
+		$item->links->attachment->href = "https://api.zotero.org/groups/4511960/items/KnownPDF";
 
 		$maintUser = User::newSystemUser(
 			User::MAINTENANCE_SCRIPT_USER,
@@ -249,7 +275,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
-		$this->uploadAttachment( $maintUser, $targetSummary );
+		$this->uploadAttachment( $maintUser, $targetSummary, 'KnownPDF.pdf' );
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems', 'preloadAttachmentData', 'getAttachmentInfo', 'getAttachmentLocation' ]
@@ -260,11 +286,11 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$requester->expects( $this->once() )->method( 'preloadAttachmentData' );
 		$requester->expects( $this->once() )
 			->method( 'getAttachmentInfo' )
-			->with( 'ExamplePDF' )
+			->with( 'KnownPDF' )
 			->willReturn( [ 'parentItem' => '8WP3QPF3', 'version' => 'bar', 'makePublic' => false ] );
 		$requester->expects( $this->once() )
 			->method( 'getAttachmentLocation' )
-			->with( 'ExamplePDF' )
+			->with( 'KnownPDF' )
 			->willReturn( 'MOCK' );
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
@@ -273,7 +299,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "Found: 1 references\n";
 		$expectStr .= "After processing: 1 references, and 1 attachments\n";
 		$expectStr .= "References 1/1 (100%): 8WP3QPF3 ...DRY RUN\n";
-		$expectStr .= "Attachments 1/1 (100%): ExamplePDF ...found redirect, DRY RUN\n";
+		$expectStr .= "Attachments 1/1 (100%): KnownPDF ...found redirect, DRY RUN\n";
 		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
 		$expectStr .= "Attachment summary:\n0 uploaded\n";
 		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
@@ -291,7 +317,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace', 'page_title' ],
 			[ 'page_namespace' => NS_FILE ],
 			[
-				[ (string)NS_FILE, 'ExamplePDF.pdf' ],
+				[ (string)NS_FILE, 'KnownPDF.pdf' ],
 			]
 		);
 	}
