@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
+use CommentStore;
 use Maintenance;
 use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
@@ -26,6 +27,7 @@ require_once "$IP/maintenance/Maintenance.php";
 class ImportZoteroData extends Maintenance {
 
 	private AttachmentManager $manager;
+	private CommentStore $commentStore;
 	private DeletePageFactory $deletePageFactory;
 	private WikiPageFactory $wikiPageFactory;
 	private WikiUpdater $updater;
@@ -75,11 +77,23 @@ class ImportZoteroData extends Maintenance {
 			'Delete any pages in the Zotero Reference namespace that do not '
 				. 'correspond to entries in Zotero (default: report)'
 		);
+
+		// Cannot be used with
+		// * --from
+		// * --type=references
+		// * --item-list
+		$this->addOption(
+			'do-delete-unknown-attachments',
+			'Delete any attachments in the file namespace that were previously '
+				. 'imported by ZoteroConnector but do not correspond to entries '
+				. 'in Zotero (default: report)'
+		);
 	}
 
 	private function initServices() {
 		$services = MediaWikiServices::getInstance();
 		$this->manager = $services->getService( 'ZoteroConnector.AttachmentManager' );
+		$this->commentStore = $services->getCommentStore();
 		$this->deletePageFactory = $services->getDeletePageFactory();
 		$this->wikiPageFactory = $services->getWikiPageFactory();
 		$this->updater = $services->getService( 'ZoteroConnector.WikiUpdater' );
@@ -103,6 +117,7 @@ class ImportZoteroData extends Maintenance {
 			);
 		}
 		$deleteUnknownRefs = $this->hasOption( 'do-delete-unknown-refs' );
+		$deleteUnknownAttachments = $this->hasOption( 'do-delete-unknown-attachments' );
 		if ( $deleteUnknownRefs ) {
 			if ( $from !== null ) {
 				$this->fatalError(
@@ -115,6 +130,18 @@ class ImportZoteroData extends Maintenance {
 				);
 			}
 		}
+		if ( $deleteUnknownAttachments ) {
+			if ( $from !== null ) {
+				$this->fatalError(
+					'--do-delete-unknown-attachments cannot be used with --from'
+				);
+			}
+			if ( $type === 'references' ) {
+				$this->fatalError(
+					'--do-delete-unknown-attachments cannot be used with --type=references'
+				);
+			}
+		}
 		$dryRun = !$this->hasOption( 'do-import' );
 
 		$mode = $dryRun ? 'DRY-RUN' : 'DO-IMPORT';
@@ -122,6 +149,9 @@ class ImportZoteroData extends Maintenance {
 			// Won't even be printed when there is an item-list since we don't
 			// fetch everything
 			$mode .= $deleteUnknownRefs ? ', DELETE-UNKNOWN-REFS' : ', PRINT-UNKNOWN-REFS';
+			$mode .= $deleteUnknownAttachments
+				? ', DELETE-UNKNOWN-ATTACHMENTS'
+				: ', PRINT-UNKNOWN-ATTACHMENTS';
 		}
 		$this->output( "ImportZoteroData: import-mode=$mode type=$type\n" );
 
@@ -129,6 +159,11 @@ class ImportZoteroData extends Maintenance {
 			if ( $deleteUnknownRefs ) {
 				$this->fatalError(
 					'--do-delete-unknown-refs cannot be used with --item-list'
+				);
+			}
+			if ( $deleteUnknownAttachments ) {
+				$this->fatalError(
+					'--do-delete-unknown-attachments cannot be used with --item-list'
 				);
 			}
 			$itemList = $this->getOption( 'item-list' );
@@ -161,6 +196,8 @@ class ImportZoteroData extends Maintenance {
 		);
 
 		$allKnownReferences = array_keys( $referencePages );
+		// Make a copy since filterAttachments() will modify the array
+		$allKnownAttachments = array_values( $attachmentIds );
 
 		$this->filterReferences( $referencePages );
 		$this->filterAttachments( $attachmentIds );
@@ -170,6 +207,8 @@ class ImportZoteroData extends Maintenance {
 		if ( !$this->hasOption( 'item-list' ) ) {
 			// Either delete or just print all unknown references
 			$this->handleUnknownReferences( $allKnownReferences, $deleteUnknownRefs );
+			// Either delete or just print all unknown attachments
+			$this->handleUnknownAttachments( $allKnownAttachments, $deleteUnknownAttachments );
 		}
 
 		$this->output( "Done\n" );
@@ -615,6 +654,121 @@ class ImportZoteroData extends Maintenance {
 				$this->output( "$page: $error\n" );
 			}
 		}
+	}
+
+	/**
+	 * Given the list of known attachments, identify all pages in the file
+	 * namespace that were originally uploaded by this extension and then
+	 * either delete them or just report about them
+	 *
+	 * @param string[] $knownAttachments array of keys
+	 */
+	private function handleUnknownAttachments(
+		array $knownAttachments,
+		bool $deleteUnknown
+	) {
+		// Attachments are PDFs, titles start with a capital letter
+		$knownAttachments = array_map(
+			static fn ( $id ) => ucfirst( $id ) . '.pdf',
+			$knownAttachments
+		);
+		$db = $this->getDb( DB_REPLICA );
+		// Find all pages
+		// * in the file namespace
+		// * that are not known attachments
+		// * where the oldest revision was created by User::MAINTENANCE_SCRIPT_USER
+		// * and the oldest revision had the edit summary `/* zoteroconnector-auto-upload */`
+		$uploader = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		$uploadActor = $uploader->getActorId();
+
+		$comment = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
+
+		// Doing this with two queries
+		// First: all pages in the file namespace that are not known attachments
+		$possibleFiles = $db->newSelectQueryBuilder()
+			->select( [ 'page_namespace', 'page_title', 'page_id' ] )
+			->from( 'page' )
+			->where( [
+				'page_namespace' => NS_FILE,
+				'page_title NOT IN (' . $db->makeList( $knownAttachments ) . ')'
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$possibleFilesCount = count( $possibleFiles );
+		if ( $possibleFilesCount === 0 ) {
+			$this->output( "No unknown attachments!\n" );
+			return;
+		}
+
+		$filePageIds = [];
+		foreach ( $possibleFiles as $row ) {
+			$filePageIds[] = (int)$row->page_id;
+		}
+		// Second, limit based on oldest revision being creation by this
+		// extension
+		// Need a subquery to get the oldest revision for each page before
+		// we do the filtering. We could try to combine the comment query with
+		// this but it is easier to just do them separately
+		$oldestRevs = $db->newSelectQueryBuilder()
+			->select( [ 'rev_page', 'min_rev_id' => 'MIN(rev_id)' ] )
+			->from( 'revision' )
+			->where( [
+				'rev_page IN (' . $db->makeList( $filePageIds ) . ')'
+			] )
+			->groupBy( 'rev_page' );
+		$queryInfo = WikiPage::getQueryInfo();
+		$commentJoinInfo = $this->commentStore->getJoin( 'rev_comment' );
+		$unknownAttachments = $db->newSelectQueryBuilder()
+			->select( $queryInfo['fields'] )
+			->fields( $commentJoinInfo['fields'] )
+			->from( 'page' )
+			->tables( $commentJoinInfo['tables'] )
+			->join(
+				$oldestRevs,
+				'oldest_revs',
+				[ 'page_id = oldest_revs.rev_page' ]
+			)
+			->join(
+				'revision',
+				null,
+				[ 'rev_id = oldest_revs.min_rev_id' ]
+			)
+			->joinConds( $commentJoinInfo['joins'] )
+			->where( [
+				'rev_actor' => $uploadActor,
+				'rev_comment_text' => $comment
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$unknownCount = count( $unknownAttachments );
+		if ( $unknownCount === 0 ) {
+			$this->output( "No unknown attachments!\n" );
+			return;
+		}
+		$this->output( "There are $unknownCount unknown attachments: " );
+		$files = [];
+		foreach ( $unknownAttachments as $row ) {
+			$files[] = 'File:' . $row->page_title;
+		}
+		$this->output( implode( ', ', $files ) );
+		$this->output( "\n" );
+		if ( !$deleteUnknown ) {
+			$this->output(
+				"...would delete the $unknownCount files, but deletion not requested\n"
+			);
+			return;
+		}
+		$this->output( "...deleting the $unknownCount files\n" );
+
+		$this->doDeletePages(
+			$unknownAttachments,
+			NS_FILE,
+			'File',
+			'Attachment deletions'
+		);
 	}
 
 	/**

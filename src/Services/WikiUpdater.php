@@ -49,6 +49,9 @@ class WikiUpdater {
 	public function makeRequestScope( array $extraPerms ): array {
 		// TODO do we want this to be done by the acting user instead of by
 		// maintenance script?
+		// If this changes though, it will be harder to identify unknown
+		// attachments since those are currently filtered by uploader and upload
+		// summary
 		$systemUser = User::newSystemUser(
 			User::MAINTENANCE_SCRIPT_USER,
 			[ 'steal' => true ]
