@@ -14,6 +14,7 @@ use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
 use RuntimeException;
 use User;
+use Wikimedia\Rdbms\IResultWrapper;
 use WikiPage;
 
 $IP = getenv( 'MW_INSTALL_PATH' );
@@ -101,16 +102,16 @@ class ImportZoteroData extends Maintenance {
 				'`references` or `attachments`'
 			);
 		}
-		$deleteUnknown = $this->hasOption( 'do-delete-unknown-refs' );
-		if ( $deleteUnknown ) {
+		$deleteUnknownRefs = $this->hasOption( 'do-delete-unknown-refs' );
+		if ( $deleteUnknownRefs ) {
 			if ( $from !== null ) {
 				$this->fatalError(
-					'--delete-unknown-refs cannot be used with --from'
+					'--do-delete-unknown-refs cannot be used with --from'
 				);
 			}
 			if ( $type === 'attachments' ) {
 				$this->fatalError(
-					'--delete-unknown-refs cannot be used with --type=attachments'
+					'--do-delete-unknown-refs cannot be used with --type=attachments'
 				);
 			}
 		}
@@ -120,14 +121,14 @@ class ImportZoteroData extends Maintenance {
 		if ( !$this->hasOption( 'item-list' ) ) {
 			// Won't even be printed when there is an item-list since we don't
 			// fetch everything
-			$mode .= $deleteUnknown ? ', DELETE-UNKNOWN' : ', PRINT-UNKNOWN';
+			$mode .= $deleteUnknownRefs ? ', DELETE-UNKNOWN-REFS' : ', PRINT-UNKNOWN-REFS';
 		}
 		$this->output( "ImportZoteroData: import-mode=$mode type=$type\n" );
 
 		if ( $this->hasOption( 'item-list' ) ) {
-			if ( $deleteUnknown ) {
+			if ( $deleteUnknownRefs ) {
 				$this->fatalError(
-					'--delete-unknown-refs cannot be used with --item-list'
+					'--do-delete-unknown-refs cannot be used with --item-list'
 				);
 			}
 			$itemList = $this->getOption( 'item-list' );
@@ -168,7 +169,7 @@ class ImportZoteroData extends Maintenance {
 
 		if ( !$this->hasOption( 'item-list' ) ) {
 			// Either delete or just print all unknown references
-			$this->handleUnknownReferences( $allKnownReferences, $deleteUnknown );
+			$this->handleUnknownReferences( $allKnownReferences, $deleteUnknownRefs );
 		}
 
 		$this->output( "Done\n" );
@@ -532,22 +533,41 @@ class ImportZoteroData extends Maintenance {
 		}
 		$this->output( "...deleting the $unknownCount pages\n" );
 
+		$this->doDeletePages(
+			$unknown,
+			NS_ZOTERO_REF,
+			'Zotero reference',
+			'Reference deletions'
+		);
+	}
+
+	/**
+	 * Given a list of rows suitable to use in WikiPageFactory::newFromRow(),
+	 * confirm that they are in the given namespace and delete them
+	 */
+	private function doDeletePages(
+		IResultWrapper $rows,
+		int $namespace,
+		string $namespaceText,
+		string $progressType
+	) {
+		$totalCount = count( $rows );
 		$summary = [ 'already-deleted' => 0, 'deleted' => 0, 'errors' => [] ];
 		$itemCount = 0;
 
 		[ $sysUser, $scope ] = $this->updater->makeRequestScope(
 			[ 'delete' ]
 		);
-		foreach ( $unknown as $row ) {
+		foreach ( $rows as $row ) {
 			$itemCount++;
-			$this->logProgress( 'Deletions', $itemCount, $unknownCount, $row->page_title );
+			$this->logProgress( $progressType, $itemCount, $totalCount, $row->page_title );
 
-			// Make extra sure we don't delete anything other than a reference
-			if ( $row->page_namespace !== (string)NS_ZOTERO_REF ) {
+			// Make extra sure we don't delete anything unexpected
+			if ( $row->page_namespace !== (string)$namespace ) {
 				throw new RuntimeException( "Wrong row namespace: " . $row->page_namespace );
 			}
 			$page = $this->wikiPageFactory->newFromRow( $row );
-			if ( $page->getNamespace() !== NS_ZOTERO_REF ) {
+			if ( $page->getNamespace() !== $namespace ) {
 				throw new RuntimeException( "Wrong page namespace: " . $page->getNamespace() );
 			}
 
@@ -570,7 +590,7 @@ class ImportZoteroData extends Maintenance {
 				// Clean up unterminated line
 				$this->output( "\n" );
 				$pageTitleText = $row->page_title;
-				$this->error( "Zotero reference:$pageTitleText - failed to delete:" );
+				$this->error( "$namespaceText:$pageTitleText - failed to delete:" );
 				$this->error( $status->__toString() );
 				$summary['errors'][$pageTitleText] = implode(
 					',',
@@ -586,7 +606,7 @@ class ImportZoteroData extends Maintenance {
 				);
 			}
 		}
-		$this->output( "Deletion summary:\n" );
+		$this->output( "$progressType summary:\n" );
 		$this->output( $summary['deleted'] . " deleted\n" );
 		$this->output( $summary['already-deleted'] . " were already deleted\n" );
 		$this->output( count( $summary['errors'] ) . " errors\n" );
