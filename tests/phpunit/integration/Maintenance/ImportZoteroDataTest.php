@@ -129,6 +129,22 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			$this->editPage( 'ExamplePDFn6.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
 		);
 
+		// Pages were imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
+			],
+			[ 'SORT BY page_title' ]
+		);
+
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems' ]
@@ -164,7 +180,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 				[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
 				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
 				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
-			]
+			],
+			[ 'SORT BY page_title' ]
 		);
 	}
 
@@ -176,6 +193,16 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
 		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDryRun.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
+			]
+		);
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems' ]
@@ -219,6 +246,16 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
 		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDelete.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'ExamplePDFDelete.pdf' ],
+			]
+		);
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems' ]
@@ -275,6 +312,16 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
 		$this->uploadAttachment( $maintUser, $targetSummary, 'KnownPDF.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'KnownPDF.pdf' ],
+			]
+		);
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
 			[ 'getItems', 'preloadAttachmentData', 'getAttachmentInfo', 'getAttachmentLocation' ]
