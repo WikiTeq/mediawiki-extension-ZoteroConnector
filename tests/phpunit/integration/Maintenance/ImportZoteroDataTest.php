@@ -74,6 +74,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 		// Make sure imports are to different locations with different names
 		rename( $fileDir . '/ExamplePDF.pdf', $fileDir . "/$name" );
+		sleep( 1 );
 
 		$maint->loadWithArgv( [
 			'--overwrite',
@@ -91,6 +92,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 		// Make sure imports are to different locations with different names
 		rename( $fileDir . "/$name", $fileDir . '/ExamplePDF.pdf' );
+		sleep( 1 );
 	}
 
 	/**
