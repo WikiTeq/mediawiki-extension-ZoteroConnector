@@ -46,6 +46,16 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 	}
 
+	protected function tearDown(): void {
+		// Remove left over files
+		$maint = TestingAccessWrapper::newFromObject( new NukeNS() );
+		$maint->loadWithArgv( [ '--delete', '--ns', NS_FILE, '--all', '--quiet' ] );
+		$maint->execute();
+		$maint->cleanupChanneled();
+
+		parent::tearDown();
+	}
+
 	protected function getMaintenanceClass(): string {
 		return ImportZoteroData::class;
 	}
@@ -55,12 +65,6 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		string $summary,
 		string $name
 	) {
-		// Remove left over files
-		$maint = TestingAccessWrapper::newFromObject( new NukeNS() );
-		$maint->loadWithArgv( [ '--delete', '--ns', NS_FILE, '--all', '--quiet' ] );
-		$maint->execute();
-		$maint->cleanupChanneled();
-
 		// Using the importImages.php maintenance script
 		// Basically what MaintenanceBaseTestCase::createMaintenance() does
 		$maint = new ImportImages();
@@ -89,51 +93,41 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		rename( $fileDir . "/$name", $fileDir . '/ExamplePDF.pdf' );
 	}
 
-	public static function provideNotDeletedAttachmentCases() {
-		// $isMaintUser, $isZoteroSummary, $addExtraEdit
-		yield 'Test sysop (other summary, only edit)' => [ false, false, false ];
-		yield 'Test sysop (other summary, extra edit)' => [ false, false, true ];
-		yield 'Test sysop (correct summary, only edit)' => [ false, true, false ];
-		yield 'Test sysop (correct summary, extra edit)' => [ false, true, true ];
-		yield 'Maint user (other summary, only edit)' => [ true, false, false ];
-		yield 'Maint user (other summary, extra edit)' => [ true, false, true ];
-	}
-
 	/**
 	 * Deletion of unknown attachments should not trigger when the file is
 	 * unknown but was uploaded by someone other that the maintenance user or
 	 * was uploaded by the maintenance user but with a different summary
-	 *
-	 * @dataProvider provideNotDeletedAttachmentCases
 	 */
-	public function testFileNotDeleted( $isMaintUser, $isZoteroSummary, $addExtraEdit ) {
+	public function testFileNotDeleted() {
 		$maintUser = User::newSystemUser(
 			User::MAINTENANCE_SCRIPT_USER,
 			[ 'steal' => true ]
 		);
+		$sysop = $this->getTestSysop()->getUser();
 		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
 
-		// Unique files
-		static $count = 0;
-		$count++;
-
-		$this->uploadAttachment(
-			$isMaintUser ? $maintUser : $this->getTestSysop()->getUser(),
-			$isZoteroSummary ? $targetSummary : 'other',
-			"ExamplePDFn$count.pdf"
+		// Test sysop (other summary, only edit)
+		$this->uploadAttachment( $sysop, 'other', 'ExamplePDFn1.pdf' );
+		// Test sysop (other summary, extra edit)
+		$this->uploadAttachment( $sysop, 'other', 'ExamplePDFn2.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn2.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
 		);
-		if ( $addExtraEdit ) {
-			// Make an edit to the page as the correct maintenance user with the
-			// upload summary, still not enough to trigger it
-			$editStatus = $this->editPage(
-				"ExamplePDFn$count.pdf",
-				'Content',
-				$targetSummary,
-				NS_FILE,
-				$maintUser
-			);
-			$this->assertStatusGood( $editStatus );
-		}
+		// Test sysop (correct summary, only edit)
+		$this->uploadAttachment( $sysop, $targetSummary, 'ExamplePDFn3.pdf' );
+		// Test sysop (correct summary, extra edit)
+		$this->uploadAttachment( $sysop, $targetSummary, 'ExamplePDFn4.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn4.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
+		);
+
+		// Maint user (other summary, only edit)
+		$this->uploadAttachment( $maintUser, 'other', 'ExamplePDFn5.pdf' );
+		// Maint user (other summary, extra edit)
+		$this->uploadAttachment( $maintUser, 'other', 'ExamplePDFn6.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn6.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
+		);
 
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
@@ -164,7 +158,12 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace', 'page_title' ],
 			[ 'page_namespace' => NS_FILE ],
 			[
-				[ (string)NS_FILE, "ExamplePDFn$count.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
 			]
 		);
 	}
