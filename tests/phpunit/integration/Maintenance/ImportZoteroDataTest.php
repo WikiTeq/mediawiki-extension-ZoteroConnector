@@ -4,16 +4,20 @@ namespace MediaWiki\Extension\ZoteroConnector\Tests\Integration\Maintenance;
 
 use FilesystemIterator;
 use GlobIterator;
+use ImportImages;
+use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Maintenance\ImportZoteroData;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
 use MediaWiki\Extension\ZoteroConnector\Services\TemplateBuilder;
 use MediaWiki\Extension\ZoteroConnector\Services\WikiUpdater;
 use MediaWiki\Extension\ZoteroConnector\Services\ZoteroRequester;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
+use NukeNS;
 use RuntimeException;
 use Status;
 use Title;
 use User;
+use Wikimedia\TestingAccessWrapper;
 use WikitextContent;
 
 /**
@@ -23,10 +27,349 @@ use WikitextContent;
 class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 
 	/** @var string[] */
-	protected $tablesUsed = [ 'page' ];
+	protected $tablesUsed = [ 'page', 'filearchive', 'oldimage', 'image' ];
+
+	protected function setUp(): void {
+		parent::setUp();
+		// Make sure we have a maintenance user that exists
+		$maintUser = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		// and has an actor id assigned
+		$maintUser->getActorId();
+		// and is different from the test sysop, that also has an actor id
+		// assigned
+		$this->assertNotSame(
+			$maintUser->getActorId(),
+			$this->getTestSysop()->getUser()->getActorId()
+		);
+	}
+
+	protected function tearDown(): void {
+		// Remove left over files
+		$maint = TestingAccessWrapper::newFromObject( new NukeNS() );
+		$maint->loadWithArgv( [ '--delete', '--ns', NS_FILE, '--all', '--quiet' ] );
+		$maint->execute();
+		$maint->cleanupChanneled();
+
+		parent::tearDown();
+	}
 
 	protected function getMaintenanceClass(): string {
 		return ImportZoteroData::class;
+	}
+
+	private function uploadAttachment(
+		User $actor,
+		string $summary,
+		string $name
+	) {
+		// Using the importImages.php maintenance script
+		// Basically what MaintenanceBaseTestCase::createMaintenance() does
+		$maint = new ImportImages();
+		$maint = TestingAccessWrapper::newFromObject( $maint );
+
+		$fileDir = dirname( __DIR__, 2 ) . '/attachments';
+
+		// Make sure imports are to different locations with different names
+		rename( $fileDir . '/ExamplePDF.pdf', $fileDir . "/$name" );
+		sleep( 1 );
+
+		$maint->loadWithArgv( [
+			'--overwrite',
+			'--user',
+			$actor->getName(),
+			'--summary',
+			$summary,
+			'--extensions',
+			'pdf',
+			// Quiet so that we don't need to handle the output from the
+			// uploading
+			'--quiet',
+			$fileDir
+		] );
+		$maint->execute();
+		$maint->cleanupChanneled();
+
+		// Make sure imports are to different locations with different names
+		rename( $fileDir . "/$name", $fileDir . '/ExamplePDF.pdf' );
+		sleep( 1 );
+	}
+
+	/**
+	 * Deletion of unknown attachments should not trigger when the file is
+	 * unknown but was uploaded by someone other that the maintenance user or
+	 * was uploaded by the maintenance user but with a different summary
+	 */
+	public function testFileNotDeleted() {
+		$maintUser = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		$sysop = $this->getTestSysop()->getUser();
+		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
+
+		// Test sysop (other summary, only edit)
+		$this->uploadAttachment( $sysop, 'other', 'ExamplePDFn1.pdf' );
+		// Test sysop (other summary, extra edit)
+		$this->uploadAttachment( $sysop, 'other', 'ExamplePDFn2.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn2.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
+		);
+		// Test sysop (correct summary, only edit)
+		$this->uploadAttachment( $sysop, $targetSummary, 'ExamplePDFn3.pdf' );
+		// Test sysop (correct summary, extra edit)
+		$this->uploadAttachment( $sysop, $targetSummary, 'ExamplePDFn4.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn4.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
+		);
+
+		// Maint user (other summary, only edit)
+		$this->uploadAttachment( $maintUser, 'other', 'ExamplePDFn5.pdf' );
+		// Maint user (other summary, extra edit)
+		$this->uploadAttachment( $maintUser, 'other', 'ExamplePDFn6.pdf' );
+		$this->assertStatusGood(
+			$this->editPage( 'ExamplePDFn6.pdf', 'Content', $targetSummary, NS_FILE, $maintUser )
+		);
+
+		// Pages were imported
+		// $this->assertSelect(
+		// 	'page',
+		// 	[ 'page_namespace', 'page_title' ],
+		// 	[ 'page_namespace' => NS_FILE ],
+		// 	[
+		// 		[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
+		// 	],
+		// 	[ 'SORT BY page_title' ]
+		// );
+
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( [] );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=both\n";
+		$expectStr .= "Found: 0 references\n";
+		$expectStr .= "After processing: 0 references, and 0 attachments\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n0 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "No unknown attachments!\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [] );
+		$this->maintenance->execute();
+
+		// Pages not deleted
+		// $this->assertSelect(
+		// 	'page',
+		// 	[ 'page_namespace', 'page_title' ],
+		// 	[ 'page_namespace' => NS_FILE ],
+		// 	[
+		// 		[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+		// 		[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
+		// 	],
+		// 	[ 'SORT BY page_title' ]
+		// );
+	}
+
+	public function testUnknownAttachmentDryRun() {
+		$maintUser = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
+
+		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDryRun.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
+			]
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( [] );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=both\n";
+		$expectStr .= "Found: 0 references\n";
+		$expectStr .= "After processing: 0 references, and 0 attachments\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n0 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "There are 1 unknown attachments: File:ExamplePDFDryRun.pdf\n";
+		$expectStr .= "...would delete the 1 files, but deletion not requested\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [] );
+		$this->maintenance->execute();
+
+		// Page not deleted
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
+			]
+		);
+	}
+
+	public function testUnknownAttachmentDeleted() {
+		$maintUser = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
+
+		$this->uploadAttachment( $maintUser, $targetSummary, 'ExamplePDFDelete.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'ExamplePDFDelete.pdf' ],
+			]
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( [] );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, DELETE-UNKNOWN-ATTACHMENTS type=both\n";
+		$expectStr .= "Found: 0 references\n";
+		$expectStr .= "After processing: 0 references, and 0 attachments\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n0 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "There are 1 unknown attachments: File:ExamplePDFDelete.pdf\n";
+		$expectStr .= "...deleting the 1 files\n";
+		$expectStr .= "Attachment deletions 1/1 (100%): ExamplePDFDelete.pdf ...deleted\n";
+		$expectStr .= "Attachment deletions summary:\n";
+		$expectStr .= "1 deleted\n0 were already deleted\n0 errors\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [ '--do-delete-unknown-attachments' ] );
+		$this->maintenance->execute();
+
+		// Page was deleted
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[]
+		);
+	}
+
+	public function testAttachmentKnown() {
+		// In testUnknownAttachmentDryRun() and testUnknownAttachmentDeleted()
+		// we confirmed that if the maintenance user performs the initial upload
+		// with the correct summary then the file is considered an attachment
+		// and may be deleted; confirm that in such a situation, if it is still
+		// a known attachment in Zotero it is *not* deleted
+		// Reuse one of the items we already have and just set the attachment
+		// to be KnownPDF instead of building a new item
+		$abstractFile = dirname( __DIR__, 2 ) . '/data/abstract 8WP3QPF3.json';
+		$item = json_decode( file_get_contents( $abstractFile ) );
+		$item->links->attachment->href = "https://api.zotero.org/groups/4511960/items/KnownPDF";
+
+		$maintUser = User::newSystemUser(
+			User::MAINTENANCE_SCRIPT_USER,
+			[ 'steal' => true ]
+		);
+		$targetSummary = '/* ' . CommentHandler::AUTO_UPLOAD_KEY . ' */';
+
+		$this->uploadAttachment( $maintUser, $targetSummary, 'KnownPDF.pdf' );
+
+		// Page was imported
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'KnownPDF.pdf' ],
+			]
+		);
+		$requester = $this->createNoOpMock(
+			ZoteroRequester::class,
+			[ 'getItems', 'preloadAttachmentData', 'getAttachmentInfo', 'getAttachmentLocation' ]
+		);
+		$requester->expects( $this->once() )
+			->method( 'getItems' )
+			->willReturn( [ $item ] );
+		$requester->expects( $this->once() )->method( 'preloadAttachmentData' );
+		$requester->expects( $this->once() )
+			->method( 'getAttachmentInfo' )
+			->with( 'KnownPDF' )
+			->willReturn( [ 'parentItem' => '8WP3QPF3', 'version' => 'bar', 'makePublic' => false ] );
+		$requester->expects( $this->once() )
+			->method( 'getAttachmentLocation' )
+			->with( 'KnownPDF' )
+			->willReturn( 'MOCK' );
+		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
+
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=both\n";
+		$expectStr .= "Found: 1 references\n";
+		$expectStr .= "After processing: 1 references, and 1 attachments\n";
+		$expectStr .= "References 1/1 (100%): 8WP3QPF3 ...DRY RUN\n";
+		$expectStr .= "Attachments 1/1 (100%): KnownPDF ...found redirect, DRY RUN\n";
+		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
+		$expectStr .= "Attachment summary:\n0 uploaded\n";
+		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
+		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "No unknown attachments!\n";
+		$expectStr .= "Done\n";
+
+		$this->expectOutputString( $expectStr );
+		$this->maintenance->loadWithArgv( [] );
+		$this->maintenance->execute();
+
+		// Page not deleted
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, 'KnownPDF.pdf' ],
+			]
+		);
 	}
 
 	/** @dataProvider provideInvalidArgs */
@@ -50,15 +393,27 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		];
 		yield 'No delete unknown refs with --from' => [
 			[ '--type', 'references', '--from', 'foo', '--do-delete-unknown-refs' ],
-			'--delete-unknown-refs cannot be used with --from',
+			'--do-delete-unknown-refs cannot be used with --from',
 		];
 		yield 'No delete unknown refs with type=attachments' => [
 			[ '--type', 'attachments', '--do-delete-unknown-refs' ],
-			'--delete-unknown-refs cannot be used with --type=attachments',
+			'--do-delete-unknown-refs cannot be used with --type=attachments',
 		];
 		yield 'No delete unknown refs with --item-list' => [
 			[ '--item-list', 'foo,bar', '--do-delete-unknown-refs' ],
-			'--delete-unknown-refs cannot be used with --item-list',
+			'--do-delete-unknown-refs cannot be used with --item-list',
+		];
+		yield 'No delete unknown attachments with --from' => [
+			[ '--type', 'attachments', '--from', 'foo', '--do-delete-unknown-attachments' ],
+			'--do-delete-unknown-attachments cannot be used with --from',
+		];
+		yield 'No delete unknown attachments with type=references' => [
+			[ '--type', 'references', '--do-delete-unknown-attachments' ],
+			'--do-delete-unknown-attachments cannot be used with --type=references',
+		];
+		yield 'No delete unknown attachments with --item-list' => [
+			[ '--item-list', 'foo,bar', '--do-delete-unknown-attachments' ],
+			'--do-delete-unknown-attachments cannot be used with --item-list',
 		];
 	}
 
@@ -81,7 +436,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -91,6 +447,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "No unknown reference pages!\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -167,7 +524,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, PRINT-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -177,6 +535,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "No unknown reference pages!\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -249,7 +608,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -259,6 +619,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "No unknown reference pages!\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -388,7 +749,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.WikiUpdater', $updater );
 
 		$count = count( $allItems );
-		$expectStr = "ImportZoteroData: import-mode=DO-IMPORT, PRINT-UNKNOWN type=attachments\n";
+		$expectStr = "ImportZoteroData: import-mode=DO-IMPORT, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=attachments\n";
 		$expectStr .= "Found: 7 references\n";
 		$expectStr .= "After processing: 0 references, and 7 attachments\n";
 		$expectStr .= "Ignoring the references\n";
@@ -428,6 +790,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "0 pages updated without file changes\n0 unchanged\n1 errors\n";
 		$expectStr .= "GGG111: http-timed-out\n";
 		$expectStr .= "No unknown reference pages!\n";
+		$expectStr .= "No unknown attachments!\n";
 		$expectStr .= "Done\n";
 
 		$this->expectOutputString( $expectStr );
@@ -472,7 +835,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=attachments\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=attachments\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "$attachmentCount attachments\nIgnoring the references\n";
@@ -483,6 +847,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "Attachment summary:\n0 uploaded\n";
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "No unknown reference pages!\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -494,7 +859,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 	}
 
-	public function testDryRunDeletion() {
+	public function testDryRunReferenceDeletion() {
 		// Table should start empty
 		$this->assertSelect(
 			'page',
@@ -524,7 +889,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			->willReturn( [] );
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
-		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, PRINT-UNKNOWN type=both\n";
+		$expectStr = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "PRINT-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=both\n";
 		$expectStr .= "Found: 0 references\n";
 		$expectStr .= "After processing: 0 references, and 0 attachments\n";
 		$expectStr .= "References summary:\n0 updated\n0 unchanged\n0 errors\n";
@@ -532,6 +898,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectStr .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectStr .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
 		$expectStr .= "...would delete the 2 pages, but deletion not requested\n";
+		$expectStr .= "No unknown attachments!\n";
 		$expectStr .= "Done\n";
 
 		$this->expectOutputString( $expectStr );
@@ -550,7 +917,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 	}
 
-	public function testDoDeletionNoImport() {
+	public function testDoReferenceDeletionNoImport() {
 		// Table should start empty
 		$this->assertSelect(
 			'page',
@@ -602,7 +969,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, DELETE-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DRY-RUN, "
+			. "DELETE-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -613,9 +981,10 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
 		$expectRegex .= "\.\.\.deleting the 2 pages\n";
-		$expectRegex .= "Deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
-		$expectRegex .= "Deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
-		$expectRegex .= "Deletion summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "Reference deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
+		$expectRegex .= "Reference deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
+		$expectRegex .= "Reference deletions summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );
@@ -635,7 +1004,7 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 	}
 
-	public function testDoDeletionAndImportRefs() {
+	public function testDoReferenceDeletionAndImportRefs() {
 		// Table should start empty
 		$this->assertSelect(
 			'page',
@@ -687,7 +1056,8 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->setService( 'ZoteroConnector.ZoteroRequester', $requester );
 
 		$count = count( $allItems );
-		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, DELETE-UNKNOWN type=references\n";
+		$expectRegex = "ImportZoteroData: import-mode=DO-IMPORT, "
+			. "DELETE-UNKNOWN-REFS, PRINT-UNKNOWN-ATTACHMENTS type=references\n";
 		$expectRegex .= "Found: $count references\n";
 		$expectRegex .= "After processing: $count references, and ";
 		$expectRegex .= "\d+ attachments\nIgnoring the attachments\n";
@@ -698,9 +1068,10 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$expectRegex .= "0 pages updated without file changes\n0 unchanged\n0 errors\n";
 		$expectRegex .= "There are 2 unknown reference pages: Zotero_reference:Bar, Zotero_reference:Foo\n";
 		$expectRegex .= "\.\.\.deleting the 2 pages\n";
-		$expectRegex .= "Deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
-		$expectRegex .= "Deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
-		$expectRegex .= "Deletion summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "Reference deletions 1\/2 \( 50%\): Bar \.\.\.deleted\n";
+		$expectRegex .= "Reference deletions 2\/2 \(100%\): Foo \.\.\.deleted\n";
+		$expectRegex .= "Reference deletions summary:\n2 deleted\n0 were already deleted\n0 errors\n";
+		$expectRegex .= "No unknown attachments!\n";
 		$expectRegex .= "Done\n";
 
 		$this->expectOutputRegex( "/$expectRegex/" );

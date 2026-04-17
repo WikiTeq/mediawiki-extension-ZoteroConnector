@@ -1,1 +1,4 @@
 * text eol=lf
+
+# Some things are binary
+*.pdf binary
