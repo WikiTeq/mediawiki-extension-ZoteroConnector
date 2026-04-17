@@ -84,7 +84,6 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			$summary,
 			// Quiet so that we don't need to handle the output from the
 			// uploading
-			'--quiet',
 			$fileDir
 		] );
 		$maint->execute();
