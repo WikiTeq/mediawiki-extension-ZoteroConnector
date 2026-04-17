@@ -82,8 +82,11 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			$actor->getName(),
 			'--summary',
 			$summary,
+			'--extensions',
+			'pdf',
 			// Quiet so that we don't need to handle the output from the
 			// uploading
+			'--quiet',
 			$fileDir
 		] );
 		$maint->execute();
