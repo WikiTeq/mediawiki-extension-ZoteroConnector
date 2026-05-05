@@ -134,20 +134,20 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		);
 
 		// Pages were imported
-		// $this->assertSelect(
-		// 	'page',
-		// 	[ 'page_namespace', 'page_title' ],
-		// 	[ 'page_namespace' => NS_FILE ],
-		// 	[
-		// 		[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
-		// 	],
-		// 	[ 'SORT BY page_title' ]
-		// );
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
+			],
+			[ 'SORT BY page_title' ]
+		);
 
 		$requester = $this->createNoOpMock(
 			ZoteroRequester::class,
@@ -173,20 +173,20 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 
 		// Pages not deleted
-		// $this->assertSelect(
-		// 	'page',
-		// 	[ 'page_namespace', 'page_title' ],
-		// 	[ 'page_namespace' => NS_FILE ],
-		// 	[
-		// 		[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
-		// 		[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
-		// 	],
-		// 	[ 'SORT BY page_title' ]
-		// );
+		$this->assertSelect(
+			'page',
+			[ 'page_namespace', 'page_title' ],
+			[ 'page_namespace' => NS_FILE ],
+			[
+				[ (string)NS_FILE, "ExamplePDFn1.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn2.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn3.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn4.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
+				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
+			],
+			[ 'SORT BY page_title' ]
+		);
 	}
 
 	public function testUnknownAttachmentDryRun() {
