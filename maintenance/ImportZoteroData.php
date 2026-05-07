@@ -760,7 +760,7 @@ class ImportZoteroData extends Maintenance {
 				'comment_text' => $comment
 			] )
 			// Order by title for consistent test output
-			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC ),
+			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 		$unknownCount = count( $unknownAttachments );
