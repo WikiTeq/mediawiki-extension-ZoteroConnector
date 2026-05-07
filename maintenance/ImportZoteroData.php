@@ -16,6 +16,7 @@ use MessageSpecifier;
 use RuntimeException;
 use User;
 use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use WikiPage;
 
 $IP = getenv( 'MW_INSTALL_PATH' );
@@ -552,7 +553,9 @@ class ImportZoteroData extends Maintenance {
 			->from( 'page' )
 			->where( [
 				'page_namespace' => NS_ZOTERO_REF,
-			] );
+			] )
+			// Order by title for consistent test output
+			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC );
 		if ( $knownReferences ) {
 			$unknownQuery->where( [
 				'page_title NOT IN (' . $db->makeList( $knownReferences ) . ')'
@@ -756,6 +759,8 @@ class ImportZoteroData extends Maintenance {
 				// MySQL doesn't let you use aliases in where clauses
 				'comment_text' => $comment
 			] )
+			// Order by title for consistent test output
+			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC ),
 			->caller( __METHOD__ )
 			->fetchResultSet();
 		$unknownCount = count( $unknownAttachments );
