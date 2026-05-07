@@ -751,7 +751,8 @@ class ImportZoteroData extends Maintenance {
 			->joinConds( $commentJoinInfo['joins'] )
 			->where( [
 				'rev_actor' => $uploadActor,
-				'rev_comment_text' => $comment
+				// MySQL doesn't let you use aliases in where clauses
+				'comment_text' => $comment
 			] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
