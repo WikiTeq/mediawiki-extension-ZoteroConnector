@@ -737,17 +737,19 @@ class ImportZoteroData extends Maintenance {
 			->select( $queryInfo['fields'] )
 			->fields( $commentJoinInfo['fields'] )
 			->from( 'page' )
-			->tables( $commentJoinInfo['tables'] )
 			->join(
 				$oldestRevs,
 				'oldest_revs',
 				[ 'page_id = oldest_revs.rev_page' ]
 			)
+			// Make sure to join revision *before* adding the table(s) for
+			// comments so that rev_id in the comment conditions works
 			->join(
 				'revision',
 				null,
 				[ 'rev_id = oldest_revs.min_rev_id' ]
 			)
+			->tables( $commentJoinInfo['tables'] )
 			->joinConds( $commentJoinInfo['joins'] )
 			->where( [
 				'rev_actor' => $uploadActor,
