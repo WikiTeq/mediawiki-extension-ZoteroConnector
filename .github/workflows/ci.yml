@@ -82,6 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MW_INSTALL_PATH: ${{ github.workspace }}/mediawiki
+      PHPUNIT_USE_NORMAL_TABLES: 1
     strategy:
       fail-fast: false
       matrix:
