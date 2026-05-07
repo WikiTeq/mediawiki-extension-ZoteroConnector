@@ -100,3 +100,4 @@ jobs:
           php: ${{ matrix.php }}
           mwbranch: ${{ matrix.mediawiki }}
           extension: ZoteroConnector
+          use_mysql: true
