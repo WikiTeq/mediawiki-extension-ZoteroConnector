@@ -656,6 +656,8 @@ class ImportZoteroData extends Maintenance {
 					// permission just in case
 					->deleteUnsafe( $reason );
 			}
+			// Always set
+			'@phan-var Status $status';
 
 			if ( $status->hasMessage( 'cannotdelete' ) ) {
 				$this->output( "already deleted\n" );
