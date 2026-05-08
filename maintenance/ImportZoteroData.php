@@ -16,6 +16,7 @@ use MessageSpecifier;
 use RuntimeException;
 use User;
 use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 use WikiPage;
 
 $IP = getenv( 'MW_INSTALL_PATH' );
@@ -311,14 +312,18 @@ class ImportZoteroData extends Maintenance {
 		// Just use a DB query, its simpler than individually checking the
 		// different titles. Select all those that exist, and then exclude
 		// those
-		$existingFiles = $this->getDb( DB_REPLICA )->newSelectQueryBuilder()
+		$existingFilesQuery = $this->getDb( DB_REPLICA )->newSelectQueryBuilder()
 			->select( 'page_title' )
 			->from( 'page' )
 			->where( [
 				'page_namespace' => NS_FILE,
+			] );
+		if ( $attachmentFiles ) {
+			$existingFilesQuery->where( [
 				'page_title' => $attachmentFiles,
-			] )
-			->caller( __METHOD__ )
+			] );
+		}
+		$existingFiles = $existingFilesQuery->caller( __METHOD__ )
 			->fetchFieldValues();
 		$existingFiles = array_flip( $existingFiles );
 		$attachmentIds = array_filter(
@@ -543,14 +548,20 @@ class ImportZoteroData extends Maintenance {
 		);
 		$db = $this->getDb( DB_REPLICA );
 		$queryInfo = WikiPage::getQueryInfo();
-		$unknown = $db->newSelectQueryBuilder()
+		$unknownQuery = $db->newSelectQueryBuilder()
 			->select( $queryInfo['fields'] )
 			->from( 'page' )
 			->where( [
 				'page_namespace' => NS_ZOTERO_REF,
-				'page_title NOT IN (' . $db->makeList( $knownReferences ) . ')'
 			] )
-			->caller( __METHOD__ )
+			// Order by title for consistent test output
+			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC );
+		if ( $knownReferences ) {
+			$unknownQuery->where( [
+				'page_title NOT IN (' . $db->makeList( $knownReferences ) . ')'
+			] );
+		}
+		$unknown = $unknownQuery->caller( __METHOD__ )
 			->fetchResultSet();
 		$unknownCount = count( $unknown );
 		if ( $unknownCount === 0 ) {
@@ -688,14 +699,18 @@ class ImportZoteroData extends Maintenance {
 
 		// Doing this with two queries
 		// First: all pages in the file namespace that are not known attachments
-		$possibleFiles = $db->newSelectQueryBuilder()
+		$possibleFilesQuery = $db->newSelectQueryBuilder()
 			->select( [ 'page_namespace', 'page_title', 'page_id' ] )
 			->from( 'page' )
 			->where( [
 				'page_namespace' => NS_FILE,
+			] );
+		if ( $knownAttachments ) {
+			$possibleFilesQuery->where( [
 				'page_title NOT IN (' . $db->makeList( $knownAttachments ) . ')'
-			] )
-			->caller( __METHOD__ )
+			] );
+		}
+		$possibleFiles = $possibleFilesQuery->caller( __METHOD__ )
 			->fetchResultSet();
 		$possibleFilesCount = count( $possibleFiles );
 		if ( $possibleFilesCount === 0 ) {
@@ -725,22 +740,27 @@ class ImportZoteroData extends Maintenance {
 			->select( $queryInfo['fields'] )
 			->fields( $commentJoinInfo['fields'] )
 			->from( 'page' )
-			->tables( $commentJoinInfo['tables'] )
 			->join(
 				$oldestRevs,
 				'oldest_revs',
 				[ 'page_id = oldest_revs.rev_page' ]
 			)
+			// Make sure to join revision *before* adding the table(s) for
+			// comments so that rev_id in the comment conditions works
 			->join(
 				'revision',
 				null,
 				[ 'rev_id = oldest_revs.min_rev_id' ]
 			)
+			->tables( $commentJoinInfo['tables'] )
 			->joinConds( $commentJoinInfo['joins'] )
 			->where( [
 				'rev_actor' => $uploadActor,
-				'rev_comment_text' => $comment
+				// MySQL doesn't let you use aliases in where clauses
+				'comment_text' => $comment
 			] )
+			// Order by title for consistent test output
+			->orderBy( 'page_title', SelectQueryBuilder::SORT_ASC )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 		$unknownCount = count( $unknownAttachments );
