@@ -146,7 +146,22 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
 				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
 			],
-			[ 'SORT BY page_title' ]
+			[ 'ORDER BY page_title' ]
+		);
+		// Files exist
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
+			[
+				[ "ExamplePDFn1.pdf" ],
+				[ "ExamplePDFn2.pdf" ],
+				[ "ExamplePDFn3.pdf" ],
+				[ "ExamplePDFn4.pdf" ],
+				[ "ExamplePDFn5.pdf" ],
+				[ "ExamplePDFn6.pdf" ],
+			],
+			[ 'ORDER BY img_name' ]
 		);
 
 		$requester = $this->createNoOpMock(
@@ -185,7 +200,22 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 				[ (string)NS_FILE, "ExamplePDFn5.pdf" ],
 				[ (string)NS_FILE, "ExamplePDFn6.pdf" ],
 			],
-			[ 'SORT BY page_title' ]
+			[ 'ORDER BY page_title' ]
+		);
+		// Files not deleted
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
+			[
+				[ "ExamplePDFn1.pdf" ],
+				[ "ExamplePDFn2.pdf" ],
+				[ "ExamplePDFn3.pdf" ],
+				[ "ExamplePDFn4.pdf" ],
+				[ "ExamplePDFn5.pdf" ],
+				[ "ExamplePDFn6.pdf" ],
+			],
+			[ 'ORDER BY img_name' ]
 		);
 	}
 
@@ -205,6 +235,15 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace' => NS_FILE ],
 			[
 				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
+			]
+		);
+		// File was imported
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
+			[
+				[ "ExamplePDFDryRun.pdf" ],
 			]
 		);
 		$requester = $this->createNoOpMock(
@@ -238,6 +277,15 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[ 'page_namespace' => NS_FILE ],
 			[
 				[ (string)NS_FILE, 'ExamplePDFDryRun.pdf' ],
+			]
+		);
+		// Nor was the file
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
+			[
+				[ 'ExamplePDFDryRun.pdf' ]
 			]
 		);
 	}
@@ -293,6 +341,13 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			'page',
 			[ 'page_namespace', 'page_title' ],
 			[ 'page_namespace' => NS_FILE ],
+			[]
+		);
+		// And so was the actual file
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
 			[]
 		);
 	}
@@ -369,6 +424,15 @@ class ImportZoteroDataTest extends MaintenanceBaseTestCase {
 			[
 				[ (string)NS_FILE, 'KnownPDF.pdf' ],
 			]
+		);
+		// File not deleted
+		$this->assertSelect(
+			'image',
+			[ 'img_name' ],
+			[],
+			[
+				[ "KnownPDF.pdf" ],
+			],
 		);
 	}
 

@@ -3,6 +3,8 @@
 namespace MediaWiki\Extension\ZoteroConnector\Maintenance;
 
 use CommentStore;
+use FileDeleteForm;
+use LocalFile;
 use Maintenance;
 use MediaWiki\Extension\ZoteroConnector\HookHandlers\CommentHandler;
 use MediaWiki\Extension\ZoteroConnector\Services\AttachmentManager;
@@ -13,6 +15,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\DeletePageFactory;
 use MediaWiki\Page\WikiPageFactory;
 use MessageSpecifier;
+use RepoGroup;
 use RuntimeException;
 use User;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -30,6 +33,7 @@ class ImportZoteroData extends Maintenance {
 	private AttachmentManager $manager;
 	private CommentStore $commentStore;
 	private DeletePageFactory $deletePageFactory;
+	private RepoGroup $repoGroup;
 	private WikiPageFactory $wikiPageFactory;
 	private WikiUpdater $updater;
 	private ZoteroRequester $requester;
@@ -96,6 +100,7 @@ class ImportZoteroData extends Maintenance {
 		$this->manager = $services->getService( 'ZoteroConnector.AttachmentManager' );
 		$this->commentStore = $services->getCommentStore();
 		$this->deletePageFactory = $services->getDeletePageFactory();
+		$this->repoGroup = $services->getRepoGroup();
 		$this->wikiPageFactory = $services->getWikiPageFactory();
 		$this->updater = $services->getService( 'ZoteroConnector.WikiUpdater' );
 		$this->requester = $services->getService( 'ZoteroConnector.ZoteroRequester' );
@@ -605,6 +610,7 @@ class ImportZoteroData extends Maintenance {
 		$summary = [ 'already-deleted' => 0, 'deleted' => 0, 'errors' => [] ];
 		$itemCount = 0;
 
+		$reason = '/* ' . CommentHandler::AUTO_DELETE_KEY . ' */';
 		[ $sysUser, $scope ] = $this->updater->makeRequestScope(
 			[ 'delete' ]
 		);
@@ -621,14 +627,37 @@ class ImportZoteroData extends Maintenance {
 				throw new RuntimeException( "Wrong page namespace: " . $page->getNamespace() );
 			}
 
-			$deletePage = $this->deletePageFactory->newDeletePage(
-				$page,
-				$sysUser
-			);
-			$status = $deletePage->forceImmediate( true )
-				// bypass any permission checks, we still add the `delete`
-				// permission just in case
-				->deleteUnsafe( '/* ' . CommentHandler::AUTO_DELETE_KEY . ' */' );
+			// We use FileDeleteForm for files so that the files are actually
+			// deleted, if they exist
+			$triedDeletion = false;
+			if ( $namespace === NS_FILE ) {
+				$file = $this->repoGroup->findFile( $page, [ 'ignoreRedirect' => true ] );
+				if ( $file && $file->isLocal() && $file instanceof LocalFile ) {
+					$status = FileDeleteForm::doDelete(
+						$page->getTitle(),
+						$file,
+						// old image
+						null,
+						$reason,
+						// suppression?
+						false,
+						$sysUser,
+					);
+					$triedDeletion = true;
+				}
+			}
+			if ( !$triedDeletion ) {
+				$deletePage = $this->deletePageFactory->newDeletePage(
+					$page,
+					$sysUser
+				);
+				$status = $deletePage->forceImmediate( true )
+					// bypass any permission checks, we still add the `delete`
+					// permission just in case
+					->deleteUnsafe( $reason );
+			}
+			// Always set
+			'@phan-var \Status $status';
 
 			if ( $status->hasMessage( 'cannotdelete' ) ) {
 				$this->output( "already deleted\n" );
