@@ -59,8 +59,11 @@ class LinkHandler implements HtmlPageLinkRendererBeginHook {
 			// No display title set?
 			return true;
 		}
-		$displayText = $displayProps[ $asTitle->getId() ];
-		$text = $displayText;
+		$pageId = $asTitle->getId();
+		if ( !isset( $displayProps[ $pageId ] ) ) {
+			return true;
+		}
+		$text = $displayProps[ $pageId ];
 		// Stop processing
 		return false;
 	}
