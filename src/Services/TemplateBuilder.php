@@ -132,6 +132,43 @@ class TemplateBuilder {
 	}
 
 	/**
+	 * Format a date for {{Cite act}}, which needs `j F Y` - Zotero allows
+	 * free-form dates (e.g. `n.d.`, `circa 1950`), and the general parser
+	 * used by DateTimeImmutable would either throw or, worse, silently
+	 * misinterpret such values as relative dates (`n.d.` parses like
+	 * "next day"), so only explicitly absolute formats are accepted here.
+	 *
+	 * @param string $original
+	 * @return string the reformatted date, or the original value if it is
+	 *   not in one of the supported formats
+	 */
+	private static function formatActDate( string $original ): string {
+		// No-date markers are passed through unchanged
+		if ( in_array( strtolower( trim( $original ) ), [ '', 'n.d.', 'nd' ], true ) ) {
+			return $original;
+		}
+		$formats = [ 'Y-m-d\TH:i:sP', 'Y-m-d\TH:i:s', 'Y-m-d', 'Y-m', 'Y' ];
+		foreach ( $formats as $format ) {
+			$parsed = DateTimeImmutable::createFromFormat(
+				"!$format",
+				trim( $original )
+			);
+			$errors = DateTimeImmutable::getLastErrors();
+			// PHP >= 8.2 returns false instead of an error array when there
+			// were no errors or warnings; trailing data or invalid dates
+			// produce errors or warnings here
+			$hasProblems = $errors !== false
+				&& ( $errors['warning_count'] > 0 || $errors['error_count'] > 0 );
+			if ( $parsed !== false && !$hasProblems ) {
+				return $parsed->format( 'j F Y' );
+			}
+		}
+		// Not in any recognized format; keep the original value rather than
+		// guessing at what it means
+		return $original;
+	}
+
+	/**
 	 * Add the details of a creator to the template, generally for
 	 * authors but supports other roles too; the array passed by reference
 	 * checks the number of each role already used, to identify the next number
@@ -340,10 +377,9 @@ class TemplateBuilder {
 			);
 			// {{Cite act}} doesn't support all formats for dates
 			if ( $templateName === 'Cite act' ) {
-				$dateTime = new DateTimeImmutable( $template->getParam( 'date' ) );
 				$template->setParam(
 					'date',
-					$dateTime->format( 'j F Y' )
+					self::formatActDate( $template->getParam( 'date' ) )
 				);
 			}
 		}
