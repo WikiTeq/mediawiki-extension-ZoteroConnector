@@ -7,7 +7,7 @@
 	"license-name": "MIT",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.39"
+		"MediaWiki": ">= 1.43.0"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ZoteroConnector\\": "src/",
